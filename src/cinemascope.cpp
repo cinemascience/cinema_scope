@@ -56,7 +56,7 @@
 #endif
 #endif
 
-#include "imageviewer.h"
+#include "cinemascope.h"
 
 //! [0]
 ImageViewer::ImageViewer()

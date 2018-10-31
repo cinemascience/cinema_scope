@@ -51,7 +51,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 
-#include "imageviewer.h"
+#include "cinemascope.h"
 
 int main(int argc, char *argv[])
 {
