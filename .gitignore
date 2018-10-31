@@ -1,2 +1,4 @@
 Makefile
 .qmake.stash
+cinema_scope.app/
+.DS_Store
