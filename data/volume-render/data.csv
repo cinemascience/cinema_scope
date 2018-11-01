@@ -1,4 +1,4 @@
-phi,xFlip,xValue,xVisible,zVisible,zFlip,yFlip,zValue,theta,yVisible,yValue,image
+phi,xFlip,xValue,xVisible,zVisible,zFlip,yFlip,zValue,theta,yVisible,yValue,FILE
 0,1,166,1,1,1,1,166,30,1,166,images/1.jpg
 0,1,166,1,1,1,1,166,30,1,499,images/2.jpg
 0,1,166,1,1,1,1,166,30,1,832,images/3.jpg

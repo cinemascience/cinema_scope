@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include <QFormLayout>
+#include "CinDBReader.h"
 
 MainWindow::MainWindow(string path, QWidget *parent) : QMainWindow(parent)
 {
@@ -39,6 +41,10 @@ MainWindow::MainWindow(string path, QWidget *parent) : QMainWindow(parent)
         listOfSliderLabels[i]->setText(label.c_str());
     }
 
+    // testing
+    CinDBReader reader;
+    reader.readCSV("/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
+
     QHBoxLayout *layout1 = new QHBoxLayout;
     layout1->addWidget(imageView);
 
@@ -54,6 +60,7 @@ MainWindow::MainWindow(string path, QWidget *parent) : QMainWindow(parent)
 
     mainWindow->setLayout(mainLayout);
     setCentralWidget(mainWindow);
+
 }
 
 MainWindow::~MainWindow()

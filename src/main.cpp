@@ -2,9 +2,15 @@
 
 #include "mainwindow.h"
 
-// Path of the CDB folder upto images folder
+// Path for necessary files
+
+//soumya
 string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
 string dbPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/testSqlite.db";
+
+//David
+//string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/images/";
+//string dbPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/testSqlite.db";
 
 int main(int argc, char *argv[])
 {
