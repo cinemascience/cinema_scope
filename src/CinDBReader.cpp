@@ -19,16 +19,15 @@ int CinDBReader::readCSV(const char *path)
 {
     int res = 0;
 
-    std::fstream input(path, std::fstream::in); 
+    std::ifstream input(path);
 
-    qWarning() << "here 1";
+    char str[10000];
     if (input)
     {
-        // qDebug() << "here 2" << std::endl;
-        for (std::string line; getline( input, line ); )
+        std::string line;
+        while (input.getline(str, 10000))
         {
-            // qDebug() << "here 3" << std::endl;
-            // qDebug() << line << std::endl;
+            qWarning() << str;
         }
     }
 
