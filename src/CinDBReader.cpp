@@ -1,5 +1,8 @@
 #include "CinDBReader.h"
-#include <QFileInfo>
+#include <fstream>
+#include <iostream>
+#include <QtGlobal>
+#include <QtDebug>
 
 CinDBReader::CinDBReader() 
 {
@@ -12,13 +15,21 @@ int CinDBReader::init()
     return res;
 }
 
-int CinDBReader::readCSV(QString path)
+int CinDBReader::readCSV(const char *path)
 {
     int res = 0;
-    QFileInfo check_file(path);
 
-    if (check_file.exists() && check_file.isFile()) 
+    std::fstream input(path, std::fstream::in); 
+
+    qWarning() << "here 1";
+    if (input)
     {
+        // qDebug() << "here 2" << std::endl;
+        for (std::string line; getline( input, line ); )
+        {
+            // qDebug() << "here 3" << std::endl;
+            // qDebug() << line << std::endl;
+        }
     }
 
     return res;

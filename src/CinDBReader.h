@@ -1,5 +1,3 @@
-#include <QString>
-
 class CinDBReader
 {
     private:
@@ -7,6 +5,6 @@ class CinDBReader
     public:
         CinDBReader();
         int init();
-        int readCSV(QString path);
+        int readCSV(const char *path);
 };
 

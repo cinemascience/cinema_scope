@@ -2,7 +2,7 @@
 #include <QApplication>
 
 // Path of the CDB folder upto images folder
-string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/qt_cinemaDB_viewer/data/volume-render/images/";
+string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/images/";
 
 int main(int argc, char *argv[])
 {
