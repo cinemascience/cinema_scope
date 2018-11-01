@@ -26,7 +26,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+        src/CinDBReader.cpp
 
 HEADERS += \
-        src/mainwindow.h
+        src/mainwindow.h \
+        src/CinDBReader.h
