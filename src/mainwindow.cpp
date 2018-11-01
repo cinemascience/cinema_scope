@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QFormLayout>
 
 MainWindow::MainWindow(int numSliders, string path, QWidget *parent) : QMainWindow(parent)
 {
@@ -37,11 +38,10 @@ MainWindow::MainWindow(int numSliders, string path, QWidget *parent) : QMainWind
     QHBoxLayout *layout1 = new QHBoxLayout;
     layout1->addWidget(imageView);
 
-    QVBoxLayout *layout2 = new QVBoxLayout;
+    QFormLayout *layout2 = new QFormLayout;
     for(int i=0;i<this->numSliders;i++)
     {
-        layout2->addWidget(listOfSliderLabels[i]);
-        layout2->addWidget(listOfSliders[i]);
+        layout2->addRow(listOfSliderLabels[i], listOfSliders[i]); 
     }
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
