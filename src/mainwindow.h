@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QApplication>
+#include <QtSql>
 #include <QMainWindow>
 #include <QSlider>
 #include <QHBoxLayout>
@@ -9,6 +11,7 @@
 #include <QPixmap>
 #include <QGraphicsView>
 #include <QDir>
+#include <QFormLayout>
 
 #include <iostream>
 #include <sstream>
@@ -21,7 +24,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(int, string, QWidget *parent = 0);
+    explicit MainWindow(string, QWidget *parent = 0);
     vector<QSlider*> listOfSliders;
     vector<QLabel*> listOfSliderLabels;
     int numSliders;
