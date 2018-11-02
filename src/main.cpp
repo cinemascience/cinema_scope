@@ -2,20 +2,19 @@
 
 #include "mainwindow.h"
 
-// Path for necessary files
+#define DEBUG false
 
+// Path for necessary files: TODO
 //soumya
 string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
-string dbPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/testSqlite.db";
-
 //David
-//string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/images/";
-//string dbPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/testSqlite.db";
+//string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
 
 int main(int argc, char *argv[])
 {
     /////////////////////////////////////////////////////////////////
     /// Read cinema database and create a sqlite database
+    string dbPath = dataPath + "testSqlite.db";
     QString path = QString::fromStdString(dbPath);
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(path);
@@ -35,7 +34,7 @@ int main(int argc, char *argv[])
                 query.bindValue(":phi", j);
 
                 stringstream ss;
-                ss<<rand() % 1000 + 1; //randomely assign image id for now
+                ss<<rand() % 1000 + 1; //randomely assign image id for now from sample CDB
                 string fname = "images/" + ss.str() + ".jpg";
                 query.bindValue(":image", QString::fromStdString(fname));
 
@@ -45,23 +44,29 @@ int main(int argc, char *argv[])
         }
     }
 
+    //QString tname = QString("dummyCinemaDB");
+    //cout<<db.driver()->record(tname).fieldName(1).toStdString()<<endl;
+
+
+#if DEBUG
     //Show the contents of the table: for testing only
-    /*query.exec("SELECT * FROM dummyCinemaDB");
+    query.exec("SELECT * FROM dummyCinemaDB");
     while (query.next())
     {
         cout<<query.value(0).toString().toStdString()<<" "<<
               query.value(1).toString().toStdString()<<" "<<
               query.value(2).toString().toStdString()<<endl;
     }
-    cout<<query.record().count()<<" "<<query.size()<<endl;*/
+    cout<<query.record().count()<<" "<<query.size()<<endl;
+#endif
 
     /////////////////////////////////////////////////////////////////////
     /// Qt application code starts here for cinemaViewer
 
     QApplication cinemaViewer(argc, argv);
-    cinemaViewer.setStyleSheet("QSlider {height:20px; width:200}");
+    cinemaViewer.setStyleSheet("QSlider {height:20px; width:150}");
 
-    MainWindow mainWindow(dataPath);
+    MainWindow mainWindow(db, dataPath);
     mainWindow.setWindowTitle("Qt-based CinemaDB Viewer");
     mainWindow.show();
 
