@@ -69,7 +69,7 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     initFileID = qry.value(this->numSliders).toString().toStdString(); //get the value of last column which is the image path
 
     string imagePath = rootPath + initFileID; //loads the first image from first row in the db
-    cout<<imagePath<<endl;
+    //cout<<imagePath<<endl;
     QPixmap image;
     image.load(imagePath.c_str());
     scene = new QGraphicsScene;
