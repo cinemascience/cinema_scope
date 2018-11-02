@@ -8,17 +8,6 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     mainWindow->setWindowTitle("Test window");
     mainWindow->resize(600,600);
 
-    //load and display image
-    rootPath = path;
-    string imagePath = rootPath + "images/1.jpg"; //loads the first image for now
-    QPixmap image;
-    image.load(imagePath.c_str());
-
-    scene = new QGraphicsScene;
-    scene->addPixmap(image);
-    imageView = new QGraphicsView;
-    imageView->setScene(this->scene);
-
     ///////////////////////////////////////////////////////////
     /// extract information from sql database
 
@@ -70,6 +59,23 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
         listOfSliderLabels[i] = new QLabel;
         listOfSliderLabels[i]->setText(label.c_str());
     }
+
+    //load and display an initial image
+    rootPath = path;
+    queryText = "SELECT * FROM " + tname.toStdString();
+    qry.exec(queryText.c_str());
+    string initFileID;
+    qry.first();
+    initFileID = qry.value(this->numSliders).toString().toStdString(); //get the value of last column which is the image path
+
+    string imagePath = rootPath + initFileID; //loads the first image from first row in the db
+    cout<<imagePath<<endl;
+    QPixmap image;
+    image.load(imagePath.c_str());
+    scene = new QGraphicsScene;
+    scene->addPixmap(image);
+    imageView = new QGraphicsView;
+    imageView->setScene(this->scene);
 
     // testing
     CinDBReader reader;
