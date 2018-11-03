@@ -6,7 +6,9 @@
 
 // Path for necessary files: TODO
 //soumya
-string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
+//string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
+string dataPath = "/Users/sdutta/Codes/cinema_scope/data/volume-render/";
+
 //David
 //string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
 
@@ -22,8 +24,9 @@ int main(int argc, char *argv[])
 
     QSqlQuery query;
 
-    if ( !db.tables().contains( QLatin1String("dummyCinemaDB")) )
+    if( !db.tables().contains( QLatin1String("dummyCinemaDB")) )
     {
+        srand(time(nullptr));
         qDebug()<<query.exec("CREATE TABLE dummyCinemaDB (theta integer, phi integer, image varchar(100))");
         query.prepare("INSERT INTO dummyCinemaDB(theta,phi,image) values(:theta,:phi,:image)");
         for(int i=1;i<=50;i++)
@@ -37,34 +40,32 @@ int main(int argc, char *argv[])
                 ss<<rand() % 1000 + 1; //randomely assign image id for now from sample CDB
                 string fname = "images/" + ss.str() + ".jpg";
                 query.bindValue(":image", QString::fromStdString(fname));
-
-                //execute the query
                 query.exec();
             }
         }
-    }
-
-    //QString tname = QString("dummyCinemaDB");
-    //cout<<db.driver()->record(tname).fieldName(1).toStdString()<<endl;
-
 
 #if DEBUG
-    //Show the contents of the table: for testing only
-    query.exec("SELECT * FROM dummyCinemaDB");
-    while (query.next())
-    {
-        cout<<query.value(0).toString().toStdString()<<" "<<
-              query.value(1).toString().toStdString()<<" "<<
-              query.value(2).toString().toStdString()<<endl;
-    }
-    cout<<query.record().count()<<" "<<query.size()<<endl;
+        //Show the contents of the table: for testing only
+        query.exec("SELECT * FROM dummyCinemaDB");
+        while (query.next())
+        {
+            cout<<query.value(0).toString().toStdString()<<" "<<
+                  query.value(1).toString().toStdString()<<" "<<
+                  query.value(2).toString().toStdString()<<endl;
+        }
+        cout<<query.record().count()<<" "<<query.size()<<endl;
 #endif
+
+    }
 
     /////////////////////////////////////////////////////////////////////
     /// Qt application code starts here for cinemaViewer
 
     QApplication cinemaViewer(argc, argv);
     cinemaViewer.setStyleSheet("QSlider {height:20px; width:150}");
+
+    //qDebug() << QStyleFactory::keys();
+    //cinemaViewer.setStyle(QStyleFactory::create("Windows"));
 
     MainWindow mainWindow(db, dataPath);
     mainWindow.setWindowTitle("Qt-based CinemaDB Viewer");

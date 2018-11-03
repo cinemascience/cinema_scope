@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "CinDBReader.h"
-#include <QSqlField>
 
 MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWindow(parent)
 {
@@ -71,7 +70,13 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     string imagePath = rootPath + initFileID; //loads the first image from first row in the db
     //cout<<imagePath<<endl;
     QPixmap image;
-    image.load(imagePath.c_str());
+    bool loadSuccess = image.load(imagePath.c_str());
+    if(!loadSuccess)
+    {
+        imagePath = rootPath + "empty_image/empty.png";
+        image.load(imagePath.c_str());
+    }
+
     scene = new QGraphicsScene;
     scene->addPixmap(image);
     imageView = new QGraphicsView;
@@ -118,7 +123,12 @@ void MainWindow::on_slider_valueChanged(int value)
     ss << val;
     string imagePath = rootPath + ss.str();
     QPixmap image;
-    image.load(imagePath.c_str());
+    bool loadSuccess = image.load(imagePath.c_str());
+    if(!loadSuccess)
+    {
+        imagePath = rootPath + "empty_image/empty.png";
+        image.load(imagePath.c_str());
+    }
 
     scene->addPixmap(image);
     imageView->setScene(this->scene);

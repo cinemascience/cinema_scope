@@ -12,9 +12,13 @@
 #include <QGraphicsView>
 #include <QDir>
 #include <QFormLayout>
+#include <QSqlField>
+#include <QStyleFactory>
+
 
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 
 
 using namespace std;

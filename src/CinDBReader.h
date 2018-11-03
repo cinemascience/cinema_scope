@@ -1,3 +1,6 @@
+#ifndef CINDBREADER_H
+#define CINDBREADER_H
+
 class CinDBReader
 {
     private:
@@ -8,3 +11,4 @@ class CinDBReader
         int readCSV(const char *path);
 };
 
+#endif // CINDBREADER_H
