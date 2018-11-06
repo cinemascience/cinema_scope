@@ -1,22 +1,24 @@
 // To create an empty database in command line type: sqlite3 testSqlite.db "create table aTable(field1 int); drop table aTable;"
 
 #include "mainwindow.h"
+#include "CinDBReader.h"
 
 #define DEBUG false
 
 // Path for necessary files: TODO
 //soumya
-// string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
-// string dataPath = "/Users/sdutta/Codes/cinema_scope/data/volume-render/";
+string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
+string csvPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/data.csv";
 
 //David
-string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
+//string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
+//string csvPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv";
 
 int main(int argc, char *argv[])
 {
     /////////////////////////////////////////////////////////////////
     /// Read cinema database and create a sqlite database
-    string dbPath = dataPath + "testSqlite.db";
+    /*string dbPath = dataPath + "testSqlite.db";
     QString path = QString::fromStdString(dbPath);
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(path);
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
         cout<<query.record().count()<<" "<<query.size()<<endl;
 #endif
 
-    }
+    }*/
 
     /////////////////////////////////////////////////////////////////////
     /// Qt application code starts here for cinemaViewer
@@ -65,7 +67,13 @@ int main(int argc, char *argv[])
     cinemaViewer.setStyleSheet("QSlider {height:20px; width:150}");
 
     //qDebug() << QStyleFactory::keys();
-    //cinemaViewer.setStyle(QStyleFactory::create("Windows"));
+    //cinemaViewer.setStyle(QStyleFactory::create("Macintosh"));
+
+    // testing
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.open();
+    CinDBReader reader;
+    reader.readCSV(db, csvPath.c_str());
 
     MainWindow mainWindow(db, dataPath);
     mainWindow.setWindowTitle("Qt-based CinemaDB Viewer");

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "CinDBReader.h"
 
 MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWindow(parent)
 {
@@ -83,8 +82,8 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     imageView->setScene(this->scene);
 
     // testing
-    CinDBReader reader;
-    reader.readCSV(db, "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
+    //CinDBReader reader;
+    //reader.readCSV(db, "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
 
     QHBoxLayout *layout1 = new QHBoxLayout;
     layout1->addWidget(imageView);
