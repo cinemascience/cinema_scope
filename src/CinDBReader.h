@@ -22,16 +22,18 @@ class CinDBColData
 
 class CinDBReader
 {
+    public:
+        CinDBReader();
+        int init();
+        int readCSV(QSqlDatabase &db, const char *path);
+
     private:
         void split(const std::string & s, char c, std::vector<std::string>& v);
         bool isInt(const std::string &s);
         bool isFloat(const std::string &s);
         void adjustRange(CinDBColData &c, float value);
-
-    public:
-        CinDBReader();
-        int init();
-        int readCSV(QSqlDatabase &db, const char *path);
+        int  loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata);
+        void constructCommands(const char *dbname, std::vector<CinDBColData> &coldata, QString &create, QString &insert);
 };
 
 #endif // CINDBREADER_H

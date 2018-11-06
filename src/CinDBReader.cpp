@@ -1,5 +1,8 @@
 #include "CinDBReader.h"
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlField>
 #include <fstream>
 #include <iostream>
 #include <QtGlobal>
@@ -46,18 +49,18 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
             coldata.push_back(data);
         }
         // print out col names
+        /*
         for (std::vector<CinDBColData>::iterator cur = coldata.begin(); 
             cur != coldata.end(); ++cur)
         {
-            qWarning() << cur->name.c_str() << "\n";
+            qDebug() << cur->name.c_str() << "\n";
         }
+        */
 
         // continue, gathering metadata along the way
         std::vector<std::string> colvals;
         while (input.getline(str, 10000))
         {
-            qWarning() << str;
-
             // get values for the current line
             this->split(str, ',', colvals);
 
@@ -68,7 +71,6 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
                  cur != colvals.end(); ++cur)
             {
                 // determine type
-                qWarning() << "TYPE: " << curColData->type;
                 if (curColData->type == CinDBColData::UNDEFINED) {
                     if (isInt(*cur)) {
                         curColData->type = CinDBColData::INT;
@@ -88,18 +90,10 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
 
             colvals.clear();
         }
-
-        // check values
-/*
-        for (std::vector<CinDBColData>::iterator curColData = coldata.begin();
-             curColData != coldata.end(); ++curColData)
-        {
-            qWarning() << curColData->name.c_str() << "::" 
-                << curColData->type 
-                << ": " << curColData->min << ", " << curColData->max;
-        }
-*/
     }
+
+    // now load data into the database
+    this->loadDB(db, path, coldata); 
 
     return res;
 }
@@ -123,7 +117,6 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
 
 void CinDBReader::adjustRange(CinDBColData &c, float value)
 {
-    qWarning() << c.name.c_str() << ": " << c.rangeInitialized << ": " << value << ", " << c.min << ", " << c.max;
     if (c.rangeInitialized) {
         if (c.min > value) {
             c.min = value;
@@ -136,7 +129,6 @@ void CinDBReader::adjustRange(CinDBColData &c, float value)
         c.min = value;
         c.max = value;
     }
-    qWarning() << c.name.c_str() << ": " << c.rangeInitialized << ": " << value << ", " << c.min << ", " << c.max << "\n";
 }
 
 bool CinDBReader::isInt(const std::string &s) 
@@ -184,3 +176,128 @@ bool CinDBReader::isFloat(const std::string &s)
 
     return result;
 }
+
+int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata)
+{
+    std::ifstream input(path);
+    QSqlQuery query;
+    QString command;
+    QString insert;
+
+    // create the table from the columns
+    const char *dbname = "cinema";
+    constructCommands(dbname, coldata, command, insert);
+    qDebug() << "Executing creation of \"" << dbname << "\" table" << query.exec(command);
+
+    // perform value-based insert
+    char str[10000];
+    // eat the first line (column names)
+    input.getline(str, 10000);
+    // get the rest of the values
+    if (input)
+    {
+        std::vector<std::string> colvals;
+        int inserts = 0;
+        QString trimmer;
+        while (input.getline(str, 10000))
+        {
+            // start the insert command 
+            query.prepare(insert);
+
+            // get values for the current line, then iterate over them
+            this->split(str, ',', colvals);
+            // iterate over the column names as well
+            QString bindName;
+            std::vector<CinDBColData>::iterator curColData = coldata.begin();
+            for (std::vector<std::string>::iterator cur = colvals.begin(); 
+                 cur != colvals.end(); ++cur)
+            {
+                bindName = ":";
+                bindName += curColData->name.c_str();
+                // bind the value according to type 
+                if (curColData->type == CinDBColData::STRING) {
+                    trimmer = cur->c_str();
+                    trimmer = trimmer.trimmed();
+                    query.bindValue( bindName, trimmer ); 
+                } else if (curColData->type == CinDBColData::INT) {
+                    query.bindValue( bindName, std::stoi(*cur) );
+                } else {
+                    // it's a float
+                    query.bindValue( bindName, std::stof(*cur) );
+                }
+
+                // increment iterator 
+                curColData++;
+            }
+            // execute
+            query.exec();
+
+            // clean up
+            inserts++;
+            colvals.clear();
+        }
+        // qDebug() << "INSERTS: " << inserts;
+    }
+
+    //testing
+/*
+    QSqlRecord record = db.record(dbname);
+    for (int i=0;i<record.count();i++)
+    {
+        QSqlField field = record.field(i);
+        qDebug() << field.name() << field.value();
+    }
+    QString select = "SELECT * from ";
+    select += dbname;
+    query.exec(select);
+    while (query.next())
+    {
+        qDebug() << "VALUE: " << query.value(0).toString()
+                 << query.value(11).toString();
+    }
+*/
+}
+
+void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData> &coldata, QString &create, QString &insert)
+{
+    bool first = true;
+    QString names[] = {"UNDEFINED", "varchar(100)", "float", "int"};
+    QString values;
+
+    create = "CREATE TABLE ";
+    create += dbname;
+    create += " (";
+    insert = "INSERT INTO ";
+    insert += dbname;
+    insert += "(";
+    values = " values(";
+
+    for (std::vector<CinDBColData>::iterator curColData = coldata.begin();
+         curColData != coldata.end(); ++curColData)
+    {
+        if (!first) {
+            create += ", ";
+            insert += ", ";
+            values += ", ";
+        } else {
+            first = false;
+        }
+
+        create += curColData->name.c_str();
+        create += " " + names[curColData->type];
+
+        insert += curColData->name.c_str();
+        values += ":";
+        values += curColData->name.c_str();
+
+    }
+    create += ")";
+    insert += ")";
+    values += ")";
+    insert += values;
+
+    // qDebug() << "CREATE: " << create;
+    // qDebug() << "INSERT: " << insert;
+}
+
+
