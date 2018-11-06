@@ -43,8 +43,6 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
             trimmer = cur->c_str();
             trimmer = trimmer.trimmed();
             data.type = CinDBColData::UNDEFINED;
-            // data.min  = 0.0;
-            // data.max  = 0.0;
             data.name = trimmer.toStdString().c_str();
             coldata.push_back(data);
         }
@@ -129,24 +127,6 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
    }
 }
 
-/*
-void CinDBReader::adjustRange(CinDBColData &c, float value)
-{
-    if (c.rangeInitialized) {
-        if (c.min > value) {
-            c.min = value;
-        }
-        if (c.max < value) {
-            c.max = value;
-        }
-    } else {
-        c.rangeInitialized = true;
-        c.min = value;
-        c.max = value;
-    }
-}
-*/
-
 int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata)
 {
     std::ifstream input(path);
@@ -157,7 +137,8 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
     // create the table from the columns
     const char *dbname = "cinema";
     constructCommands(dbname, coldata, command, insert);
-    qDebug() << "Executing creation of \"" << dbname << "\" table" << query.exec(command);
+    bool success = query.exec(command); 
+    // qDebug() << "Executing creation of \"" << dbname << "\" table" << success; 
 
     // perform value-based insert
     char str[10000];
@@ -167,7 +148,6 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
     if (input)
     {
         std::vector<std::string> colvals;
-        int inserts = 0;
         QString trimmer;
         while (input.getline(str, 10000))
         {
@@ -203,14 +183,12 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
             query.exec();
 
             // clean up
-            inserts++;
             colvals.clear();
         }
-        // qDebug() << "INSERTS: " << inserts;
     }
 
     //testing
-/*
+    /*
     QSqlRecord record = db.record(dbname);
     for (int i=0;i<record.count();i++)
     {
@@ -223,9 +201,9 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
     while (query.next())
     {
         qDebug() << "VALUE: " << query.value(0).toString()
-                 << query.value(11).toString();
+                 << query.value(6).toString();
     }
-*/
+    */
 }
 
 void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData> &coldata, QString &create, QString &insert)
