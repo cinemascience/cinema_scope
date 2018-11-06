@@ -1,5 +1,5 @@
 one,two,thr,fou,fiv,six,FILE
-0,3,200,0,0.1,-1.0,images/1.jpg
+0,3,200,0,0.1,-1.0e10,images/1.jpg
 1,2,100,10,1.0,100.0,images/2.jpg
 2,1,500,-10,10.0,-1.5,images/3.jpg
 3,0,50,5,0.05,0.0,images/4.jpg
