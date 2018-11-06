@@ -31,6 +31,8 @@ public:
     explicit MainWindow(QSqlDatabase, string, QWidget *parent = 0);
     vector<QSlider*> listOfSliders;
     vector<QLabel*> listOfSliderLabels;
+    vector<string> columnNames;
+    QString tname;
     int numSliders;
     QGraphicsScene *scene;
     QGraphicsView *imageView;
@@ -40,6 +42,7 @@ public:
 private slots:
 
     void on_slider_valueChanged(int);
+    string constructQueryString(vector<float>);
 };
 
 #endif // MAINWINDOW_H

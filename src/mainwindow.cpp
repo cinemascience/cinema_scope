@@ -1,5 +1,11 @@
 #include "mainwindow.h"
 
+
+MainWindow::~MainWindow()
+{
+
+}
+
 MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWindow(parent)
 {
     QWidget *mainWindow = new QWidget;
@@ -10,7 +16,7 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     /// extract information from sql database
 
     QStringList tablesList = db.tables(); //get all the tables. We should have just one
-    QString tname = tablesList[0]; // get the table name
+    tname = tablesList[0]; // get the table name
     cout<<"Name of the table: "<<tname.toStdString()<<endl;
     //cout<<tablesList.length()<<endl; // should be 1 for now since we handle one cinemaBD
 
@@ -20,9 +26,9 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
 
     //Get number of sliders = number of columns-1
     this->numSliders = qry.record().count()-1;
+    cout<<"Number of columns: "<<this->numSliders+1<<endl;
 
     //Get column names
-    vector<string> columnNames;
     for(int i=0;i<qry.record().count();i++)
     {
         columnNames.push_back(db.driver()->record(tname).fieldName(i).toStdString());
@@ -49,7 +55,8 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     for(int i=0;i<this->numSliders;i++)
     {
         listOfSliders[i] = new QSlider(Qt::Horizontal);
-        listOfSliders[i]->setRange(minVals[i],maxVals[i]); //hard coded for now
+        listOfSliders[i]->setRange(minVals[i],maxVals[i]);
+        listOfSliders[i]->setSingleStep(11);
         QObject::connect(listOfSliders[i],SIGNAL(valueChanged(int)),this,SLOT(on_slider_valueChanged(int)));
         stringstream ss;
         ss<<i;
@@ -67,7 +74,6 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     initFileID = qry.value(this->numSliders).toString().toStdString(); //get the value of last column which is the image path
 
     string imagePath = rootPath + initFileID; //loads the first image from first row in the db
-    //cout<<imagePath<<endl;
     QPixmap image;
     bool loadSuccess = image.load(imagePath.c_str());
     if(!loadSuccess)
@@ -80,10 +86,6 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     scene->addPixmap(image);
     imageView = new QGraphicsView;
     imageView->setScene(this->scene);
-
-    // testing
-    //CinDBReader reader;
-    //reader.readCSV(db, "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
 
     QHBoxLayout *layout1 = new QHBoxLayout;
     layout1->addWidget(imageView);
@@ -102,33 +104,66 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     setCentralWidget(mainWindow);
 }
 
-MainWindow::~MainWindow()
+string MainWindow::constructQueryString(vector<float> currentVals)
 {
+    string query;
 
+    query = "SELECT * FROM " + tname.toStdString() + " WHERE ";
+    for(int i=0;i<numSliders;i++)
+    {
+        if(i<numSliders-1)
+            query = query + columnNames[i] + "=:" + columnNames[i] + " AND ";
+        else
+            query = query + columnNames[i] + "=:" + columnNames[i];
+
+    }
+    return query;
 }
+
 
 void MainWindow::on_slider_valueChanged(int value)
 {
-    QSqlQuery qry;
-    qry.prepare("SELECT * FROM dummyCinemaDB WHERE theta=:theta AND phi=:phi");
-    qry.bindValue(":theta", listOfSliders[0]->value());
-    qry.bindValue(":phi", listOfSliders[1]->value());
-    qry.exec();
 
-    qry.first(); // to get the first record.
-    string val = qry.value(this->numSliders).toString().toStdString(); //get the last column which has the image name
-
-    stringstream ss;
-    ss << val;
-    string imagePath = rootPath + ss.str();
-    QPixmap image;
-    bool loadSuccess = image.load(imagePath.c_str());
-    if(!loadSuccess)
+    vector<float> currentSLiderVals;
+    for(int i=0;i<this->numSliders;i++)
     {
-        imagePath = rootPath + "empty_image/empty.png";
-        image.load(imagePath.c_str());
+        currentSLiderVals.push_back(listOfSliders[i]->value());
     }
 
-    scene->addPixmap(image);
-    imageView->setScene(this->scene);
+    for(int i=0;i<this->numSliders;i++)
+    {
+        cout<<listOfSliders[i]->value()<<" ";
+    }
+    cout<<endl;
+
+    string query = constructQueryString(currentSLiderVals);
+
+    QSqlQuery qry;
+    qry.prepare(QString::fromStdString(query));
+    for(int i=0;i<numSliders;i++)
+    {
+        string s;
+        s = ":"+columnNames[i];
+        qry.bindValue(QString::fromStdString(s), listOfSliders[i]->value());
+    }
+    qry.exec();
+
+    while (qry.next())
+    {
+        string val = qry.value(this->numSliders).toString().toStdString(); //get the last column which has the image name
+        stringstream ss;
+        ss << val;
+        //cout<<val<<endl;
+        string imagePath = rootPath + ss.str();
+        QPixmap image;
+        bool loadSuccess = image.load(imagePath.c_str());
+        if(!loadSuccess)
+        {
+            imagePath = rootPath + "empty_image/empty.png";
+            image.load(imagePath.c_str());
+        }
+
+        scene->addPixmap(image);
+        imageView->setScene(this->scene);
+    }
 }
