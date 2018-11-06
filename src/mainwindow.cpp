@@ -84,7 +84,7 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
 
     // testing
     CinDBReader reader;
-    reader.readCSV("/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
+    reader.readCSV(db, "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv");
 
     QHBoxLayout *layout1 = new QHBoxLayout;
     layout1->addWidget(imageView);

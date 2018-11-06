@@ -6,11 +6,11 @@
 
 // Path for necessary files: TODO
 //soumya
-//string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
-string dataPath = "/Users/sdutta/Codes/cinema_scope/data/volume-render/";
+// string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
+// string dataPath = "/Users/sdutta/Codes/cinema_scope/data/volume-render/";
 
 //David
-//string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
+string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
 
 int main(int argc, char *argv[])
 {

@@ -2,3 +2,10 @@ Makefile
 .qmake.stash
 cinemascope.app/
 .DS_Store
+Debug/
+Info.plist
+XCBuildData/
+cinema_scope.build/
+cinema_scope.xcodeproj/
+moc_mainwindow.cpp
+moc_predefs.h
