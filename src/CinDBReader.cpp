@@ -43,8 +43,8 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
             trimmer = cur->c_str();
             trimmer = trimmer.trimmed();
             data.type = CinDBColData::UNDEFINED;
-            data.min  = 0.0;
-            data.max  = 0.0;
+            // data.min  = 0.0;
+            // data.max  = 0.0;
             data.name = trimmer.toStdString().c_str();
             coldata.push_back(data);
         }
@@ -72,18 +72,13 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
             {
                 // determine type
                 if (curColData->type == CinDBColData::UNDEFINED) {
-                    if (isInt(*cur)) {
-                        curColData->type = CinDBColData::INT;
-                    } else if (isFloat(*cur)) {
-                        curColData->type = CinDBColData::FLOAT;
-                    } else {
-                        curColData->type = CinDBColData::STRING;
-                    }
+                    QString value = cur->c_str();
+                    curColData->type = this->getType(value);
                 }
 
                 // save the range
                 value = cur->c_str();
-                this->adjustRange(*curColData, value.toFloat());
+                // this->adjustRange(*curColData, value.toFloat());
 
                 curColData++;
             }
@@ -96,6 +91,25 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
     this->loadDB(db, path, coldata); 
 
     return res;
+}
+
+CinDBColData::Type CinDBReader::getType(QString &value)
+{
+    CinDBColData::Type type = CinDBColData::UNDEFINED;
+    bool iTest = false;
+    bool fTest = false;
+
+    value.toInt(&iTest, 10);
+    value.toFloat(&fTest);
+    if (iTest) {
+        type = CinDBColData::INT;
+    } else if (fTest) {
+        type = CinDBColData::FLOAT;
+    } else {
+        type = CinDBColData::STRING;
+    }
+
+    return type;
 }
 
 
@@ -115,6 +129,7 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
    }
 }
 
+/*
 void CinDBReader::adjustRange(CinDBColData &c, float value)
 {
     if (c.rangeInitialized) {
@@ -130,52 +145,7 @@ void CinDBReader::adjustRange(CinDBColData &c, float value)
         c.max = value;
     }
 }
-
-bool CinDBReader::isInt(const std::string &s) 
-{
-    bool result = true;
-
-    QString val = s.c_str();
-    int startID = 0;
-    if (val[0] == '-') {
-        // this is a negative value, and so far OK
-        startID = 1;
-    }
-
-    for (int i=startID;i<val.size();i++) 
-    {
-        if (! val[i].isDigit())
-        {
-            result = false;
-        }
-    }
-
-    return result;
-}
-
-bool CinDBReader::isFloat(const std::string &s) 
-{
-    bool result = true;
-
-    QString val = s.c_str();
-    int startID = 0;
-    if (val[0] == '-') {
-        // this is a negative value, and so far OK
-        startID = 1;
-    }
-
-    for (int i=startID;i<val.size();i++) 
-    {
-        if (! val[i].isDigit())
-        {
-            if (! (val[i] == '.')) {
-                result = false;
-            }
-        }
-    }
-
-    return result;
-}
+*/
 
 int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata)
 {
