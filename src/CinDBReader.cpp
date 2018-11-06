@@ -98,7 +98,6 @@ int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
     return res;
 }
 
-
 void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& v) 
 {
    int i = 0;
