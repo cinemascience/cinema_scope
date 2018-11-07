@@ -1,4 +1,4 @@
-## Cinema Scope application
+## Cinema Scope cross-platform application
 
 <img src="doc/img/cinema_scope.png" width="350">
 
