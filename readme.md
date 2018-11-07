@@ -16,6 +16,7 @@ The application is built on the open source release of Qt, v5.11. To build:
 2. Run `qmake` on the `qt_cinemaDB_viewer.pro` for your specific OS and
 development environment. Examples include:
     - OSX: `qmake qt_cinemaDB_viewer.pro`
+    - OSX (XCode): `qmake -spec macx-xcode qt_cinemaDB_viewer.pro`
     - Linux: `qmake qt_cinemaDB_viewer.pro`
 3. You will now have makefiles, etc for your specific platform (assuming the
 appropriate tools are installed). Edit the code and run `make` to create
