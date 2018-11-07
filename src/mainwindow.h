@@ -29,7 +29,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QSqlDatabase, string, QWidget *parent = 0);
+    explicit MainWindow(QSqlDatabase, QString, QWidget *parent = 0);
     vector<QSlider*> listOfSliders;
     vector<QLabel*> listOfSliderLabels;
     vector<string> columnNames;

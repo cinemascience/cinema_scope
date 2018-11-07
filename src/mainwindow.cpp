@@ -14,7 +14,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
-MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
 {
     QWidget *mainWindow = new QWidget;
     mainWindow->setWindowTitle("Test window");
@@ -74,19 +74,19 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     }
 
     //load and display an initial image
-    rootPath = path;
+    rootPath = path.toStdString();
     queryText = "SELECT * FROM " + tname.toStdString();
     qry.exec(queryText.c_str());
     string initFileID;
     qry.first();
     initFileID = qry.value(this->numSliders).toString().toStdString(); //get the value of last column which is the image path
 
-    string imagePath = rootPath + initFileID; //loads the first image from first row in the db
+    string imagePath = rootPath + "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
     bool loadSuccess = image.load(imagePath.c_str());
     if(!loadSuccess)
     {
-        imagePath = rootPath + "empty_image/empty.png";
+        imagePath = rootPath + "/" + "empty_image/empty.png";
         image.load(imagePath.c_str());
     }
 
@@ -188,12 +188,12 @@ void MainWindow::on_slider_valueChanged(int value)
         string val = qry.value(this->numSliders).toString().toStdString(); //get the last column which has the image name
         stringstream ss;
         ss << val;
-        string imagePath = rootPath + ss.str();
+        string imagePath = rootPath + "/" + ss.str();
         QPixmap image;
         bool loadSuccess = image.load(imagePath.c_str());
         if(!loadSuccess)
         {
-            imagePath = rootPath + "empty_image/empty.png";
+            imagePath = rootPath + "/" + "empty_image/empty.png";
             image.load(imagePath.c_str());
         }
 

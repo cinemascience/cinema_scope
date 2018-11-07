@@ -23,17 +23,22 @@ class DBReader
 {
     public:
         DBReader();
-        int readCinemaDatabase(QSqlDatabase &db, const char *path);
+        int readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName);
 
     private:
         DBColData::Type getType(QString &value);
         void split(const std::string & s, char c, std::vector<std::string>& v);
-        int  loadDB(QSqlDatabase &db, const char *path, std::vector<DBColData> &coldata);
-        void constructCommands(const char *dbname, std::vector<DBColData> &coldata, QString &create, QString &insert);
-        void constructNewTableCommand(QString &newTableCommand, const char *initTable, const char *finalTable);
-        void readSettings(const char *path);
+        int  loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata);
+        void constructCommands(const QString &tableName, std::vector<DBColData> &coldata, QString &create, QString &insert);
+        void constructNewTableCommand(QString &newTableCommand, const QString &initTable, const QString &finalTable);
+        void readSettings(QString &path);
 
         std::vector<QString> mColOrder;
+
+        // Class variables
+        static const QString CSVFile;
+        static const QString SettingsFile;
+        static const QString InitTableName;
 };
 
 }

@@ -7,12 +7,12 @@
 
 // Path for necessary files: TODO
 //soumya
-string dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/";
-// string csvPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render/data.csv";
+// QString dataPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/";
+// QString csvPath = "/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/data.csv";
 
 //David
-// string dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/";
-// string csvPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render/data.csv";
+QString dataPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render.cdb";
+// QString csvPath = "/Users/dhr/LANL/git/github/cinemascience/cinema_scope/data/volume-render.cdb/data.csv";
 
 int main(int argc, char *argv[])
 {
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.open();
     cin::DBReader reader;
-    reader.readCinemaDatabase(db, dataPath.c_str());
+    reader.readCinemaDatabase(db, dataPath, QString("cinema"));
 
     MainWindow mainWindow(db, dataPath);
     mainWindow.setWindowTitle("Qt-based CinemaDB Viewer");
