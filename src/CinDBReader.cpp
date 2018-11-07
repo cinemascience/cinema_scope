@@ -3,6 +3,11 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlField>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
 #include <fstream>
 #include <iostream>
 #include <QtGlobal>
@@ -15,17 +20,13 @@ CinDBReader::CinDBReader()
 {
 }
 
-int CinDBReader::init()
-{
-    int res = 0;
-    return res;
-}
-
-int CinDBReader::readCSV(QSqlDatabase &db, const char *path)
+int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
 {
     int res = 0;
 
-    std::ifstream input(path);
+    QString csvFile = path;
+    csvFile += "data.csv";
+    std::ifstream input(csvFile.toStdString().c_str());
     std::vector<CinDBColData> coldata;
 
     char str[10000];
@@ -97,15 +98,22 @@ CinDBColData::Type CinDBReader::getType(QString &value)
     bool iTest = false;
     bool fTest = false;
 
-    value.toInt(&iTest, 10);
-    value.toFloat(&fTest);
-    if (iTest) {
-        type = CinDBColData::INT;
-    } else if (fTest) {
+    // is this a NaN?
+    if (value.toLower() == "nan") {
         type = CinDBColData::FLOAT;
+    } else if (value.isEmpty()) {
+        type = CinDBColData::UNDEFINED;
     } else {
-        type = CinDBColData::STRING;
-    }
+        value.toInt(&iTest, 10);
+        value.toFloat(&fTest);
+        if (iTest) {
+            type = CinDBColData::INT;
+        } else if (fTest) {
+            type = CinDBColData::FLOAT;
+        } else {
+            type = CinDBColData::STRING;
+        }
+    } 
 
     return type;
 }
@@ -129,13 +137,20 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
 
 int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata)
 {
-    std::ifstream input(path);
+    QString csvFile = path;
+    csvFile += "data.csv";
+    std::ifstream input(csvFile.toStdString().c_str());
     QSqlQuery query;
     QString command;
     QString insert;
 
+    // read settings, if they exist
+    QString settingsPath = path;
+    settingsPath += "cscope.json";
+    readSettings(settingsPath.toStdString().c_str());
+
     // create the table from the columns
-    const char *dbname = "cinema";
+    const char *dbname = "cinema_init";
     constructCommands(dbname, coldata, command, insert);
     bool success = query.exec(command); 
     // qDebug() << "Executing creation of \"" << dbname << "\" table" << success; 
@@ -186,6 +201,13 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
             colvals.clear();
         }
     }
+
+    QString newTableCommand;
+    this->constructNewTableCommand(newTableCommand, dbname, "cinema");
+    bool newTable = query.exec(newTableCommand); 
+    qDebug() << "NEWTABLE : " << newTable;
+    bool dropTable = query.exec("DROP TABLE cinema_init");
+    qDebug() << "DROPTABLE: " << dropTable; 
 
     //testing
     /*
@@ -248,4 +270,48 @@ void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData
     // qDebug() << "INSERT: " << insert;
 }
 
+void CinDBReader::constructNewTableCommand(QString &newTableCommand, const char *initTable, const char *finalTable)
+{
+    bool first = true;
 
+    newTableCommand = "CREATE TABLE ";
+    newTableCommand += finalTable;
+    newTableCommand += " AS SELECT ";
+
+    for (std::vector<QString>::iterator cur = mColOrder.begin(); cur != mColOrder.end(); ++cur)
+    {
+        if (!first) {
+            newTableCommand += ", ";
+        } else {
+            first = false;
+        }
+
+        newTableCommand += cur->toStdString().c_str();
+    }
+
+    newTableCommand += " FROM ";
+    newTableCommand += initTable; 
+}
+
+
+
+void CinDBReader::readSettings(const char *path)
+{
+    QString settings;
+    QFile file;
+
+    file.setFileName(path);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    settings = file.readAll();
+    file.close();
+
+    QJsonDocument sd = QJsonDocument::fromJson(settings.toUtf8());
+    QJsonObject settingsObj = sd.object();
+    QJsonObject::const_iterator it = settingsObj.constFind(QString("colorder"));
+    QJsonArray value = (*it).toArray();
+    for (QJsonArray::iterator cur = value.begin(); cur != value.end(); ++cur)
+    {
+        mColOrder.push_back((*cur).toString());
+    }
+    qDebug() << mColOrder;
+}
