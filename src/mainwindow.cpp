@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QSizePolicy>
 
 MainWindow::~MainWindow()
 {
@@ -63,6 +64,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     for(int i=0;i<this->numSliders;i++)
     {
         listOfSliders[i] = new QSlider(Qt::Horizontal);
+        listOfSliders[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
         listOfSliders[i]->setRange(minVals[i],maxVals[i]);
         //listOfSliders[i]->setSingleStep(11);
         QObject::connect(listOfSliders[i],SIGNAL(valueChanged(int)),this,SLOT(on_slider_valueChanged(int)));
@@ -70,6 +72,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
         ss<<i;
         string label = columnNames[i];
         listOfSliderLabels[i] = new QLabel;
+        listOfSliderLabels[i]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         listOfSliderLabels[i]->setText(label.c_str());
     }
 
@@ -99,6 +102,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     layout1->addWidget(imageView);
 
     QFormLayout *layout2 = new QFormLayout;
+    layout2->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for(int i=0;i<this->numSliders;i++)
     {
         layout2->addRow(listOfSliderLabels[i], listOfSliders[i]);
