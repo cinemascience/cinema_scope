@@ -1,4 +1,7 @@
-## Cinema Scope cross-platform application
+## Cinema Scope v0.1 cross-platform application
+
+Note that Cinema:Scope is in pre-release development. Code should be considered
+for experimental use only.
 
 <img src="doc/img/cinema_scope.png" width="350">
 
