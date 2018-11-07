@@ -1,9 +1,16 @@
 #include "mainwindow.h"
 
-
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton)
+    {
+        // Do something related to the left button
+    }
 }
 
 MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWindow(parent)
@@ -56,7 +63,7 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     {
         listOfSliders[i] = new QSlider(Qt::Horizontal);
         listOfSliders[i]->setRange(minVals[i],maxVals[i]);
-        listOfSliders[i]->setSingleStep(11);
+        //listOfSliders[i]->setSingleStep(11);
         QObject::connect(listOfSliders[i],SIGNAL(valueChanged(int)),this,SLOT(on_slider_valueChanged(int)));
         stringstream ss;
         ss<<i;

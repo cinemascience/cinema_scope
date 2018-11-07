@@ -14,6 +14,7 @@
 #include <QFormLayout>
 #include <QSqlField>
 #include <QStyleFactory>
+#include <QMouseEvent>
 
 
 #include <iostream>
@@ -43,6 +44,7 @@ private slots:
 
     void on_slider_valueChanged(int);
     string constructQueryString(vector<float>);
+    void mouseReleaseEvent(QMouseEvent *e);
 };
 
 #endif // MAINWINDOW_H
