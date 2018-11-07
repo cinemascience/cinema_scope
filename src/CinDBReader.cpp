@@ -141,7 +141,7 @@ void DBReader::split(const std::string& s, char c, std::vector<std::string>& v)
    }
 }
 
-int  DBReader::loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata)
+void  DBReader::loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata)
 {
     QString csvFile = path;
     csvFile += "/" + DBReader::CSVFile; 

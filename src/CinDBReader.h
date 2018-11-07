@@ -28,7 +28,7 @@ class DBReader
     private:
         DBColData::Type getType(QString &value);
         void split(const std::string & s, char c, std::vector<std::string>& v);
-        int  loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata);
+        void loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata);
         void constructCommands(const QString &tableName, std::vector<DBColData> &coldata, QString &create, QString &insert);
         void constructNewTableCommand(QString &newTableCommand, const QString &initTable, const QString &finalTable);
         void readSettings(QString &path);
