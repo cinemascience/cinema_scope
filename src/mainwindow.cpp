@@ -9,6 +9,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
+        cout<<"On left mouse release"<<endl;
 
     }
 }
@@ -111,12 +112,12 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     setCentralWidget(mainWindow);
 }
 
-
-vector<float> MainWindow::constructFilterQueryString(vector<float> currentVals)
+void MainWindow::popSlidersOnValidValue()
 {
-    string query;
+    string query,query1;
     vector<float> adjustedVals;
-    QSqlQuery qry;
+    QSqlQuery qry,qry1;
+    float val,val1;
 
     for(int i=0;i<numSliders;i++)
     {
@@ -124,22 +125,35 @@ vector<float> MainWindow::constructFilterQueryString(vector<float> currentVals)
         ss<<listOfSliders[i]->value();
 
         query = "SELECT min(" + columnNames[i] + ") FROM " + tname.toStdString() + " WHERE " + columnNames[i] + " >= " + ss.str();
-        //cout<<query<<endl;
-
         qry.exec(query.c_str());
+
+        query1 = "SELECT max(" + columnNames[i] + ") FROM " + tname.toStdString() + " WHERE " + columnNames[i] + " < " + ss.str();
+        qry1.exec(query1.c_str());
 
         while (qry.next())
         {
-            float val = qry.value(0).toString().toFloat(); //get the last column which has the image name
-            //cout<<i<<" "<<columnNames[i]<<" "<<val<<endl;
-            adjustedVals.push_back(val);
+            val = qry.value(0).toString().toFloat(); //get the last column which has the image name
         }
+
+        while (qry1.next())
+        {
+            val1 = qry1.value(0).toString().toFloat(); //get the last column which has the image name
+        }
+
+        if(abs(val-listOfSliders[i]->value()) >= abs(val1-listOfSliders[i]->value()))
+            adjustedVals.push_back(val1);
+        else
+            adjustedVals.push_back(val);
     }
 
-    return adjustedVals;
+    //Set the values to the sliders on nearest valid values
+    for(int i=0;i<numSliders;i++)
+    {
+        listOfSliders[i]->setValue(adjustedVals[i]);
+    }
 }
 
-string MainWindow::constructQueryString(vector<float> currentVals)
+string MainWindow::constructQueryString()
 {
     string query;
 
@@ -155,17 +169,9 @@ string MainWindow::constructQueryString(vector<float> currentVals)
     return query;
 }
 
-
 void MainWindow::on_slider_valueChanged(int value)
 {
-
-    vector<float> currentSLiderVals;
-    for(int i=0;i<this->numSliders;i++)
-    {
-        currentSLiderVals.push_back(listOfSliders[i]->value());
-    }
-
-    string query = constructQueryString(currentSLiderVals);
+    string query = constructQueryString();
 
     QSqlQuery qry;
     qry.prepare(QString::fromStdString(query));
@@ -195,21 +201,7 @@ void MainWindow::on_slider_valueChanged(int value)
         imageView->setScene(this->scene);
     }
 
-
-    vector<float> adjustedVals;
-    adjustedVals = constructFilterQueryString(currentSLiderVals);
-
-    /*or(int i=0;i<numSliders;i++)
-    {
-        cout<<adjustedVals[i]<<endl;
-    }*/
-
-    //Set the values to the sliders on nearest valid values
-    for(int i=0;i<numSliders;i++)
-    {
-        listOfSliders[i]->setValue(adjustedVals[i]);
-    }
-
-
+    //Pop sliders to a valid value during drag: To overcome Qts default behavior of sliders that increment step by 1. But our step is not always 1.
+    popSlidersOnValidValue();
 
 }

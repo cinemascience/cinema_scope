@@ -43,8 +43,8 @@ public:
 private slots:
 
     void on_slider_valueChanged(int);
-    string constructQueryString(vector<float>);
-    vector<float> constructFilterQueryString(vector<float>);
+    string constructQueryString();
+    void popSlidersOnValidValue();
     void mouseReleaseEvent(QMouseEvent *e);
 };
 
