@@ -15,19 +15,21 @@
 #include <string>
 #include <vector>
 
+using namespace cin;
 
-CinDBReader::CinDBReader() 
+
+DBReader::DBReader() 
 {
 }
 
-int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
+int DBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
 {
     int res = 0;
 
     QString csvFile = path;
     csvFile += "data.csv";
     std::ifstream input(csvFile.toStdString().c_str());
-    std::vector<CinDBColData> coldata;
+    std::vector<DBColData> coldata;
 
     char str[10000];
     if (input)
@@ -36,20 +38,20 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
         input.getline(str, 10000);
         std::vector<std::string> colnames;
         this->split(str, ',', colnames);
-        CinDBColData data;
+        DBColData data;
         QString trimmer;
         for (std::vector<std::string>::iterator cur = colnames.begin(); 
              cur != colnames.end(); ++cur)
         {
             trimmer = cur->c_str();
             trimmer = trimmer.trimmed();
-            data.type = CinDBColData::UNDEFINED;
+            data.type = DBColData::UNDEFINED;
             data.name = trimmer.toStdString().c_str();
             coldata.push_back(data);
         }
         // print out col names
         /*
-        for (std::vector<CinDBColData>::iterator cur = coldata.begin(); 
+        for (std::vector<DBColData>::iterator cur = coldata.begin(); 
             cur != coldata.end(); ++cur)
         {
             qDebug() << cur->name.c_str() << "\n";
@@ -64,13 +66,13 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
             this->split(str, ',', colvals);
 
             // save relevant metadata
-            std::vector<CinDBColData>::iterator curColData = coldata.begin();
+            std::vector<DBColData>::iterator curColData = coldata.begin();
             QString value;
             for (std::vector<std::string>::iterator cur = colvals.begin(); 
                  cur != colvals.end(); ++cur)
             {
                 // determine type
-                if (curColData->type == CinDBColData::UNDEFINED) {
+                if (curColData->type == DBColData::UNDEFINED) {
                     QString value = cur->c_str();
                     curColData->type = this->getType(value);
                 }
@@ -92,26 +94,26 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const char *path)
     return res;
 }
 
-CinDBColData::Type CinDBReader::getType(QString &value)
+DBColData::Type DBReader::getType(QString &value)
 {
-    CinDBColData::Type type = CinDBColData::UNDEFINED;
+    DBColData::Type type = DBColData::UNDEFINED;
     bool iTest = false;
     bool fTest = false;
 
     // is this a NaN?
     if (value.toLower() == "nan") {
-        type = CinDBColData::FLOAT;
+        type = DBColData::FLOAT;
     } else if (value.isEmpty()) {
-        type = CinDBColData::UNDEFINED;
+        type = DBColData::UNDEFINED;
     } else {
         value.toInt(&iTest, 10);
         value.toFloat(&fTest);
         if (iTest) {
-            type = CinDBColData::INT;
+            type = DBColData::INT;
         } else if (fTest) {
-            type = CinDBColData::FLOAT;
+            type = DBColData::FLOAT;
         } else {
-            type = CinDBColData::STRING;
+            type = DBColData::STRING;
         }
     } 
 
@@ -119,7 +121,7 @@ CinDBColData::Type CinDBReader::getType(QString &value)
 }
 
 
-void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& v) 
+void DBReader::split(const std::string& s, char c, std::vector<std::string>& v) 
 {
    int i = 0;
    int j = s.find(c);
@@ -135,7 +137,7 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
    }
 }
 
-int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata)
+int  DBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<DBColData> &coldata)
 {
     QString csvFile = path;
     csvFile += "data.csv";
@@ -173,18 +175,18 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
             this->split(str, ',', colvals);
             // iterate over the column names as well
             QString bindName;
-            std::vector<CinDBColData>::iterator curColData = coldata.begin();
+            std::vector<DBColData>::iterator curColData = coldata.begin();
             for (std::vector<std::string>::iterator cur = colvals.begin(); 
                  cur != colvals.end(); ++cur)
             {
                 bindName = ":";
                 bindName += curColData->name.c_str();
                 // bind the value according to type 
-                if (curColData->type == CinDBColData::STRING) {
+                if (curColData->type == DBColData::STRING) {
                     trimmer = cur->c_str();
                     trimmer = trimmer.trimmed();
                     query.bindValue( bindName, trimmer ); 
-                } else if (curColData->type == CinDBColData::INT) {
+                } else if (curColData->type == DBColData::INT) {
                     query.bindValue( bindName, std::stoi(*cur) );
                 } else {
                     // it's a float
@@ -228,7 +230,7 @@ int  CinDBReader::loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBCo
     */
 }
 
-void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData> &coldata, QString &create, QString &insert)
+void DBReader::constructCommands(const char *dbname, std::vector<DBColData> &coldata, QString &create, QString &insert)
 {
     bool first = true;
     QString names[] = {"UNDEFINED", "varchar(100)", "float", "int"};
@@ -242,7 +244,7 @@ void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData
     insert += "(";
     values = " values(";
 
-    for (std::vector<CinDBColData>::iterator curColData = coldata.begin();
+    for (std::vector<DBColData>::iterator curColData = coldata.begin();
          curColData != coldata.end(); ++curColData)
     {
         if (!first) {
@@ -270,7 +272,7 @@ void CinDBReader::constructCommands(const char *dbname, std::vector<CinDBColData
     // qDebug() << "INSERT: " << insert;
 }
 
-void CinDBReader::constructNewTableCommand(QString &newTableCommand, const char *initTable, const char *finalTable)
+void DBReader::constructNewTableCommand(QString &newTableCommand, const char *initTable, const char *finalTable)
 {
     bool first = true;
 
@@ -295,7 +297,7 @@ void CinDBReader::constructNewTableCommand(QString &newTableCommand, const char 
 
 
 
-void CinDBReader::readSettings(const char *path)
+void DBReader::readSettings(const char *path)
 {
     QString settings;
     QFile file;

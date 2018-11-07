@@ -5,33 +5,37 @@
 #include <string>
 #include <vector>
 
-class CinDBColData
+namespace cin {
+
+class DBColData
 {
     public:
-        CinDBColData() {}
+        DBColData() {}
 
         enum Type{UNDEFINED=0, STRING, FLOAT, INT};
 
-        int type=CinDBColData::UNDEFINED;
+        int type=DBColData::UNDEFINED;
         std::string name;
 
 };
 
-class CinDBReader
+class DBReader
 {
     public:
-        CinDBReader();
+        DBReader();
         int readCinemaDatabase(QSqlDatabase &db, const char *path);
 
     private:
-        CinDBColData::Type getType(QString &value);
+        DBColData::Type getType(QString &value);
         void split(const std::string & s, char c, std::vector<std::string>& v);
-        int  loadDB(QSqlDatabase &db, const char *path, std::vector<CinDBColData> &coldata);
-        void constructCommands(const char *dbname, std::vector<CinDBColData> &coldata, QString &create, QString &insert);
+        int  loadDB(QSqlDatabase &db, const char *path, std::vector<DBColData> &coldata);
+        void constructCommands(const char *dbname, std::vector<DBColData> &coldata, QString &create, QString &insert);
         void constructNewTableCommand(QString &newTableCommand, const char *initTable, const char *finalTable);
         void readSettings(const char *path);
 
         std::vector<QString> mColOrder;
 };
+
+}
 
 #endif // CINDBREADER_H
