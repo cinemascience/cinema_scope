@@ -1,10 +1,10 @@
-Makefile
-.qmake.stash
-cinemascope.app/
 .DS_Store
+.qmake.stash
 Debug/
 Info.plist
+Makefile
 XCBuildData/
+cinemascope.app/
 cinema_scope.build/
 cinema_scope.xcodeproj/
 moc_mainwindow.cpp
