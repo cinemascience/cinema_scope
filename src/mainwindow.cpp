@@ -9,7 +9,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        // Do something related to the left button
+
     }
 }
 
@@ -111,6 +111,34 @@ MainWindow::MainWindow(QSqlDatabase db, string path, QWidget *parent) : QMainWin
     setCentralWidget(mainWindow);
 }
 
+
+vector<float> MainWindow::constructFilterQueryString(vector<float> currentVals)
+{
+    string query;
+    vector<float> adjustedVals;
+    QSqlQuery qry;
+
+    for(int i=0;i<numSliders;i++)
+    {
+        stringstream ss;
+        ss<<listOfSliders[i]->value();
+
+        query = "SELECT min(" + columnNames[i] + ") FROM " + tname.toStdString() + " WHERE " + columnNames[i] + " >= " + ss.str();
+        //cout<<query<<endl;
+
+        qry.exec(query.c_str());
+
+        while (qry.next())
+        {
+            float val = qry.value(0).toString().toFloat(); //get the last column which has the image name
+            //cout<<i<<" "<<columnNames[i]<<" "<<val<<endl;
+            adjustedVals.push_back(val);
+        }
+    }
+
+    return adjustedVals;
+}
+
 string MainWindow::constructQueryString(vector<float> currentVals)
 {
     string query;
@@ -137,12 +165,6 @@ void MainWindow::on_slider_valueChanged(int value)
         currentSLiderVals.push_back(listOfSliders[i]->value());
     }
 
-    for(int i=0;i<this->numSliders;i++)
-    {
-        cout<<listOfSliders[i]->value()<<" ";
-    }
-    cout<<endl;
-
     string query = constructQueryString(currentSLiderVals);
 
     QSqlQuery qry;
@@ -160,7 +182,6 @@ void MainWindow::on_slider_valueChanged(int value)
         string val = qry.value(this->numSliders).toString().toStdString(); //get the last column which has the image name
         stringstream ss;
         ss << val;
-        //cout<<val<<endl;
         string imagePath = rootPath + ss.str();
         QPixmap image;
         bool loadSuccess = image.load(imagePath.c_str());
@@ -173,4 +194,22 @@ void MainWindow::on_slider_valueChanged(int value)
         scene->addPixmap(image);
         imageView->setScene(this->scene);
     }
+
+
+    vector<float> adjustedVals;
+    adjustedVals = constructFilterQueryString(currentSLiderVals);
+
+    /*or(int i=0;i<numSliders;i++)
+    {
+        cout<<adjustedVals[i]<<endl;
+    }*/
+
+    //Set the values to the sliders on nearest valid values
+    for(int i=0;i<numSliders;i++)
+    {
+        listOfSliders[i]->setValue(adjustedVals[i]);
+    }
+
+
+
 }
