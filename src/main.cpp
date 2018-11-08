@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("0.1");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Here is some text");
+    parser.setApplicationDescription("CinemaScope v0.1");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("database", 
