@@ -43,23 +43,7 @@ public:
     string rootPath;
     ~MainWindow();
 
-private:
-    void createActions();
-    void createMenus();
-
-    // menus
-    QMenuBar *mMenuBar=NULL;
-    QMenu    *mFileMenu=NULL;
-    QMenu    *mHelpMenu=NULL;
-    // actions
-    QAction  *mOpenAction=NULL;
-    QAction  *mQuitAction=NULL;
-    QAction  *mAboutAction=NULL;
-
-    QString   mCurDatabase;
-
 private slots:
-
     void on_slider_valueChanged(int);
     string constructQueryString();
     void popSlidersOnValidValue();
@@ -67,6 +51,17 @@ private slots:
     void onOpenFile();
     void onQuit();
     void onAbout();
+
+private:
+    void createActions();
+
+    // actions
+    QAction  *mOpenAction=NULL;
+    QAction  *mQuitAction=NULL;
+    QAction  *mAboutAction=NULL;
+
+    QString   mCurDatabase;
+
 };
 
 #endif // MAINWINDOW_H
