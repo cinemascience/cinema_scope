@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 #include <QSizePolicy>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QFileDialog>
 
 MainWindow::~MainWindow()
 {
@@ -20,6 +24,11 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     QWidget *mainWindow = new QWidget;
     mainWindow->setWindowTitle("Test window");
     mainWindow->resize(600,600);
+
+    // create menu
+    this->mMenu = new QMenuBar(mainWindow);
+    this->createActions();
+    this->createMenus();
 
     ///////////////////////////////////////////////////////////
     /// extract information from sql database
@@ -208,4 +217,41 @@ void MainWindow::on_slider_valueChanged(int value)
     //Pop sliders to a valid value during drag: To overcome Qts default behavior of sliders that increment step by 1. But our step is not always 1.
     popSlidersOnValidValue();
 
+}
+
+void MainWindow::createMenus()
+{
+    mFileMenu = mMenu->addMenu(tr("&File"));
+    mFileMenu->addAction(mOpenAction);
+    mFileMenu->addAction(mQuitAction);
+
+    // mHelpMenu = mMenu->addMenu(tr("&Help"));
+}
+
+void MainWindow::createActions()
+{
+    mOpenAction = new QAction(tr("&Open"), this);
+    mOpenAction->setShortcuts(QKeySequence::New);
+    mOpenAction->setStatusTip(tr("Create a new file"));
+    connect(mOpenAction, &QAction::triggered, this, &MainWindow::openFile);
+
+    mQuitAction = new QAction(tr("&Quit"), this);
+    mQuitAction->setShortcuts(QKeySequence::Quit);
+    mQuitAction->setStatusTip(tr("Quit application"));
+    connect(mQuitAction, &QAction::triggered, this, &MainWindow::quit);
+}
+
+void MainWindow::openFile()
+{
+    mCurDatabase = QFileDialog::getExistingDirectory(this,
+        tr("Open Cinema Database"), "/Users/dhr",
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    // TODO: check the database
+    qDebug() << mCurDatabase;
+}
+
+void MainWindow::quit()
+{
+    QApplication::quit();
 }

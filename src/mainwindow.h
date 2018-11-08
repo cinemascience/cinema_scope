@@ -15,6 +15,9 @@
 #include <QSqlField>
 #include <QStyleFactory>
 #include <QMouseEvent>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
 
 
 #include <iostream>
@@ -40,12 +43,26 @@ public:
     string rootPath;
     ~MainWindow();
 
+private:
+    void createActions();
+    void createMenus();
+
+    QMenuBar *mMenu=NULL;
+    QMenu    *mFileMenu=NULL;
+    QMenu    *mHelpMenu=NULL;
+    QAction  *mOpenAction=NULL;
+    QAction  *mQuitAction=NULL;
+
+    QString   mCurDatabase;
+
 private slots:
 
     void on_slider_valueChanged(int);
     string constructQueryString();
     void popSlidersOnValidValue();
     void mouseReleaseEvent(QMouseEvent *e);
+    void openFile();
+    void quit();
 };
 
 #endif // MAINWINDOW_H
