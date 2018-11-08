@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 
     parser.process(cinemaViewer);
     const QStringList args = parser.positionalArguments();
-    qDebug() << "ARGS: " << args;
 
     // currently, there is one positional argument
     QString dataPath;
@@ -34,17 +33,15 @@ int main(int argc, char *argv[])
         dataPath = args.at(0);
     }
 
-    //qDebug() << QStyleFactory::keys();
-    //cinemaViewer.setStyle(QStyleFactory::create("Macintosh"));
 
-    // testing
+    // run the application 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.open();
     cin::DBReader reader;
     reader.readCinemaDatabase(db, dataPath, QString("cinema"));
 
     MainWindow mainWindow(db, dataPath);
-    mainWindow.setWindowTitle("Qt-based CinemaDB Viewer");
+    mainWindow.setWindowTitle("CinemaScope");
     mainWindow.show();
 
     return cinemaViewer.exec();
