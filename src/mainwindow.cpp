@@ -26,7 +26,6 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     mainWindow->resize(600,600);
 
     // create menu
-    this->mMenuBar = new QMenuBar(0);
     this->createActions();
     this->createMenus();
 
@@ -221,12 +220,12 @@ void MainWindow::on_slider_valueChanged(int value)
 
 void MainWindow::createMenus()
 {
-    mFileMenu = mMenuBar->addMenu(tr("&File"));
+    mFileMenu = menuBar()->addMenu(tr("&File"));
     mFileMenu->addAction(mOpenAction);
     mFileMenu->addSeparator();
     mFileMenu->addAction(mQuitAction);
 
-    mHelpMenu = mMenuBar->addMenu(tr("&Help"));
+    mHelpMenu = menuBar()->addMenu(tr("&Help"));
     mHelpMenu->addAction(mAboutAction);
 }
 
