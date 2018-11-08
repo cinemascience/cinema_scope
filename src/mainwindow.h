@@ -18,6 +18,9 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QPainter>
+#include <QImage>
+#include <QPaintEvent>
 
 
 #include <iostream>
@@ -43,6 +46,10 @@ public:
     string rootPath;
     ~MainWindow();
 
+    //void paintEvent(QPaintEvent *p) override;
+    //QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
+
+
 private:
     void createActions();
     void createMenus();
@@ -60,10 +67,14 @@ private:
 
 private slots:
 
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+
+
     void on_slider_valueChanged(int);
     string constructQueryString();
-    void popSlidersOnValidValue();
-    void mouseReleaseEvent(QMouseEvent *e);
+    void popSlidersOnValidValue();    
     void onOpenFile();
     void onQuit();
     void onAbout();

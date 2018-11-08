@@ -15,9 +15,43 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     if (e->button() == Qt::LeftButton)
     {
         cout<<"On left mouse release"<<endl;
-
     }
 }
+
+void MainWindow::mousePressEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton)
+    {
+        cout<<"On left mouse press"<<endl;
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *e)
+{
+    QPoint p = e->pos();
+    cout<<"moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+}
+
+/*void MainWindow::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+    QRect rect = e->rect();
+    painter.drawImage(rect,image,rect);
+}*/
+
+/*class MyWidget : public QWidget
+{
+public:
+    QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
+
+    void paintEvent(QPaintEvent *e)
+    {
+        QWidget::paintEvent(e);
+        QPainter painter(this);
+        QRect rect = e->rect();
+        painter.drawImage(rect,image,rect);
+    }
+};*/
 
 MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
 {
@@ -94,6 +128,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
 
     string imagePath = rootPath + "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
+
     bool loadSuccess = image.load(imagePath.c_str());
     if(!loadSuccess)
     {
@@ -101,8 +136,16 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
         image.load(imagePath.c_str());
     }
 
+    //image.fill(Qt::transparent); // shows a blank screen
+
+    /*QWidget* wrapper = new QWidget();
+    MyWidget* overlay = new MyWidget();
+    overlay->setParent(wrapper);
+    wrapper->show();*/
+
     scene = new QGraphicsScene;
     scene->addPixmap(image);
+    //scene->addWidget(wrapper);
     imageView = new QGraphicsView;
     imageView->setScene(this->scene);
 

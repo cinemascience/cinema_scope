@@ -5,8 +5,6 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 
-#define DEBUG false
-
 int main(int argc, char *argv[])
 {
     QApplication cinemaViewer(argc, argv);
