@@ -47,11 +47,14 @@ private:
     void createActions();
     void createMenus();
 
-    QMenuBar *mMenu=NULL;
+    // menus
+    QMenuBar *mMenuBar=NULL;
     QMenu    *mFileMenu=NULL;
     QMenu    *mHelpMenu=NULL;
+    // actions
     QAction  *mOpenAction=NULL;
     QAction  *mQuitAction=NULL;
+    QAction  *mAboutAction=NULL;
 
     QString   mCurDatabase;
 
@@ -61,8 +64,9 @@ private slots:
     string constructQueryString();
     void popSlidersOnValidValue();
     void mouseReleaseEvent(QMouseEvent *e);
-    void openFile();
-    void quit();
+    void onOpenFile();
+    void onQuit();
+    void onAbout();
 };
 
 #endif // MAINWINDOW_H

@@ -26,7 +26,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     mainWindow->resize(600,600);
 
     // create menu
-    this->mMenu = new QMenuBar(mainWindow);
+    this->mMenuBar = new QMenuBar(0);
     this->createActions();
     this->createMenus();
 
@@ -221,11 +221,13 @@ void MainWindow::on_slider_valueChanged(int value)
 
 void MainWindow::createMenus()
 {
-    mFileMenu = mMenu->addMenu(tr("&File"));
+    mFileMenu = mMenuBar->addMenu(tr("&File"));
     mFileMenu->addAction(mOpenAction);
+    mFileMenu->addSeparator();
     mFileMenu->addAction(mQuitAction);
 
-    // mHelpMenu = mMenu->addMenu(tr("&Help"));
+    mHelpMenu = mMenuBar->addMenu(tr("&Help"));
+    mHelpMenu->addAction(mAboutAction);
 }
 
 void MainWindow::createActions()
@@ -233,25 +235,34 @@ void MainWindow::createActions()
     mOpenAction = new QAction(tr("&Open"), this);
     mOpenAction->setShortcuts(QKeySequence::New);
     mOpenAction->setStatusTip(tr("Create a new file"));
-    connect(mOpenAction, &QAction::triggered, this, &MainWindow::openFile);
+    connect(mOpenAction, &QAction::triggered, this, &MainWindow::onOpenFile);
 
     mQuitAction = new QAction(tr("&Quit"), this);
     mQuitAction->setShortcuts(QKeySequence::Quit);
     mQuitAction->setStatusTip(tr("Quit application"));
-    connect(mQuitAction, &QAction::triggered, this, &MainWindow::quit);
+    connect(mQuitAction, &QAction::triggered, this, &MainWindow::onQuit);
+
+    mAboutAction = new QAction(tr("&About"), this);
+    mAboutAction->setStatusTip(tr("About this application"));
+    connect(mAboutAction, &QAction::triggered, this, &MainWindow::onAbout);
 }
 
-void MainWindow::openFile()
+void MainWindow::onOpenFile()
 {
     mCurDatabase = QFileDialog::getExistingDirectory(this,
-        tr("Open Cinema Database"), "/Users/dhr",
+        tr("Open Cinema Database"), "/",
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     // TODO: check the database
     qDebug() << mCurDatabase;
 }
 
-void MainWindow::quit()
+void MainWindow::onQuit()
+{
+    QApplication::quit();
+}
+
+void MainWindow::onAbout()
 {
     QApplication::quit();
 }
