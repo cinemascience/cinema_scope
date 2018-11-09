@@ -34,7 +34,7 @@ void DBReader::setCurDatabase(const QString &path)
     this->mCurSettingsFile += "/" + DBReader::SettingsFile;
 }
 
-int DBReader::verifyDatabase(const QString &path)
+int DBReader::VerifyDatabase(const QString &path)
 {
     int res = 0;
 

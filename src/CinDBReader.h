@@ -24,7 +24,7 @@ class DBReader
     public:
         DBReader();
         int readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName);
-        int verifyDatabase(const QString &path);
+        static int VerifyDatabase(const QString &path);
 
         enum Results{DatabaseLoaded=1, DatabaseInvalid, DatabaseLoadError};
         const QString &getCurDatabase() {return mCurDatabase;}
