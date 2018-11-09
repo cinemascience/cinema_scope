@@ -213,9 +213,9 @@ void  DBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vector<D
     QString newTableCommand;
     this->constructNewTableCommand(newTableCommand, DBReader::InitTableName, tableName);
     bool newTable = query.exec(newTableCommand); 
-    qDebug() << "NEWTABLE : " << newTable;
+    // qDebug() << "NEWTABLE : " << newTable;
     bool dropTable = query.exec("DROP TABLE " + DBReader::InitTableName);
-    qDebug() << "DROPTABLE: " << dropTable; 
+    // qDebug() << "DROPTABLE: " << dropTable; 
 }
 
 void DBReader::constructCommands(const QString &tableName, std::vector<DBColData> &coldata, QString &create, QString &insert)
@@ -256,8 +256,8 @@ void DBReader::constructCommands(const QString &tableName, std::vector<DBColData
     values += ")";
     insert += values;
 
-    qDebug() << "CREATE: " << create;
-    qDebug() << "INSERT: " << insert;
+    // qDebug() << "CREATE: " << create;
+    // qDebug() << "INSERT: " << insert;
 }
 
 void DBReader::constructNewTableCommand(QString &newTableCommand, const QString &initTable, const QString &finalTable)
@@ -286,7 +286,7 @@ void DBReader::constructNewTableCommand(QString &newTableCommand, const QString 
     newTableCommand += " FROM ";
     newTableCommand += initTable; 
 
-    qDebug() << "NEW: " << newTableCommand;
+    // qDebug() << "NEW: " << newTableCommand;
 }
 
 
@@ -310,7 +310,7 @@ void DBReader::readSettings()
         {
             mColOrder.push_back((*cur).toString());
         }
-        qDebug() << mColOrder;
+        // qDebug() << mColOrder;
     }
 }
 
