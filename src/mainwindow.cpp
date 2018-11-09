@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
+#include <QSplitter>
 
 
 MainWindow::~MainWindow()
@@ -87,23 +88,50 @@ void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 
 MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
 {
-    QWidget *mainWindow = new QWidget;
-    //mainWindow->installEventFilter(this);
+    // create the basic components
+    QWidget     *mainWidget       = new QWidget(this);
+    QLayout     *mainWidgetLayout = new QHBoxLayout;
+    QSplitter   *splitter         = new QSplitter(Qt::Horizontal, mainWidget);
+    QWidget     *imagePanel       = new QWidget();
+    QHBoxLayout *imageLayout      = new QHBoxLayout;
+    QWidget     *sliderPanel      = new QWidget();
+    QFormLayout *sliderLayout     = new QFormLayout;
 
-    mainWindow->setWindowTitle("Test window");
-    mainWindow->resize(600,600);
-    setCentralWidget(mainWindow);
-    createActions();
+    mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainWidget->setLayout(mainWidgetLayout);
+    mainWidgetLayout->addWidget(splitter);
+
+    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    splitter->addWidget(imagePanel);
+    splitter->addWidget(sliderPanel);
+
+    imagePanel->setLayout(imageLayout);
+    imagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    sliderPanel->setLayout(sliderLayout);
+    sliderPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //mainWidget->installEventFilter(this);
+
+    // colors for testing
+    // mainWidget->setStyleSheet("background-color:red");
+    // splitter->setStyleSheet("background-color:blue");
+
+    // set up initial state
+    this->setCentralWidget(mainWidget);
+    this->resize(800,600);
+    this->createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
+
 
     ///////////////////////////////////////////////////////////
     /// extract information from sql database
 
-    QStringList tablesList = db.tables(); //get all the tables. We should have just one
+    //get all the tables. We should have just one, since there is only one db
+    QStringList tablesList = db.tables(); 
     tname = tablesList[0]; // get the table name
     cout<<"Name of the table: "<<tname.toStdString()<<endl;
-    //cout<<tablesList.length()<<endl; // should be 1 for now since we handle one cinemaBD
+    //cout<<tablesList.length()<<endl; 
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + tname.toStdString();
@@ -158,7 +186,9 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     qry.exec(queryText.c_str());
     string initFileID;
     qry.first();
-    initFileID = qry.value(this->numSliders).toString().toStdString(); //get the value of last column which is the image path
+    //get the value of last column which is the image path
+    // TODO: query for FILE column
+    initFileID = qry.value(this->numSliders).toString().toStdString(); 
 
     string imagePath = rootPath + "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
@@ -174,29 +204,27 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
 
     scene = new QGraphicsScene();
     scene->addPixmap(image);
-    imageView = new MyImageView(mainWindow);
+    imageView = new MyImageView(imagePanel);
+    imageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
     //imageView->viewport()->setMouseTracking(true);
 
     imageView->setScene(this->scene);
+    imageLayout->addWidget(imageView);
 
-    QHBoxLayout *layout1 = new QHBoxLayout;
-    layout1->addWidget(imageView);
-
-    QFormLayout *layout2 = new QFormLayout;
-    layout2->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+    sliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for(int i=0;i<this->numSliders;i++)
     {
-        layout2->addRow(listOfSliderLabels[i], listOfSliders[i]);
+        sliderLayout->addRow(listOfSliderLabels[i], listOfSliders[i]);
     }
 
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addLayout(layout1);
-    mainLayout->addLayout(layout2);
+    // QHBoxLayout *mainLayout = new QHBoxLayout;
+    // layout1->addWidget(imageView);
+    // splitter->addWidget(imageView);
+    // splitter->addWidget(sliderPanel);
 
-    mainWindow->setLayout(mainLayout);
-
+    // mainWidget->setLayout(mainLayout);
 }
 
 void MainWindow::popSlidersOnValidValue()
