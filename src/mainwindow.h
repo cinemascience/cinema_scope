@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QImage>
 #include <QPaintEvent>
+#include <QGraphicsScene>
 
 
 #include <iostream>
@@ -29,6 +30,22 @@
 
 
 using namespace std;
+
+class MyImageView : public QGraphicsView
+{
+    protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent*);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+};
+
+class MyImageScene : public QGraphicsScene
+{
+    protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent*);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+};
 
 class MainWindow : public QMainWindow
 {
@@ -42,7 +59,9 @@ public:
     QString tname;
     int numSliders;
     QGraphicsScene *scene;
-    QGraphicsView *imageView;
+    //MyImageScene *scene;
+    //QGraphicsView *imageView;
+    MyImageView *imageView;
     string rootPath;
     ~MainWindow();
 

@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QFileDialog>
+#include <QGraphicsSceneMouseEvent>
 
 MainWindow::~MainWindow()
 {
@@ -32,26 +33,30 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
     cout<<"moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
-/*void MainWindow::paintEvent(QPaintEvent *e)
-{
-    QPainter painter(this);
-    QRect rect = e->rect();
-    painter.drawImage(rect,image,rect);
-}*/
 
-/*class MyWidget : public QWidget
-{
-public:
-    QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
 
-    void paintEvent(QPaintEvent *e)
+void MyImageView::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton)
     {
-        QWidget::paintEvent(e);
-        QPainter painter(this);
-        QRect rect = e->rect();
-        painter.drawImage(rect,image,rect);
+        cout<<"On left mouse release"<<endl;
     }
-};*/
+}
+
+void MyImageView :: mousePressEvent(QGraphicsSceneMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton)
+    {
+        cout<<"On left mouse press"<<endl;
+    }
+}
+
+void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+{
+    QPointF p = e->scenePos();
+    cout<<"Moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+}
+
 
 MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
 {
@@ -138,15 +143,13 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
 
     //image.fill(Qt::transparent); // shows a blank screen
 
-    /*QWidget* wrapper = new QWidget();
-    MyWidget* overlay = new MyWidget();
-    overlay->setParent(wrapper);
-    wrapper->show();*/
-
-    scene = new QGraphicsScene;
+    scene = new QGraphicsScene();
     scene->addPixmap(image);
-    //scene->addWidget(wrapper);
-    imageView = new QGraphicsView;
+    imageView = new MyImageView();
+
+    //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
+    imageView->setMouseTracking(true);
+
     imageView->setScene(this->scene);
 
     QHBoxLayout *layout1 = new QHBoxLayout;
