@@ -42,6 +42,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent*);
     void mouseMoveEvent(QGraphicsSceneMouseEvent*);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+    void mouseMoveEvent(QMouseEvent *);
 };
 
 class MainWindow : public QMainWindow

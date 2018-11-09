@@ -58,16 +58,21 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
-    cout<<"moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+    cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
 
+void MyImageView::mouseMoveEvent(QMouseEvent *e)
+{
+    QPoint p = e->pos();
+    cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+}
 
 void MyImageView::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        cout<<"On left mouse release"<<endl;
+        cout<<"MYIMAGE: n left mouse release"<<endl;
     }
 }
 
@@ -75,14 +80,14 @@ void MyImageView :: mousePressEvent(QGraphicsSceneMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        cout<<"On left mouse press"<<endl;
+        cout<<"MYIMAGE: on left mouse press"<<endl;
     }
 }
 
 void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
     QPointF p = e->scenePos();
-    cout<<"Moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+    cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
 
