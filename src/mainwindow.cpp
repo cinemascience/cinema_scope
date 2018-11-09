@@ -104,6 +104,9 @@ void MainWindow::buildApplication(QWidget *parent)
     this->mDatabase.open();
     this->mReader = new DBReader();
 
+    // remember the table name
+    this->mTableName = "cinema";
+
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QLayout     *mainWidgetLayout = new QHBoxLayout;
@@ -151,13 +154,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     this->flushUI();
 
     // load database
-    mReader->readCinemaDatabase(this->mDatabase, database, QString("cinema"));
-
-    // get all the tables. We should have just one, since there is only one db
-    QStringList tablesList = this->mDatabase.tables(); 
-    this->mTableName = tablesList[0]; // get the table name
-    // cout<<"Name of the table: "<this->mTableName.toStdString()<<endl;
-    // cout<<tablesList.length()<<endl; 
+    mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();
@@ -398,7 +395,7 @@ void MainWindow::flushUI()
 {
     // flush the database
     QSqlQuery qry;
-    qry.exec("DROP TABLE cinema");
+    qry.exec("DROP TABLE " + this->mTableName);
 
     // flush the sliders
     int count = this->mSliderLayout->rowCount();
