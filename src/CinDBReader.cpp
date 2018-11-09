@@ -27,7 +27,7 @@ DBReader::DBReader()
 
 int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName) 
 {
-    int res = 0;
+    int res = DBReader::DatabaseLoadError; 
 
     QString csvFile = path;
     csvFile += "/" + DBReader::CSVFile; 
@@ -90,6 +90,10 @@ int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QS
 
             colvals.clear();
         }
+
+        res = DBReader::DatabaseLoaded;
+    } else {
+        res = DBReader::DatabaseLoadError;
     }
 
     // now load data into the database

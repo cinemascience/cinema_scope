@@ -25,6 +25,8 @@ class DBReader
         DBReader();
         int readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName);
 
+        enum Results{DatabaseLoaded=1, DatabaseInvalid, DatabaseLoadError};
+
     private:
         DBColData::Type getType(QString &value);
         void split(const std::string & s, char c, std::vector<std::string>& v);
@@ -34,6 +36,7 @@ class DBReader
         void readSettings(QString &path);
 
         std::vector<QString> mColOrder;
+        QString mCurDatabase;
 
         // Class variables
         static const QString CSVFile;
