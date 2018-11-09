@@ -22,6 +22,7 @@
 #include <QImage>
 #include <QPaintEvent>
 #include <QGraphicsScene>
+#include "CinDBReader.h"
 
 
 #include <iostream>
@@ -30,6 +31,7 @@
 
 
 using namespace std;
+using namespace cin;
 
 class MyImageView : public QGraphicsView
 {
@@ -50,7 +52,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QSqlDatabase, QString, QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
+    void loadCinemaDatabase(const QString &database);
+
     vector<QSlider*> listOfSliders;
     vector<QLabel*> listOfSliderLabels;
     vector<string> columnNames;
@@ -67,6 +71,7 @@ public:
 
 private:
     void createActions();
+    void buildApplication(QWidget *parent);
 
     // actions
     QAction  *mOpenAction=NULL;
@@ -74,6 +79,16 @@ private:
     QAction  *mAboutAction=NULL;
 
     QString   mCurDatabase;
+
+    QSqlDatabase  mDatabase;
+    MyImageView  *mImageView=NULL;
+    QWidget      *mImagePanel=NULL;
+    QHBoxLayout  *mImageLayout=NULL;
+    QFormLayout  *mSliderLayout=NULL;
+    DBReader     *mReader=NULL;
+
+    // components
+
 
 private slots:
 

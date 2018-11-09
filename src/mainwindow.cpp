@@ -7,6 +7,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
 #include <QSplitter>
+#include "CinDBReader.h"
 
 
 MainWindow::~MainWindow()
@@ -91,29 +92,39 @@ void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 }
 
 
-MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    this->buildApplication(parent);
+}
+
+void MainWindow::buildApplication(QWidget *parent)
+{
+    // create the database and cinema reaader
+    mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    mDatabase.open();
+    mReader = new DBReader();
+
     // create the basic components
-    QWidget     *mainWidget       = new QWidget(this);
+    QWidget     *mainWidget       = new QWidget(parent);
     QLayout     *mainWidgetLayout = new QHBoxLayout;
     QSplitter   *splitter         = new QSplitter(Qt::Horizontal, mainWidget);
-    QWidget     *imagePanel       = new QWidget();
-    QHBoxLayout *imageLayout      = new QHBoxLayout;
+    this->mImagePanel   = new QWidget();
+    this->mImageLayout  = new QHBoxLayout;
     QWidget     *sliderPanel      = new QWidget();
-    QFormLayout *sliderLayout     = new QFormLayout;
+    this->mSliderLayout = new QFormLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
     mainWidgetLayout->addWidget(splitter);
 
     splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    splitter->addWidget(imagePanel);
+    splitter->addWidget(this->mImagePanel);
     splitter->addWidget(sliderPanel);
 
-    imagePanel->setLayout(imageLayout);
-    imagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->mImagePanel->setLayout(this->mImageLayout);
+    this->mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    sliderPanel->setLayout(sliderLayout);
+    sliderPanel->setLayout(this->mSliderLayout);
     sliderPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //mainWidget->installEventFilter(this);
 
@@ -127,13 +138,15 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     this->createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
+}
 
-
-    ///////////////////////////////////////////////////////////
-    /// extract information from sql database
+void MainWindow::loadCinemaDatabase(const QString &database)
+{
+    // load database
+    mReader->readCinemaDatabase(this->mDatabase, database, QString("cinema"));
 
     //get all the tables. We should have just one, since there is only one db
-    QStringList tablesList = db.tables(); 
+    QStringList tablesList = this->mDatabase.tables(); 
     tname = tablesList[0]; // get the table name
     cout<<"Name of the table: "<<tname.toStdString()<<endl;
     //cout<<tablesList.length()<<endl; 
@@ -149,7 +162,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     //Get column names
     for(int i=0;i<qry.record().count();i++)
     {
-        columnNames.push_back(db.driver()->record(tname).fieldName(i).toStdString());
+        columnNames.push_back(this->mDatabase.driver()->record(tname).fieldName(i).toStdString());
     }
 
     //Get value ranges of each column
@@ -186,42 +199,43 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     }
 
     //load and display an initial image
-    rootPath = path.toStdString();
     queryText = "SELECT * FROM " + tname.toStdString();
     qry.exec(queryText.c_str());
-    string initFileID;
+    QString initFileID;
     qry.first();
     //get the value of last column which is the image path
     // TODO: query for FILE column
-    initFileID = qry.value(this->numSliders).toString().toStdString(); 
+    initFileID = qry.value(this->numSliders).toString();
 
-    string imagePath = rootPath + "/" + initFileID; //loads the first image from first row in the db
+    QString imagePath = database;
+    imagePath += "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
 
-    bool loadSuccess = image.load(imagePath.c_str());
+    bool loadSuccess = image.load(imagePath);
     if(!loadSuccess)
     {
-        imagePath = rootPath + "/" + "empty_image/empty.png";
-        image.load(imagePath.c_str());
+        imagePath = database;
+        imagePath += "/empty_image/empty.png";
+        image.load(imagePath);
     }
 
     //image.fill(Qt::transparent); // shows a blank screen
 
     scene = new QGraphicsScene();
     scene->addPixmap(image);
-    imageView = new MyImageView(imagePanel);
-    imageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->mImageView = new MyImageView(this->mImagePanel);
+    this->mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
     //imageView->viewport()->setMouseTracking(true);
 
-    imageView->setScene(this->scene);
-    imageLayout->addWidget(imageView);
+    this->mImageView->setScene(this->scene);
+    this->mImageLayout->addWidget(this->mImageView);
 
-    sliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+    this->mSliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for(int i=0;i<this->numSliders;i++)
     {
-        sliderLayout->addRow(listOfSliderLabels[i], listOfSliders[i]);
+        this->mSliderLayout->addRow(listOfSliderLabels[i], listOfSliders[i]);
     }
 
     // QHBoxLayout *mainLayout = new QHBoxLayout;
@@ -231,6 +245,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
 
     // mainWidget->setLayout(mainLayout);
 }
+
 
 void MainWindow::popSlidersOnValidValue()
 {
@@ -305,20 +320,24 @@ void MainWindow::on_slider_valueChanged(int value)
 
     while (qry.next())
     {
-        string val = qry.value(this->numSliders).toString().toStdString(); //get the last column which has the image name
-        stringstream ss;
-        ss << val;
-        string imagePath = rootPath + "/" + ss.str();
+        QString val = qry.value(this->numSliders).toString(); //get the last column which has the image name
+        // stringstream ss;
+        // ss << val;
+        QString imagePath = this->mCurDatabase;
+        imagePath += "/";
+        imagePath += val;
         QPixmap image;
-        bool loadSuccess = image.load(imagePath.c_str());
+        bool loadSuccess = image.load(imagePath);
         if(!loadSuccess)
         {
-            imagePath = rootPath + "/" + "empty_image/empty.png";
-            image.load(imagePath.c_str());
+            imagePath = this->mCurDatabase;
+            imagePath += "/";
+            imagePath += "empty_image/empty.png";
+            image.load(imagePath);
         }
 
         scene->addPixmap(image);
-        imageView->setScene(this->scene);
+        this->mImageView->setScene(this->scene);
     }
 
     //Pop sliders to a valid value during drag: To overcome Qts default behavior of sliders that increment step by 1. But our step is not always 1.
@@ -353,6 +372,8 @@ void MainWindow::onOpenFile()
 
     // TODO: check the database
     qDebug() << mCurDatabase;
+
+    this->loadCinemaDatabase(mCurDatabase);
 }
 
 void MainWindow::onQuit()
