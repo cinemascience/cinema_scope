@@ -17,24 +17,39 @@
 
 using namespace cin;
 
-const QString DBReader::CSVFile      = "data.csv";
-const QString DBReader::SettingsFile = "csettings.json";
+const QString DBReader::CSVFile       = "data.csv";
+const QString DBReader::SettingsFile  = "csettings.json";
 const QString DBReader::InitTableName = "initial_table";
 
 DBReader::DBReader() 
 {
 }
 
+void DBReader::setCurDatabase(const QString &path)
+{
+    this->mCurDatabase = path;
+    this->mCurCSVFile  = path;
+    this->mCurCSVFile  += "/" + DBReader::CSVFile;
+    this->mCurSettingsFile = path;
+    this->mCurSettingsFile += "/" + DBReader::SettingsFile;
+}
+
+int DBReader::verifyDatabase(const QString &path)
+{
+    int res = 0;
+
+    return res;
+}
+
 int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName) 
 {
     int res = DBReader::DatabaseLoadError; 
 
-    QString csvFile = path;
-    csvFile += "/" + DBReader::CSVFile; 
-    qDebug() << "CSVFILE: " << csvFile;
-    std::ifstream input(csvFile.toStdString().c_str());
+    this->setCurDatabase(path);
+    std::ifstream input(this->getCurCSVFile().toStdString().c_str());
     std::vector<DBColData> coldata;
 
+    // TODO: make this bulletproof
     char str[10000];
     if (input)
     {
@@ -53,14 +68,6 @@ int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QS
             data.name = trimmer.toStdString().c_str();
             coldata.push_back(data);
         }
-        // print out col names
-        /*
-        for (std::vector<DBColData>::iterator cur = coldata.begin(); 
-            cur != coldata.end(); ++cur)
-        {
-            qDebug() << cur->name.c_str() << "\n";
-        }
-        */
 
         // continue, gathering metadata along the way
         std::vector<std::string> colvals;
@@ -71,7 +78,6 @@ int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QS
 
             // save relevant metadata
             std::vector<DBColData>::iterator curColData = coldata.begin();
-            QString value;
             for (std::vector<std::string>::iterator cur = colvals.begin(); 
                  cur != colvals.end(); ++cur)
             {
@@ -81,10 +87,6 @@ int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QS
                     curColData->type = this->getType(value);
                 }
 
-                // save the range
-                value = cur->c_str();
-                // this->adjustRange(*curColData, value.toFloat());
-
                 curColData++;
             }
 
@@ -92,12 +94,13 @@ int DBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QS
         }
 
         res = DBReader::DatabaseLoaded;
+        mCurDatabase = path;
     } else {
         res = DBReader::DatabaseLoadError;
     }
 
     // now load data into the database
-    this->loadDB(db, path, tableName, coldata); 
+    this->loadDB(db, tableName, coldata); 
 
     return res;
 }
@@ -145,21 +148,15 @@ void DBReader::split(const std::string& s, char c, std::vector<std::string>& v)
    }
 }
 
-void  DBReader::loadDB(QSqlDatabase &db, const QString &path, const QString &tableName, std::vector<DBColData> &coldata)
+void  DBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vector<DBColData> &coldata)
 {
-    QString csvFile = path;
-    csvFile += "/" + DBReader::CSVFile; 
-    qDebug() << "CSVFILE: " << csvFile;
-    std::ifstream input(csvFile.toStdString().c_str());
+    std::ifstream input(this->getCurCSVFile().toStdString().c_str());
     QSqlQuery query;
     QString command;
     QString insert;
 
     // read settings, if they exist
-    QString settingsFile = path;
-    settingsFile += "/" + DBReader::SettingsFile;
-    // qDebug() << "SETTINGSFILE: " << settingsFile;
-    this->readSettings(settingsFile);
+    this->readSettings();
 
     // create the table from the columns
     this->constructCommands(DBReader::InitTableName, coldata, command, insert);
@@ -288,14 +285,16 @@ void DBReader::constructNewTableCommand(QString &newTableCommand, const QString 
 
     newTableCommand += " FROM ";
     newTableCommand += initTable; 
+
+    qDebug() << "NEW: " << newTableCommand;
 }
 
 
 
-void DBReader::readSettings(QString &path)
+void DBReader::readSettings()
 {
     QString settings;
-    QFile file(path);
+    QFile file(this->getCurSettingsFile());
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
