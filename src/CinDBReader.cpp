@@ -256,8 +256,8 @@ void DBReader::constructCommands(const QString &tableName, std::vector<DBColData
     values += ")";
     insert += values;
 
-    // qDebug() << "CREATE: " << create;
-    // qDebug() << "INSERT: " << insert;
+    qDebug() << "CREATE: " << create;
+    qDebug() << "INSERT: " << insert;
 }
 
 void DBReader::constructNewTableCommand(QString &newTableCommand, const QString &initTable, const QString &finalTable)
@@ -296,6 +296,7 @@ void DBReader::readSettings()
     QString settings;
     QFile file(this->getCurSettingsFile());
 
+    mColOrder.clear();
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         settings = file.readAll();

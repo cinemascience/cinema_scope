@@ -100,17 +100,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void MainWindow::buildApplication(QWidget *parent)
 {
     // create the database and cinema reaader
-    mDatabase = QSqlDatabase::addDatabase("QSQLITE");
-    mDatabase.open();
-    mReader = new DBReader();
+    this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    this->mDatabase.open();
+    this->mReader = new DBReader();
 
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QLayout     *mainWidgetLayout = new QHBoxLayout;
     QSplitter   *splitter         = new QSplitter(Qt::Horizontal, mainWidget);
+    QWidget     *sliderPanel      = new QWidget();
     this->mImagePanel   = new QWidget();
     this->mImageLayout  = new QHBoxLayout;
-    QWidget     *sliderPanel      = new QWidget();
     this->mSliderLayout = new QFormLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -138,21 +138,29 @@ void MainWindow::buildApplication(QWidget *parent)
     this->createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
+
+    // image and scene
+    this->mScene = new QGraphicsScene();
+    this->mImageView = new MyImageView(this->mImagePanel);
+    this->mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void MainWindow::loadCinemaDatabase(const QString &database)
 {
+    // clean up all UI components
+    this->flushUI();
+
     // load database
     mReader->readCinemaDatabase(this->mDatabase, database, QString("cinema"));
 
-    //get all the tables. We should have just one, since there is only one db
+    // get all the tables. We should have just one, since there is only one db
     QStringList tablesList = this->mDatabase.tables(); 
-    tname = tablesList[0]; // get the table name
-    cout<<"Name of the table: "<<tname.toStdString()<<endl;
-    //cout<<tablesList.length()<<endl; 
+    this->mTableName = tablesList[0]; // get the table name
+    // cout<<"Name of the table: "<this->mTableName.toStdString()<<endl;
+    // cout<<tablesList.length()<<endl; 
 
     QSqlQuery qry;
-    string queryText = "SELECT * FROM " + tname.toStdString();
+    string queryText = "SELECT * FROM " + this->mTableName.toStdString();
     qry.exec(queryText.c_str());
 
     //Get number of sliders = number of columns-1
@@ -162,7 +170,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     //Get column names
     for(int i=0;i<qry.record().count();i++)
     {
-        columnNames.push_back(this->mDatabase.driver()->record(tname).fieldName(i).toStdString());
+        this->mColumnNames.push_back(this->mDatabase.driver()->record(this->mTableName).fieldName(i).toStdString());
     }
 
     //Get value ranges of each column
@@ -170,36 +178,36 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     vector<float> maxVals;
     for(int i=0;i<this->numSliders;i++) //since last column is image file names
     {
-        queryText = "SELECT MIN(" + columnNames[i] + ") , MAX(" + columnNames[i] + ") FROM " + tname.toStdString();
+        queryText = "SELECT MIN(" + this->mColumnNames[i] + ") , MAX(" + this->mColumnNames[i] + ") FROM " +this->mTableName.toStdString();
         qry.exec(queryText.c_str());
         while (qry.next())
         {
             minVals.push_back(qry.value(0).toFloat());
             maxVals.push_back(qry.value(1).toFloat());
-            cout<<"Range of column "<<columnNames[i]<<" is: "<<minVals[i]<<" "<<maxVals[i]<<endl;
+            cout<<"Range of column "<<this->mColumnNames[i]<<" is: "<<minVals[i]<<" "<<maxVals[i]<<endl;
         }
     }
 
     // slider section
-    listOfSliders.resize(this->numSliders);
-    listOfSliderLabels.resize(this->numSliders);
+    this->mListOfSliders.resize(this->numSliders);
+    this->mListOfSliderLabels.resize(this->numSliders);
     for(int i=0;i<this->numSliders;i++)
     {
-        listOfSliders[i] = new QSlider(Qt::Horizontal);
-        listOfSliders[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
-        listOfSliders[i]->setRange(minVals[i],maxVals[i]);
-        //listOfSliders[i]->setSingleStep(11);
-        QObject::connect(listOfSliders[i],SIGNAL(valueChanged(int)),this,SLOT(on_slider_valueChanged(int)));
+        this->mListOfSliders[i] = new QSlider(Qt::Horizontal);
+        this->mListOfSliders[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+        this->mListOfSliders[i]->setRange(minVals[i],maxVals[i]);
+        //this->mListOfSliders[i]->setSingleStep(11);
+        QObject::connect(this->mListOfSliders[i],SIGNAL(valueChanged(int)),this,SLOT(on_slider_valueChanged(int)));
         stringstream ss;
         ss<<i;
-        string label = columnNames[i];
-        listOfSliderLabels[i] = new QLabel;
-        listOfSliderLabels[i]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        listOfSliderLabels[i]->setText(label.c_str());
+        string label = this->mColumnNames[i];
+        this->mListOfSliderLabels[i] = new QLabel;
+        this->mListOfSliderLabels[i]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        this->mListOfSliderLabels[i]->setText(label.c_str());
     }
 
     //load and display an initial image
-    queryText = "SELECT * FROM " + tname.toStdString();
+    queryText = "SELECT * FROM " + this->mTableName.toStdString();
     qry.exec(queryText.c_str());
     QString initFileID;
     qry.first();
@@ -221,21 +229,20 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     //image.fill(Qt::transparent); // shows a blank screen
 
-    scene = new QGraphicsScene();
-    scene->addPixmap(image);
-    this->mImageView = new MyImageView(this->mImagePanel);
-    this->mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    // this->mScene = new QGraphicsScene();
+    this->mScene->addPixmap(image);
+    // this->mImageView = new MyImageView(this->mImagePanel);
 
     //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
     //imageView->viewport()->setMouseTracking(true);
 
-    this->mImageView->setScene(this->scene);
+    this->mImageView->setScene(this->mScene);
     this->mImageLayout->addWidget(this->mImageView);
 
     this->mSliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for(int i=0;i<this->numSliders;i++)
     {
-        this->mSliderLayout->addRow(listOfSliderLabels[i], listOfSliders[i]);
+        this->mSliderLayout->addRow(this->mListOfSliderLabels[i], this->mListOfSliders[i]);
     }
 
     // QHBoxLayout *mainLayout = new QHBoxLayout;
@@ -257,12 +264,12 @@ void MainWindow::popSlidersOnValidValue()
     for(int i=0;i<numSliders;i++)
     {
         stringstream ss;
-        ss<<listOfSliders[i]->value();
+        ss<<this->mListOfSliders[i]->value();
 
-        query = "SELECT min(" + columnNames[i] + ") FROM " + tname.toStdString() + " WHERE " + columnNames[i] + " >= " + ss.str();
+        query = "SELECT min(" + this->mColumnNames[i] + ") FROM " +this->mTableName.toStdString() + " WHERE " + this->mColumnNames[i] + " >= " + ss.str();
         qry.exec(query.c_str());
 
-        query1 = "SELECT max(" + columnNames[i] + ") FROM " + tname.toStdString() + " WHERE " + columnNames[i] + " < " + ss.str();
+        query1 = "SELECT max(" + this->mColumnNames[i] + ") FROM " +this->mTableName.toStdString() + " WHERE " + this->mColumnNames[i] + " < " + ss.str();
         qry1.exec(query1.c_str());
 
         while (qry.next())
@@ -275,7 +282,7 @@ void MainWindow::popSlidersOnValidValue()
             val1 = qry1.value(0).toString().toFloat(); //get the last column which has the image name
         }
 
-        if(abs(val-listOfSliders[i]->value()) >= abs(val1-listOfSliders[i]->value()))
+        if(abs(val - this->mListOfSliders[i]->value()) >= abs(val1 - this->mListOfSliders[i]->value()))
             adjustedVals.push_back(val1);
         else
             adjustedVals.push_back(val);
@@ -284,7 +291,7 @@ void MainWindow::popSlidersOnValidValue()
     //Set the values to the sliders on nearest valid values
     for(int i=0;i<numSliders;i++)
     {
-        listOfSliders[i]->setValue(adjustedVals[i]);
+        this->mListOfSliders[i]->setValue(adjustedVals[i]);
     }
 }
 
@@ -292,13 +299,13 @@ string MainWindow::constructQueryString()
 {
     string query;
 
-    query = "SELECT * FROM " + tname.toStdString() + " WHERE ";
+    query = "SELECT * FROM " +this->mTableName.toStdString() + " WHERE ";
     for(int i=0;i<numSliders;i++)
     {
         if(i<numSliders-1)
-            query = query + columnNames[i] + "=:" + columnNames[i] + " AND ";
+            query = query + this->mColumnNames[i] + "=:" + this->mColumnNames[i] + " AND ";
         else
-            query = query + columnNames[i] + "=:" + columnNames[i];
+            query = query + this->mColumnNames[i] + "=:" + this->mColumnNames[i];
 
     }
     return query;
@@ -313,8 +320,8 @@ void MainWindow::on_slider_valueChanged(int value)
     for(int i=0;i<numSliders;i++)
     {
         string s;
-        s = ":"+columnNames[i];
-        qry.bindValue(QString::fromStdString(s), listOfSliders[i]->value());
+        s = ":"+this->mColumnNames[i];
+        qry.bindValue(QString::fromStdString(s), this->mListOfSliders[i]->value());
     }
     qry.exec();
 
@@ -336,8 +343,8 @@ void MainWindow::on_slider_valueChanged(int value)
             image.load(imagePath);
         }
 
-        scene->addPixmap(image);
-        this->mImageView->setScene(this->scene);
+        this->mScene->addPixmap(image);
+        // this->mImageView->setScene(this->mScene);
     }
 
     //Pop sliders to a valid value during drag: To overcome Qts default behavior of sliders that increment step by 1. But our step is not always 1.
@@ -385,4 +392,29 @@ void MainWindow::onAbout()
 {
     QMessageBox::about(this, tr("CinemaScope"),
         tr("This is the about message"));
+}
+
+void MainWindow::flushUI()
+{
+    // flush the database
+    QSqlQuery qry;
+    qry.exec("DROP TABLE cinema");
+
+    // flush the sliders
+    int count = this->mSliderLayout->rowCount();
+    qDebug() << "COUNT: " << count;
+    for (int i=(count-1);i>=0;i--)
+    {
+        this->mSliderLayout->removeRow(i);
+    }
+
+    // flush the vectors of data associated with the sliders 
+    this->mColumnNames.clear();
+    qDebug() << this->mColumnNames.size();
+        // note that these objects should already be deleted, per the above call
+    this->mListOfSliders.clear();
+    qDebug() << this->mListOfSliders.size();
+        // note that these objects should already be deleted, per the above call
+    this->mListOfSliderLabels.clear();
+    qDebug() << this->mListOfSliderLabels.size();
 }

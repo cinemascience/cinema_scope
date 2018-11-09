@@ -55,16 +55,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void loadCinemaDatabase(const QString &database);
 
-    vector<QSlider*> listOfSliders;
-    vector<QLabel*> listOfSliderLabels;
-    vector<string> columnNames;
-    QString tname;
+    vector<QSlider*> mListOfSliders;
+    vector<QLabel*> mListOfSliderLabels;
+    vector<string> mColumnNames;
     int numSliders;
-    QGraphicsScene *scene;
     //MyImageScene *scene;
     //QGraphicsView *imageView;
-    MyImageView *imageView;
-    string rootPath;
     ~MainWindow();
 
     //virtual bool eventFilter(QObject *, QEvent *);
@@ -72,6 +68,7 @@ public:
 private:
     void createActions();
     void buildApplication(QWidget *parent);
+    void flushUI();
 
     // actions
     QAction  *mOpenAction=NULL;
@@ -80,12 +77,14 @@ private:
 
     QString   mCurDatabase;
 
-    QSqlDatabase  mDatabase;
-    MyImageView  *mImageView=NULL;
-    QWidget      *mImagePanel=NULL;
-    QHBoxLayout  *mImageLayout=NULL;
-    QFormLayout  *mSliderLayout=NULL;
-    DBReader     *mReader=NULL;
+    QSqlDatabase    mDatabase;
+    MyImageView    *mImageView=NULL;
+    QWidget        *mImagePanel=NULL;
+    QHBoxLayout    *mImageLayout=NULL;
+    QFormLayout    *mSliderLayout=NULL;
+    DBReader       *mReader=NULL;
+    QGraphicsScene *mScene;
+    QString         mTableName;
 
     // components
 
