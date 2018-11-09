@@ -95,7 +95,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     setCentralWidget(mainWindow);
     createActions();
     setUnifiedTitleAndToolBarOnMac(true);
-    menuBar()->setNativeMenuBar(true);
+    menuBar()->setNativeMenuBar(false);
 
     ///////////////////////////////////////////////////////////
     /// extract information from sql database
