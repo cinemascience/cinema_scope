@@ -33,18 +33,15 @@ using namespace std;
 
 class MyImageView : public QGraphicsView
 {
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent*);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent*);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
-};
+    Q_OBJECT
 
-class MyImageScene : public QGraphicsScene
-{
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent*);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent*);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+public:
+    MyImageView(QWidget *parent) : QGraphicsView(parent) {}
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 };
 
 class MainWindow : public QMainWindow
@@ -65,18 +62,11 @@ public:
     string rootPath;
     ~MainWindow();
 
-    //void paintEvent(QPaintEvent *p) override;
-    //QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
-
+    //virtual bool eventFilter(QObject *, QEvent *);
 
 private:
     void createActions();
-    void createMenus();
 
-    // menus
-    QMenuBar *mMenuBar=NULL;
-    QMenu    *mFileMenu=NULL;
-    QMenu    *mHelpMenu=NULL;
     // actions
     QAction  *mOpenAction=NULL;
     QAction  *mQuitAction=NULL;
@@ -93,10 +83,13 @@ private slots:
 
     void on_slider_valueChanged(int);
     string constructQueryString();
-    void popSlidersOnValidValue();    
+    void popSlidersOnValidValue();
     void onOpenFile();
     void onQuit();
     void onAbout();
+
+    //void paintEvent(QPaintEvent *p) override;
+    //QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
 };
 
 #endif // MAINWINDOW_H

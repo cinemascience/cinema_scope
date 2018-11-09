@@ -5,11 +5,38 @@
 #include <QAction>
 #include <QFileDialog>
 #include <QGraphicsSceneMouseEvent>
+#include <QMessageBox>
+
 
 MainWindow::~MainWindow()
 {
 
 }
+
+/*bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+  switch(event->type())
+  {
+  case QEvent::MouseButtonPress:
+
+      qDebug()<<"eaten mousepress";
+      return true;
+      break;
+  case QEvent::MouseButtonRelease:
+      qDebug()<<"eaten mouserelease";
+      return true;
+      break;
+  case QEvent::MouseMove:
+      qDebug()<<"mouse move";
+      return true;
+      break;
+  default:
+      //standard event processing
+      return QObject::eventFilter(obj, event);
+      break;
+  }
+}*/
+
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
@@ -61,12 +88,14 @@ void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWindow(parent)
 {
     QWidget *mainWindow = new QWidget;
+    //mainWindow->installEventFilter(this);
+
     mainWindow->setWindowTitle("Test window");
     mainWindow->resize(600,600);
-
-    // create menu
-    this->createActions();
-    this->createMenus();
+    setCentralWidget(mainWindow);
+    createActions();
+    setUnifiedTitleAndToolBarOnMac(true);
+    menuBar()->setNativeMenuBar(true);
 
     ///////////////////////////////////////////////////////////
     /// extract information from sql database
@@ -145,10 +174,10 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
 
     scene = new QGraphicsScene();
     scene->addPixmap(image);
-    imageView = new MyImageView();
+    imageView = new MyImageView(mainWindow);
 
     //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
-    imageView->setMouseTracking(true);
+    //imageView->viewport()->setMouseTracking(true);
 
     imageView->setScene(this->scene);
 
@@ -167,7 +196,7 @@ MainWindow::MainWindow(QSqlDatabase db, QString path, QWidget *parent) : QMainWi
     mainLayout->addLayout(layout2);
 
     mainWindow->setLayout(mainLayout);
-    setCentralWidget(mainWindow);
+
 }
 
 void MainWindow::popSlidersOnValidValue()
@@ -264,32 +293,23 @@ void MainWindow::on_slider_valueChanged(int value)
 
 }
 
-void MainWindow::createMenus()
-{
-    mFileMenu = menuBar()->addMenu(tr("&File"));
-    mFileMenu->addAction(mOpenAction);
-    mFileMenu->addSeparator();
-    mFileMenu->addAction(mQuitAction);
-
-    mHelpMenu = menuBar()->addMenu(tr("&Help"));
-    mHelpMenu->addAction(mAboutAction);
-}
 
 void MainWindow::createActions()
 {
-    mOpenAction = new QAction(tr("&Open"), this);
-    mOpenAction->setShortcuts(QKeySequence::New);
-    mOpenAction->setStatusTip(tr("Create a new file"));
-    connect(mOpenAction, &QAction::triggered, this, &MainWindow::onOpenFile);
+    QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 
-    mQuitAction = new QAction(tr("&Quit"), this);
-    mQuitAction->setShortcuts(QKeySequence::Quit);
+    mOpenAction = fileMenu->addAction(tr("&Open ..."), this, &MainWindow::onOpenFile);
+    mOpenAction->setShortcut(QKeySequence::Open);
+    mOpenAction->setStatusTip(tr("Open a file"));
+
+    fileMenu->addSeparator();
+
+    mQuitAction = fileMenu->addAction(tr("E&xit"), this, &MainWindow::onQuit);
+    mQuitAction->setShortcut(tr("Ctrl+Q"));
     mQuitAction->setStatusTip(tr("Quit application"));
-    connect(mQuitAction, &QAction::triggered, this, &MainWindow::onQuit);
 
-    mAboutAction = new QAction(tr("&About"), this);
-    mAboutAction->setStatusTip(tr("About this application"));
-    connect(mAboutAction, &QAction::triggered, this, &MainWindow::onAbout);
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(tr("&About"), this, &MainWindow::onAbout);
 }
 
 void MainWindow::onOpenFile()
@@ -309,5 +329,6 @@ void MainWindow::onQuit()
 
 void MainWindow::onAbout()
 {
-    QApplication::quit();
+    QMessageBox::about(this, tr("CinemaScope"),
+        tr("This is the about message"));
 }
