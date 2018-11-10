@@ -29,8 +29,10 @@ CONFIG += console
 SOURCES += \
         src/main.cpp \
         src/mainwindow.cpp \
-        src/CinDBReader.cpp
+        src/CinDBReader.cpp \
+        src/CinDBSliders.cpp
 
 HEADERS += \
         src/mainwindow.h \
-        src/CinDBReader.h
+        src/CinDBReader.h \
+        src/CinDBSliders.h
