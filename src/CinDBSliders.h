@@ -2,15 +2,20 @@
 #define CINDBSLIDERS_H
 
 #include <QWidget>
+#include <QFormLayout>
 
 namespace cin {
 
 class DBSliders : public QWidget
 {
-    public:
-        DBSliders();
+public:
+    DBSliders();
+    void build();
 
-    private:
+private:
+    void reset();
+
+    QFormLayout    *mSliderLayout=NULL;
 };
 
 }
