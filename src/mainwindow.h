@@ -5,7 +5,7 @@
 #include <QtSql>
 #include <QMainWindow>
 #include <QSlider>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QGraphicsScene>
 #include <QPixmap>
@@ -80,7 +80,7 @@ private:
     QSqlDatabase    mDatabase;
     MyImageView    *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
-    QHBoxLayout    *mImageLayout=NULL;
+    QVBoxLayout    *mImageLayout=NULL;
     QFormLayout    *mSliderLayout=NULL;
     DBReader       *mReader=NULL;
     QGraphicsScene *mScene;

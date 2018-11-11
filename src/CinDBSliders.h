@@ -3,21 +3,22 @@
 
 #include <QWidget>
 #include <QFormLayout>
-
-namespace cin {
+#include <QSqlDatabase>
 
 class DBSliders : public QWidget
 {
+    Q_OBJECT
+
 public:
     DBSliders();
-    void build();
+    void build(QSqlDatabase &database, QObject *receiver, const char *slotName);
 
 private:
     void reset();
 
     QFormLayout    *mSliderLayout=NULL;
+
 };
 
-}
 
 #endif // CINDBSLIDERS_H

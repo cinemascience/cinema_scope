@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QSplitter>
 #include "CinDBReader.h"
+#include "CinDBSliders.h"
 
 
 MainWindow::~MainWindow()
@@ -109,11 +110,11 @@ void MainWindow::buildApplication(QWidget *parent)
 
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
-    QLayout     *mainWidgetLayout = new QHBoxLayout;
+    QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
     QSplitter   *splitter         = new QSplitter(Qt::Horizontal, mainWidget);
     QWidget     *sliderPanel      = new QWidget();
     this->mImagePanel   = new QWidget();
-    this->mImageLayout  = new QHBoxLayout;
+    this->mImageLayout  = new QVBoxLayout;
     this->mSliderLayout = new QFormLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -155,6 +156,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     // load database
     mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+
+    // DBSliders testing
+    // DBSliders *dbSliders = new DBSliders();
+    // this->mImageLayout->addWidget(dbSliders);
+    // dbSliders->build(this->mDatabase, this, SLOT(on_slider_valueChanged(int)));
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();
@@ -241,13 +247,6 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     {
         this->mSliderLayout->addRow(this->mListOfSliderLabels[i], this->mListOfSliders[i]);
     }
-
-    // QHBoxLayout *mainLayout = new QHBoxLayout;
-    // layout1->addWidget(imageView);
-    // splitter->addWidget(imageView);
-    // splitter->addWidget(sliderPanel);
-
-    // mainWidget->setLayout(mainLayout);
 }
 
 
