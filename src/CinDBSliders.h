@@ -16,8 +16,8 @@ public:
 private:
     void reset();
 
-    QFormLayout    *mSliderLayout=NULL;
-
+    QFormLayout *mSliderLayout=NULL;
+    QStringList  mColNames;
 };
 
 
