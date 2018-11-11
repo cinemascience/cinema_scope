@@ -68,4 +68,3 @@ void DBSliders::reset()
     // delete all the slider names
     this->mColNames.clear();
 }
-
