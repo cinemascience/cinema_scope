@@ -9,3 +9,5 @@ cinema_scope.build/
 cinema_scope.xcodeproj/
 moc_mainwindow.cpp
 moc_predefs.h
+doc/html/
+doc/latex/
