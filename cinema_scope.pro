@@ -30,9 +30,11 @@ SOURCES += \
         src/main.cpp \
         src/mainwindow.cpp \
         src/CinDBReader.cpp \
-        src/CinDBSliders.cpp
+        src/CinDBSliders.cpp \
+        src/CinDatabase.cpp
 
 HEADERS += \
         src/mainwindow.h \
         src/CinDBReader.h \
-        src/CinDBSliders.h
+        src/CinDBSliders.h \
+        src/CinDatabase.h
