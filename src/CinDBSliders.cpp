@@ -23,6 +23,18 @@ void DBSliders::setDatabase(const QString &database)
     this->mCurDatabase = database;
 }
 
+bool DBSliders::isArtifactColumn(QString &name)
+{
+    bool ret = false;
+
+    if ( name == "FILE" ) 
+    {
+        ret = true;
+    }
+
+    return ret;
+}
+
 void DBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotName) 
 {
     // TODO: put the table name somewhere better
@@ -38,19 +50,22 @@ void DBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotN
     for (int i=0;i<record.count();i++)
     {
         column = record.field(i).name();
-        this->mColNames.push_back(column);
-        // get the min and max values
-        query.exec("SELECT MIN(" + column + ") , MAX(" + column + ") FROM " + this->mTableName);
-        query.first();
 
-        // create slider
-        slider = new QSlider(Qt::Horizontal);
-        slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        slider->setRange(query.value(0).toFloat(), query.value(1).toFloat());
-        QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
-        
-        // add these to the layout
-        this->mSliderLayout->addRow(column, slider);
+        if ( not isArtifactColumn(column) ) {
+            this->mColNames.push_back(column);
+            // get the min and max values
+            query.exec("SELECT MIN(" + column + ") , MAX(" + column + ") FROM " + this->mTableName);
+            query.first();
+
+            // create slider
+            slider = new QSlider(Qt::Horizontal);
+            slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+            slider->setRange(query.value(0).toFloat(), query.value(1).toFloat());
+            QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
+            
+            // add these to the layout
+            this->mSliderLayout->addRow(column, slider);
+        }
     }
 
     constructQueryString();
@@ -96,18 +111,13 @@ void DBSliders::onSliderValueChanged(int value)
     QString s;
     QSlider *slider = NULL;
     QSlider *label = NULL;
-    qDebug() << this->mSliderQuery;
     for(int i=0;i<numSliders;i++)
     {
         s = ":" + this->getLabelAt(i)->text();
         query.bindValue(s, this->getSliderAt(i)->value());
-        qDebug() << "S: " << s << this->getSliderAt(i)->value();
     }
     query.exec();
-
-    qDebug() << "ONSLIDER...";
-
-    while (query.next())
+    if (query.first())
     {
         //get the last column which has the image name
         QString imagePath = this->mCurDatabase;
@@ -124,7 +134,7 @@ void DBSliders::onSliderValueChanged(int value)
         }
 
         emit artifactSelected(imagePath);
-        qDebug() << "IMAGE: " << imagePath;
+        qDebug() << "DBSLIDER EMIT: " << imagePath;
     }
 
     popSlidersToValidValue();

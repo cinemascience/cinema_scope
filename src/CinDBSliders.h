@@ -30,6 +30,7 @@ private:
     void reset();
     void constructQueryString();
     void popSlidersToValidValue();
+    bool isArtifactColumn(QString &name);
     QSlider *getSliderAt(int i);
     QLabel *getLabelAt(int i);
 
