@@ -3,9 +3,8 @@
 #include <QSqlDatabase>
 #include <QFileInfo>
 
-using namespace cin;
 
-CDatabase::CDatabase() 
+CinDatabase::CinDatabase() 
 {
     // database
     mDatabase = QSqlDatabase::addDatabase("QSQLITE");
@@ -15,9 +14,9 @@ CDatabase::CDatabase()
     mTableName = "cinema";
 }
 
-int CDatabase::loadDatabase(QString &dbPath)
+int CinDatabase::loadDatabase(QString &dbPath)
 {
-    int result = DBReader::DatabaseLoadError; 
+    int result = CinDBReader::DatabaseLoadError; 
 
     if ( ! (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir()) )
     {
@@ -27,7 +26,7 @@ int CDatabase::loadDatabase(QString &dbPath)
     return result;
 }
 
-const QString &CDatabase::getPath()
+const QString &CinDatabase::getPath()
 {
     return mReader.getCurDatabase();
 }

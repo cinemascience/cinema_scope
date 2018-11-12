@@ -8,7 +8,7 @@
 #include <QSlider>
 #include <QVector>
 
-DBSliders::DBSliders() 
+CinDBSliders::CinDBSliders() 
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -18,12 +18,12 @@ DBSliders::DBSliders()
     this->setLayout(this->mSliderLayout);
 }
 
-void DBSliders::setDatabase(const QString &database)
+void CinDBSliders::setDatabase(const QString &database)
 {
     this->mCurDatabase = database;
 }
 
-bool DBSliders::isArtifactColumn(QString &name)
+bool CinDBSliders::isArtifactColumn(QString &name)
 {
     bool ret = false;
 
@@ -35,7 +35,7 @@ bool DBSliders::isArtifactColumn(QString &name)
     return ret;
 }
 
-void DBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotName) 
+void CinDBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotName) 
 {
     // TODO: put the table name somewhere better
     this->mTableName = "cinema";
@@ -71,7 +71,7 @@ void DBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotN
     constructQueryString();
 }
 
-void DBSliders::reset()
+void CinDBSliders::reset()
 {
     // Remove all the rows. This deletes the children of the rows as well
     int count = this->mSliderLayout->rowCount();
@@ -88,12 +88,12 @@ void DBSliders::reset()
     this->mSliderQuery.clear();
 }
 
-QSlider *DBSliders::getSliderAt(int i)
+QSlider *CinDBSliders::getSliderAt(int i)
 {
     return dynamic_cast<QSlider *>(this->mSliderLayout->itemAt(i, QFormLayout::FieldRole)->widget());
 }
 
-QLabel *DBSliders::getLabelAt(int i)
+QLabel *CinDBSliders::getLabelAt(int i)
 {
     return dynamic_cast<QLabel *>(this->mSliderLayout->itemAt(i, QFormLayout::LabelRole)->widget());
 }
@@ -102,7 +102,7 @@ QLabel *DBSliders::getLabelAt(int i)
 /*! \brief Find the artifact defined by the current parameters 
  * 
  */
-void DBSliders::onSliderValueChanged(int value)
+void CinDBSliders::onSliderValueChanged(int value)
 {
     QSqlQuery query;
 
@@ -146,7 +146,7 @@ void DBSliders::onSliderValueChanged(int value)
  * Pop sliders to a valid value during drag: To overcome Qt's default behavior of sliders 
  * that increment step by 1. But our step is not always 1.
  */
-void DBSliders::popSlidersToValidValue()
+void CinDBSliders::popSlidersToValidValue()
 {
     QString minText, maxText;
     QSqlQuery minQuery, maxQuery;
@@ -186,7 +186,7 @@ void DBSliders::popSlidersToValidValue()
 /*! \brief Construct a common part of the slider query 
  * 
  */
-void DBSliders::constructQueryString()
+void CinDBSliders::constructQueryString()
 {
     this->mSliderQuery = "SELECT * FROM ";
     this->mSliderQuery += this->mTableName;

@@ -5,8 +5,6 @@
 #include <QSqlDatabase>
 #include <QString>
 
-namespace cin {
-
 //! A class that manages the in-memory database created from a Cinema Database
 /*!
     This class contains everything it needs to read a Cinema Database, retain
@@ -14,10 +12,10 @@ namespace cin {
     that holds the in-memory database. 
 */
 
-class CDatabase 
+class CinDatabase 
 {
     public:
-        CDatabase();
+        CinDatabase();
         inline void           setTableName(const QString &name) {mTableName = name;}
         inline const QString &getTableName() {return mTableName;}
         const QString        &getPath();
@@ -26,10 +24,8 @@ class CDatabase
 
     private:
         QSqlDatabase mDatabase;
-        DBReader     mReader;
+        CinDBReader  mReader;
         QString      mTableName;
 };
-
-}
 
 #endif // CINDATABASE_H

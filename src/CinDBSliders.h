@@ -17,12 +17,12 @@
  *
  *    artifactSelected(QString &) 
 */
-class DBSliders : public QWidget
+class CinDBSliders : public QWidget
 {
     Q_OBJECT
 
 public:
-    DBSliders();
+    CinDBSliders();
     void setDatabase(const QString &);
     void build(QSqlDatabase &database, QObject *receiver, const char *slotName);
 

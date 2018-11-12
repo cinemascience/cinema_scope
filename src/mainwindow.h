@@ -31,7 +31,6 @@
 
 
 using namespace std;
-using namespace cin;
 
 class MyImageView : public QGraphicsView
 {
@@ -82,7 +81,7 @@ private:
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
     QFormLayout    *mSliderLayout=NULL;
-    DBReader       *mReader=NULL;
+    CinDBReader    *mReader=NULL;
     QGraphicsScene *mScene;
     QString         mTableName;
 

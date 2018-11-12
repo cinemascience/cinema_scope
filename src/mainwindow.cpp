@@ -103,7 +103,7 @@ void MainWindow::buildApplication(QWidget *parent)
     // create the database and cinema reaader
     this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
     this->mDatabase.open();
-    this->mReader = new DBReader();
+    this->mReader = new CinDBReader();
 
     // remember the table name
     this->mTableName = "cinema";
@@ -157,8 +157,9 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // load database
     mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
 
-    // DBSliders testing
-    // DBSliders *dbSliders = new DBSliders();
+    // CinDBSliders testing
+    // CinDBSliders *dbSliders = new CinDBSliders();
+    // dbSliders->setDatabase(database);
     // this->mImageLayout->addWidget(dbSliders);
     // dbSliders->build(this->mDatabase, this, SLOT(on_slider_valueChanged(int)));
 
