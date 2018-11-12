@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QFormLayout>
 #include <QSqlDatabase>
+#include <QSlider>
+#include <QLabel>
 
 /*! \brief This class manages a set of parameter sliders for a Cinema Database
  *
@@ -21,13 +23,25 @@ class DBSliders : public QWidget
 
 public:
     DBSliders();
+    void setDatabase(const QString &);
     void build(QSqlDatabase &database, QObject *receiver, const char *slotName);
 
 private:
     void reset();
+    void constructQueryString();
+    void popSlidersToValidValue();
+    QSlider *getSliderAt(int i);
+    QLabel *getLabelAt(int i);
 
     QFormLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
-    QStringList  mColNames;          /*!< TEMPORARY */
+    QString      mSliderQuery;       /*!< Common query over all sliders */
+    
+    QStringList  mColNames;          /*!< TEMPORARY column names */
+    QString      mTableName;         /*!< TEMPORARY table name */
+    QString      mCurDatabase;       /*!< TEMPORARY cinema database path */
+
+private slots:
+    void onSliderValueChanged(int value);
 
 signals:
     void artifactSelected(QString &);
