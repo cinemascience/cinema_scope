@@ -44,16 +44,18 @@ public:
     int lastXloc;
     int lastYloc;
     const int slidePixel=10;
+    bool mLoadImage(QString, QPixmap*);
+    QString mTableName;
 
-    vector<QSlider*> iListOfSliders;
-    vector<QLabel*> iListOfSliderLabels;
-    vector<string> iColumnNames;
-    int iNumSliders;
+    float currentPhi=0; //later initialize in a right place
+    float currentTheta=30; //later initialize in a right place
 
 protected:
+
     void mousePressEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent *);
+
 };
 
 class MainWindow : public QMainWindow

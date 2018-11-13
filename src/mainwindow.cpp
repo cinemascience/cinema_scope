@@ -38,18 +38,64 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
     cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
+bool MyImageView::mLoadImage(QString path, QPixmap *image )
+{
+    return image->load(path);
+}
+
 void MyImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
-    cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+    //cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 
-    string path = "../data/volume-render.cdb";
-
+    string path = "../data/volume-render.cdb"; //change later
     string imagePath = path + "/" + "images/163.jpg";
-
     QPixmap image;
-    bool loadSuccess = image.load(QString::fromStdString(imagePath));
-    if(!loadSuccess)
+
+    QSqlQuery qry;
+    string queryText;
+
+    if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
+    {
+        if((p.rx() - currentXloc) > 0) //slide right
+        {
+            queryText = "SELECT MIN(phi) FROM " + mTableName.toStdString() + " WHERE phi > :phi";
+            qry.prepare(QString::fromStdString(queryText));
+            qry.bindValue(":phi", currentPhi);
+            qry.exec();
+            while (qry.next())
+            {
+                cout<<qry.value(0).toFloat()<<endl;
+                currentPhi = qry.value(0).toFloat();
+            }
+
+            cout<<"right"<<" "<<p.rx()<<" "<<currentXloc<<endl;
+
+        }
+        else if((p.rx() - currentXloc) < 0) //slide left
+        {
+            cout<<"left"<<" "<<p.rx()<<" "<<currentXloc<<endl;
+        }
+    }
+    else if(fabs(p.ry() - currentYloc) > slidePixel && fabs(p.rx() - currentXloc) < slidePixel) //only theta
+    {
+        if((p.ry() - currentYloc) < 0) //slide up
+        {
+            cout<<"up"<<" "<<p.ry()<<" "<<currentYloc<<endl;
+        }
+        else if((p.ry() - currentYloc) > 0) //slide down
+        {
+            cout<<"down"<<" "<<p.ry()<<" "<<currentYloc<<endl;
+        }
+    }
+    else if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) > slidePixel) //both theta and phi
+    {
+        cout<<"both"<<endl;
+    }
+
+
+
+    if(!mLoadImage(QString::fromStdString(imagePath),&image))
     {
         cout<<"image loading failed!!"<<endl;
     }
@@ -113,10 +159,10 @@ void MainWindow::buildApplication(QWidget *parent)
     splitter->addWidget(this->mImagePanel);
     splitter->addWidget(sliderPanel);
 
-    this->mImagePanel->setLayout(this->mImageLayout);
-    this->mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mImagePanel->setLayout(mImageLayout);
+    mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    sliderPanel->setLayout(this->mSliderLayout);
+    sliderPanel->setLayout(mSliderLayout);
     sliderPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // colors for testing
@@ -124,19 +170,19 @@ void MainWindow::buildApplication(QWidget *parent)
     // splitter->setStyleSheet("background-color:blue");
 
     // set up initial state
-    this->setCentralWidget(mainWidget);
-    this->resize(1200,600);
-    this->createActions();
+    setCentralWidget(mainWidget);
+    resize(1200,600);
+    createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
 
     // image and scene
-    this->mScene = new QGraphicsScene();
-    this->mImageView = new MyImageView(this->mImagePanel);
-    this->mImageView->sceneObj = this->mScene;
-    this->mImageView->iListOfSliders = this->mListOfSliders;
-    this->mImageView->iNumSliders = this->numSliders;
-    this->mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mScene = new QGraphicsScene();
+    mImageView = new MyImageView(mImagePanel);
+    mImageView->sceneObj = mScene;
+    mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    mImageView->mTableName = mTableName;
 }
 
 void MainWindow::loadCinemaDatabase(const QString &database)
@@ -154,11 +200,10 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     this->mImageLayout->addWidget(dbSliders);
 
     // load database
-
-    mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+    // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
     // mDatabase = mCinDatabase->TEMPGetDatabase();
     // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
-    // mDatabase = mCinDatabase->TEMPGetDatabase(); 
+    // mDatabase = mCinDatabase->TEMPGetDatabase();
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();
@@ -219,19 +264,16 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     QString imagePath = database;
     imagePath += "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
-
-    bool loadSuccess = image.load(imagePath);
-    if(!loadSuccess)
+    if(!mImageView->mLoadImage(imagePath,&image))
     {
+        //image.fill(Qt::transparent); // shows a blank screen
+        cout<<"image loading failed"<<endl;
         imagePath = database;
         imagePath += "/empty_image/empty.png";
-        image.load(imagePath);
+        mImageView->mLoadImage(imagePath,&image);
     }
 
-    //image.fill(Qt::transparent); // shows a blank screen
-
     this->mScene->addPixmap(image);
-    // this->mImageView = new MyImageView(this->mImagePanel);
 
     this->mImageView->setScene(this->mScene);
     this->mImageLayout->addWidget(this->mImageView);
@@ -309,8 +351,8 @@ void MainWindow::on_slider_valueChanged(int value)
     for(int i=0;i<numSliders;i++)
     {
         string s;
-        s = ":"+this->mColumnNames[i];
-        qry.bindValue(QString::fromStdString(s), this->mListOfSliders[i]->value());
+        s = ":"+mColumnNames[i];
+        qry.bindValue(QString::fromStdString(s), mListOfSliders[i]->value());
     }
     qry.exec();
 
@@ -324,22 +366,17 @@ void MainWindow::on_slider_valueChanged(int value)
         imagePath += "/";
         imagePath += val;
 
-        //cout<<imagePath.toStdString()<<" "<<this->mCurDatabase.toStdString()<<endl;
-
         QPixmap image;
-        bool loadSuccess = image.load(imagePath);
-
-        if(!loadSuccess)
+        if(!mImageView->mLoadImage(imagePath,&image))
         {
             cout<<"image loading failed!!"<<endl;
-            imagePath = this->mCurDatabase;
+            imagePath = mCurDatabase;
             imagePath += "/";
             imagePath += "empty_image/empty.png";
-            image.load(imagePath);
+            mImageView->mLoadImage(imagePath,&image);
         }
 
-        this->mScene->addPixmap(image);
-        //this->mImageView->setScene(this->mScene);
+        mScene->addPixmap(image);
     }
 
     //Pop sliders to a valid value during drag: To overcome Qt's default behavior of sliders that increment step by 1. But our step is not always 1.
@@ -372,8 +409,8 @@ void MainWindow::onOpenFile()
                                                      tr("Open Cinema Database"), "/",
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     QString result = QFileDialog::getExistingDirectory(this,
-        tr("Open Cinema Database"), "/",
-        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                                                       tr("Open Cinema Database"), "/",
+                                                       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     this->loadCinemaDatabase(result);
 }
