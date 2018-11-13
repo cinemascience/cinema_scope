@@ -31,10 +31,14 @@ SOURCES += \
         src/mainwindow.cpp \
         src/CinDBReader.cpp \
         src/CinParamSliders.cpp \
+        src/CinParameter.cpp \
+        src/CinParamSet.cpp \
         src/CinDatabase.cpp
 
 HEADERS += \
         src/mainwindow.h \
         src/CinDBReader.h \
         src/CinParamSliders.h \
+        src/CinParameter.h \
+        src/CinParamSet.h \
         src/CinDatabase.h

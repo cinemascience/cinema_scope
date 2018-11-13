@@ -10,6 +10,8 @@
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
+#include "CinParameter.h"
+#include "CinParamSet.h"
 
 MainWindow::~MainWindow()
 {
@@ -198,6 +200,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     CinParamSliders *dbSliders = new CinParamSliders();
     dbSliders->setDatabase(mCDB);
     this->mImageLayout->addWidget(dbSliders);
+    CinParamSet set;
+    set.add("one", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set.add("two", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set.add("three", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set.print();
 
     // load database
     // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);

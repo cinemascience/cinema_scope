@@ -190,3 +190,4 @@ void CinParamSliders::constructQueryString()
 
     }
 }
+
