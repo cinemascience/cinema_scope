@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 
+//! Helper class for CinDBReader 
+/*!
+*/
 class CinDBColData
 {
     public:
@@ -17,6 +20,13 @@ class CinDBColData
 
 };
 
+//! Reads a Cinema database from disk into an in-memory database 
+/*!
+ * The class could read data into many types of in-memory databases,
+ * as it does not own the implementation of the in-memory database.
+ * Instead, the database is handed to this class during the read
+ * operation.
+*/
 class CinDBReader
 {
     public:

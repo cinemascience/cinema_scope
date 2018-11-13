@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <CinDatabase.h>
 
-/*! \brief This class manages a set of parameter sliders for a Cinema Database
+/*! \brief Manages a set of parameter sliders for a Cinema Database
  *
  * The class builds/rebuilds a set of sliders that select valid values
  * for a set of parameters in a Cinema Database. The set of paramaters
