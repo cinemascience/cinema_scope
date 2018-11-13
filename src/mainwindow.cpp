@@ -87,9 +87,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void MainWindow::buildApplication(QWidget *parent)
 {
     // create the database and cinema reaader
-    this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
-    this->mDatabase.open();
-    this->mReader = new CinDBReader();
+    this->mCDB = new CinDatabase();
+    this->mDatabase = this->mCDB->TEMPGetDatabase();
+    // this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    // this->mDatabase.open();
+    // this->mReader = new CinDBReader();
 
     // remember the table name
     this->mTableName = "cinema";
@@ -142,16 +144,21 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     this->flushUI();
 
-    // CinParamSliders testing
-    // mCinDatabase = new CinDatabase;
-    // mCinDatabase->loadDatabase(database, this->mTableName);
-    // CinParamSliders *dbSliders = new CinParamSliders();
-    // dbSliders->setDatabase(&cDatabase);
-    // this->mImageLayout->addWidget(dbSliders);
+    // remember this DB
+    this->mCurDatabase = database;
+
+    // Cin* class testing
+    mCDB->loadDatabase(database, this->mTableName);
+    CinParamSliders *dbSliders = new CinParamSliders();
+    dbSliders->setDatabase(mCDB);
+    this->mImageLayout->addWidget(dbSliders);
 
     // load database
+
     mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
     // mDatabase = mCinDatabase->TEMPGetDatabase();
+    // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+    // mDatabase = mCinDatabase->TEMPGetDatabase(); 
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();
@@ -164,7 +171,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     //Get column names
     for(int i=0;i<qry.record().count();i++)
     {
-        this->mColumnNames.push_back(this->mDatabase.driver()->record(this->mTableName).fieldName(i).toStdString());
+        this->mColumnNames.push_back(this->mDatabase->driver()->record(this->mTableName).fieldName(i).toStdString());
     }
 
     //Get value ranges of each column
@@ -360,14 +367,17 @@ void MainWindow::createActions()
 
 void MainWindow::onOpenFile()
 {
+<<<<<<< HEAD
     mCurDatabase = QFileDialog::getExistingDirectory(this,
                                                      tr("Open Cinema Database"), "/",
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+=======
+    QString result = QFileDialog::getExistingDirectory(this,
+        tr("Open Cinema Database"), "/",
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+>>>>>>> f5ab17769c78d90dbb660c98c1c52328c3e125c8
 
-    // TODO: check the database
-    qDebug() << mCurDatabase;
-
-    this->loadCinemaDatabase(mCurDatabase);
+    this->loadCinemaDatabase(result);
 }
 
 void MainWindow::onQuit()

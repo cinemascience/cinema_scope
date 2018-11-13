@@ -38,6 +38,7 @@ class CinDatabase
         QStringList  mParameterColumnNames;  /*!< List of non-artifact column names */
 
         static QString ArtifactColumnName;/*!< Name of the column that holds the artifacts */
+        static QString DefaultTableName;  /*!< Name of the column that holds the artifacts */
 };
 
 #endif // CINDATABASE_H
