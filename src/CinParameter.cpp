@@ -3,6 +3,9 @@
 
 const char *CinParameter::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
 
+/*! \brief Convenience function to print names instead of ints
+ *
+ */
 const char *CinParameter::GetNameForType(CinParameter::Type type)
 {
     return TypeNames[type];
