@@ -23,12 +23,11 @@
 #include <QPaintEvent>
 #include <QGraphicsScene>
 #include "CinDBReader.h"
-
+//#include "CinImageViewer.h"
 
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
-
 
 using namespace std;
 
@@ -38,11 +37,22 @@ class MyImageView : public QGraphicsView
 
 public:
     MyImageView(QWidget *parent) : QGraphicsView(parent) {}
+    QGraphicsScene* sceneObj;
+
+    int currentXloc;
+    int currentYloc;
+    int lastXloc;
+    int lastYloc;
+    const int slidePixel=10;
+
+    vector<QSlider*> iListOfSliders;
+    vector<QLabel*> iListOfSliderLabels;
+    vector<string> iColumnNames;
+    int iNumSliders;
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent*);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent*);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+    void mousePressEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent *);
 };
 
@@ -58,11 +68,7 @@ public:
     vector<QLabel*> mListOfSliderLabels;
     vector<string> mColumnNames;
     int numSliders;
-    //MyImageScene *scene;
-    //QGraphicsView *imageView;
     ~MainWindow();
-
-    //virtual bool eventFilter(QObject *, QEvent *);
 
 private:
     void createActions();
@@ -101,9 +107,6 @@ private slots:
     void onOpenFile();
     void onQuit();
     void onAbout();
-
-    //void paintEvent(QPaintEvent *p) override;
-    //QImage image = QImage("/home/soumya/Shared_Vbox/cinema_project_codes/cinema_scope/data/volume-render.cdb/images/1.jpg");
 };
 
 #endif // MAINWINDOW_H

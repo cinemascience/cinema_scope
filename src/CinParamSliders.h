@@ -6,7 +6,7 @@
 #include <QSqlDatabase>
 #include <QSlider>
 #include <QLabel>
-#include <CinDatabase.h>
+#include "CinDatabase.h"
 
 /*! \brief Manages a set of parameter sliders for a Cinema Database
  *

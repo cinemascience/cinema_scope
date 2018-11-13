@@ -11,36 +11,10 @@
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
 
-
 MainWindow::~MainWindow()
 {
 
 }
-
-/*bool MainWindow::eventFilter(QObject *obj, QEvent *event)
-{
-  switch(event->type())
-  {
-  case QEvent::MouseButtonPress:
-
-      qDebug()<<"eaten mousepress";
-      return true;
-      break;
-  case QEvent::MouseButtonRelease:
-      qDebug()<<"eaten mouserelease";
-      return true;
-      break;
-  case QEvent::MouseMove:
-      qDebug()<<"mouse move";
-      return true;
-      break;
-  default:
-      //standard event processing
-      return QObject::eventFilter(obj, event);
-      break;
-  }
-}*/
-
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
@@ -64,35 +38,46 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
     cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
-
 void MyImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
     cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
+
+    string path = "../data/volume-render.cdb";
+
+    string imagePath = path + "/" + "images/163.jpg";
+
+    QPixmap image;
+    bool loadSuccess = image.load(QString::fromStdString(imagePath));
+    if(!loadSuccess)
+    {
+        cout<<"image loading failed!!"<<endl;
+    }
+    else
+    {
+        this->sceneObj->addPixmap(image);
+    }
 }
 
-void MyImageView::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
+void MyImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
         cout<<"MYIMAGE: n left mouse release"<<endl;
+        lastXloc = e->pos().rx();
+        lastYloc = e->pos().ry();
     }
 }
 
-void MyImageView :: mousePressEvent(QGraphicsSceneMouseEvent *e)
+void MyImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
         cout<<"MYIMAGE: on left mouse press"<<endl;
+        currentXloc = e->pos().rx();
+        currentYloc = e->pos().ry();
     }
 }
-
-void MyImageView::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-{
-    QPointF p = e->scenePos();
-    cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
-}
-
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -131,7 +116,6 @@ void MainWindow::buildApplication(QWidget *parent)
 
     sliderPanel->setLayout(this->mSliderLayout);
     sliderPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //mainWidget->installEventFilter(this);
 
     // colors for testing
     // mainWidget->setStyleSheet("background-color:red");
@@ -139,7 +123,7 @@ void MainWindow::buildApplication(QWidget *parent)
 
     // set up initial state
     this->setCentralWidget(mainWidget);
-    this->resize(800,600);
+    this->resize(1200,600);
     this->createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
@@ -147,6 +131,9 @@ void MainWindow::buildApplication(QWidget *parent)
     // image and scene
     this->mScene = new QGraphicsScene();
     this->mImageView = new MyImageView(this->mImagePanel);
+    this->mImageView->sceneObj = this->mScene;
+    this->mImageView->iListOfSliders = this->mListOfSliders;
+    this->mImageView->iNumSliders = this->numSliders;
     this->mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -164,7 +151,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     // load database
     mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
-    // mDatabase = mCinDatabase->TEMPGetDatabase(); 
+    // mDatabase = mCinDatabase->TEMPGetDatabase();
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();
@@ -236,12 +223,8 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     //image.fill(Qt::transparent); // shows a blank screen
 
-    // this->mScene = new QGraphicsScene();
     this->mScene->addPixmap(image);
     // this->mImageView = new MyImageView(this->mImagePanel);
-
-    //imageView->setDragMode(QGraphicsView::ScrollHandDrag);
-    //imageView->viewport()->setMouseTracking(true);
 
     this->mImageView->setScene(this->mScene);
     this->mImageLayout->addWidget(this->mImageView);
@@ -252,7 +235,6 @@ void MainWindow::loadCinemaDatabase(const QString &database)
         this->mSliderLayout->addRow(this->mListOfSliderLabels[i], this->mListOfSliders[i]);
     }
 }
-
 
 void MainWindow::popSlidersOnValidValue()
 {
@@ -328,15 +310,21 @@ void MainWindow::on_slider_valueChanged(int value)
     while (qry.next())
     {
         QString val = qry.value(this->numSliders).toString(); //get the last column which has the image name
-        // stringstream ss;
-        // ss << val;
-        QString imagePath = this->mCurDatabase;
+
+        string path = "../data/volume-render.cdb";
+
+        QString imagePath = QString::fromStdString(path); //this->mCurDatabase; // this->mCurDatabase has NULL
         imagePath += "/";
         imagePath += val;
+
+        //cout<<imagePath.toStdString()<<" "<<this->mCurDatabase.toStdString()<<endl;
+
         QPixmap image;
         bool loadSuccess = image.load(imagePath);
+
         if(!loadSuccess)
         {
+            cout<<"image loading failed!!"<<endl;
             imagePath = this->mCurDatabase;
             imagePath += "/";
             imagePath += "empty_image/empty.png";
@@ -344,14 +332,13 @@ void MainWindow::on_slider_valueChanged(int value)
         }
 
         this->mScene->addPixmap(image);
-        // this->mImageView->setScene(this->mScene);
+        //this->mImageView->setScene(this->mScene);
     }
 
-    //Pop sliders to a valid value during drag: To overcome Qts default behavior of sliders that increment step by 1. But our step is not always 1.
+    //Pop sliders to a valid value during drag: To overcome Qt's default behavior of sliders that increment step by 1. But our step is not always 1.
     popSlidersOnValidValue();
 
 }
-
 
 void MainWindow::createActions()
 {
@@ -374,8 +361,8 @@ void MainWindow::createActions()
 void MainWindow::onOpenFile()
 {
     mCurDatabase = QFileDialog::getExistingDirectory(this,
-        tr("Open Cinema Database"), "/",
-        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                                                     tr("Open Cinema Database"), "/",
+                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     // TODO: check the database
     qDebug() << mCurDatabase;
@@ -391,7 +378,7 @@ void MainWindow::onQuit()
 void MainWindow::onAbout()
 {
     QMessageBox::about(this, tr("CinemaScope"),
-        tr("This is the about message"));
+                       tr("This is the about message"));
 }
 
 void MainWindow::flushUI()
@@ -408,13 +395,13 @@ void MainWindow::flushUI()
         this->mSliderLayout->removeRow(i);
     }
 
-    // flush the vectors of data associated with the sliders 
+    // flush the vectors of data associated with the sliders
     this->mColumnNames.clear();
     qDebug() << this->mColumnNames.size();
-        // note that these objects should already be deleted, per the above call
+    // note that these objects should already be deleted, per the above call
     this->mListOfSliders.clear();
     qDebug() << this->mListOfSliders.size();
-        // note that these objects should already be deleted, per the above call
+    // note that these objects should already be deleted, per the above call
     this->mListOfSliderLabels.clear();
     qDebug() << this->mListOfSliderLabels.size();
 }

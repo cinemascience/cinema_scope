@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication cinemaViewer(argc, argv);
-    cinemaViewer.setStyleSheet("QSlider {height:20px; width:150}");
+    cinemaViewer.setStyleSheet("QSlider {height:20px; width:50}");
 
     // 
     // handle command line args 
