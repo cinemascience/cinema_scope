@@ -102,9 +102,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void MainWindow::buildApplication(QWidget *parent)
 {
     // create the database and cinema reaader
-    this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
-    this->mDatabase.open();
-    this->mReader = new CinDBReader();
+    this->mCDB = new CinDatabase();
+    this->mDatabase = this->mCDB->TEMPGetDatabase();
+    // this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    // this->mDatabase.open();
+    // this->mReader = new CinDBReader();
 
     // remember the table name
     this->mTableName = "cinema";
@@ -155,15 +157,17 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     this->flushUI();
 
+    qDebug() << "MW: " << database << this->mTableName;
+
     // CinParamSliders testing
     // mCinDatabase = new CinDatabase;
-    // mCinDatabase->loadDatabase(database, this->mTableName);
-    // CinParamSliders *dbSliders = new CinParamSliders();
-    // dbSliders->setDatabase(&cDatabase);
-    // this->mImageLayout->addWidget(dbSliders);
+    mCDB->loadDatabase(database, this->mTableName);
+    CinParamSliders *dbSliders = new CinParamSliders();
+    dbSliders->setDatabase(mCDB);
+    this->mImageLayout->addWidget(dbSliders);
 
     // load database
-    mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+    // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
     // mDatabase = mCinDatabase->TEMPGetDatabase(); 
 
     QSqlQuery qry;
@@ -177,7 +181,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     //Get column names
     for(int i=0;i<qry.record().count();i++)
     {
-        this->mColumnNames.push_back(this->mDatabase.driver()->record(this->mTableName).fieldName(i).toStdString());
+        this->mColumnNames.push_back(this->mDatabase->driver()->record(this->mTableName).fieldName(i).toStdString());
     }
 
     //Get value ranges of each column

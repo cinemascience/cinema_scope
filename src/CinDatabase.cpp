@@ -1,5 +1,6 @@
 #include "CinDatabase.h"
 #include "CinDBReader.h"
+#include <QDebug>
 #include <QFileInfo>
 #include <QSqlDatabase>
 #include <QSqlField>
@@ -9,6 +10,7 @@
 
 // class statics
 QString CinDatabase::ArtifactColumnName = "FILE";
+QString CinDatabase::DefaultTableName   = "cinema";
 
 
 /*! \brief Constructor sets up database back end 
@@ -21,7 +23,7 @@ CinDatabase::CinDatabase()
     mDatabase.open();
 
     // other
-    mTableName = "cinema";
+    mTableName = CinDatabase::DefaultTableName; 
 }
 
 /*! \brief Load Cinema database from disk into this object 
@@ -30,8 +32,9 @@ CinDatabase::CinDatabase()
 int CinDatabase::loadDatabase(const QString &dbPath, const QString &tableName)
 {
     int result = CinDBReader::DatabaseLoadError; 
+    qDebug() << "CINDATABASE :" << dbPath << tableName;
 
-    if ( ! (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir()) )
+    if (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir())
     {
         setTableName(tableName); 
         result = mReader.readCinemaDatabase(this->mDatabase, dbPath, this->mTableName);

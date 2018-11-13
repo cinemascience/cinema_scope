@@ -23,6 +23,7 @@
 #include <QPaintEvent>
 #include <QGraphicsScene>
 #include "CinDBReader.h"
+#include "CinDatabase.h"
 
 
 #include <iostream>
@@ -76,14 +77,15 @@ private:
 
     QString   mCurDatabase;
 
-    QSqlDatabase    mDatabase;
+    QSqlDatabase   *mDatabase=NULL;
     MyImageView    *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
     QFormLayout    *mSliderLayout=NULL;
-    CinDBReader    *mReader=NULL;
+    // CinDBReader    *mReader=NULL;
     QGraphicsScene *mScene;
     QString         mTableName;
+    CinDatabase    *mCDB=NULL;
 
     // components
 
