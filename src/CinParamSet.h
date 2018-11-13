@@ -1,0 +1,43 @@
+#ifndef CINPARAMSET_H
+#define CINPARAMSET_H
+
+#include <QObject>
+#include <QString>
+#include <QMap>
+#include "CinParameter.h"
+
+//! A class that manages a set of parameters 
+/*!
+ *  A set of parameters defines the input values for a Cinema Database
+ *  This class manages communication about these parameters as they
+ *  change in a Qt application.
+*/
+class CinParamSet : public QObject
+{
+    Q_OBJECT 
+
+    public:
+        CinParamSet();
+        void  add(const QString &name, CinParameter::Type type, float min, float max, float value);
+        bool getValue(const QString &name, float *value); 
+        bool getMinMax(const QString &name, float *min, float *max); 
+        const QStringList &getParameterNames() const {return mParamNames;}
+        int getNumParameters() {return mParamNames.count();}
+        void print();
+
+
+    public slots:
+        void changeParameter(const QString &name, float value);
+
+    signals:
+        void parameterChanged(const QString &name, float value);
+
+    private:
+        bool contains(const QString &name);
+
+        QStringList mParamNames;
+        QMap<QString, CinParameter> mParameters;
+
+};
+
+#endif // CINPARAMSET_H
