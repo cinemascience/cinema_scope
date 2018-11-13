@@ -157,10 +157,10 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     this->flushUI();
 
-    qDebug() << "MW: " << database << this->mTableName;
+    // remember this DB
+    this->mCurDatabase = database;
 
-    // CinParamSliders testing
-    // mCinDatabase = new CinDatabase;
+    // Cin* class testing
     mCDB->loadDatabase(database, this->mTableName);
     CinParamSliders *dbSliders = new CinParamSliders();
     dbSliders->setDatabase(mCDB);
@@ -377,14 +377,11 @@ void MainWindow::createActions()
 
 void MainWindow::onOpenFile()
 {
-    mCurDatabase = QFileDialog::getExistingDirectory(this,
+    QString result = QFileDialog::getExistingDirectory(this,
         tr("Open Cinema Database"), "/",
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    // TODO: check the database
-    qDebug() << mCurDatabase;
-
-    this->loadCinemaDatabase(mCurDatabase);
+    this->loadCinemaDatabase(result);
 }
 
 void MainWindow::onQuit()
