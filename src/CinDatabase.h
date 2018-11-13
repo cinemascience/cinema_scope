@@ -4,6 +4,7 @@
 #include "CinDBReader.h"
 #include <QSqlDatabase>
 #include <QString>
+#include <QStringList>
 
 //! A class that manages the in-memory database created from a Cinema Database
 /*!
@@ -16,16 +17,27 @@ class CinDatabase
 {
     public:
         CinDatabase();
-        inline void           setTableName(const QString &name) {mTableName = name;}
+        int loadDatabase(const QString &dbPath, const QString &tableName);
         inline const QString &getTableName() {return mTableName;}
-        const QString        &getPath();
 
-        int loadDatabase(QString &dbPath);
+        QSqlDatabase         *TEMPGetDatabase() {return &mDatabase;} /*!< TEMP for testing */
+        void                  setParameterColumnNames();
+        const QStringList    &getParameterColumnNames() {return mParameterColumnNames;}
+        int                   getNumParameterColumns();
+        const QString        &getPath();
+        const QString        &getArtifactColumnName() {return CinDatabase::ArtifactColumnName;}
+
 
     private:
-        QSqlDatabase mDatabase;
-        CinDBReader  mReader;
-        QString      mTableName;
+        bool isArtifactColumn(const QString &name);
+        inline void setTableName(const QString &name) {mTableName = name;}
+
+        QSqlDatabase mDatabase;     /*!< The Sql back end for this database object */
+        CinDBReader  mReader;       /*!< The reader object for the database on disk */ 
+        QString      mTableName;    /*!< The name of the table created */
+        QStringList  mParameterColumnNames;  /*!< List of non-artifact column names */
+
+        static QString ArtifactColumnName;/*!< Name of the column that holds the artifacts */
 };
 
 #endif // CINDATABASE_H

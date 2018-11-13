@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSlider>
 #include <QLabel>
+#include <CinDatabase.h>
 
 /*! \brief This class manages a set of parameter sliders for a Cinema Database
  *
@@ -23,24 +24,20 @@ class CinDBSliders : public QWidget
 
 public:
     CinDBSliders();
-    void setDatabase(const QString &);
-    void build(QSqlDatabase &database, QObject *receiver, const char *slotName);
+    void setDatabase(CinDatabase *cdb);
 
 private:
-    void reset();
-    void constructQueryString();
-    void popSlidersToValidValue();
-    bool isArtifactColumn(QString &name);
+    void     buildSliders();
+    void     reset();
+    void     constructQueryString();
+    void     popSlidersToValidValue();
     QSlider *getSliderAt(int i);
-    QLabel *getLabelAt(int i);
+    QLabel  *getLabelAt(int i);
 
     QFormLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
     QString      mSliderQuery;       /*!< Common query over all sliders */
+    CinDatabase *mCurDatabase=NULL;  /*!< Common database object */ 
     
-    QStringList  mColNames;          /*!< TEMPORARY column names */
-    QString      mTableName;         /*!< TEMPORARY table name */
-    QString      mCurDatabase;       /*!< TEMPORARY cinema database path */
-
 private slots:
     void onSliderValueChanged(int value);
 

@@ -9,6 +9,7 @@
 #include <QSplitter>
 #include "CinDBReader.h"
 #include "CinDBSliders.h"
+#include "CinDatabase.h"
 
 
 MainWindow::~MainWindow()
@@ -154,14 +155,16 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     this->flushUI();
 
+    // CinDBSliders testing
+    // mCinDatabase = new CinDatabase;
+    // mCinDatabase->loadDatabase(database, this->mTableName);
+    // CinDBSliders *dbSliders = new CinDBSliders();
+    // dbSliders->setDatabase(&cDatabase);
+    // this->mImageLayout->addWidget(dbSliders);
+
     // load database
     mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
-
-    // CinDBSliders testing
-    // CinDBSliders *dbSliders = new CinDBSliders();
-    // dbSliders->setDatabase(database);
-    // this->mImageLayout->addWidget(dbSliders);
-    // dbSliders->build(this->mDatabase, this, SLOT(on_slider_valueChanged(int)));
+    // mDatabase = mCinDatabase->TEMPGetDatabase(); 
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + this->mTableName.toStdString();

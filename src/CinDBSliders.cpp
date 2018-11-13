@@ -18,54 +18,40 @@ CinDBSliders::CinDBSliders()
     this->setLayout(this->mSliderLayout);
 }
 
-void CinDBSliders::setDatabase(const QString &database)
+void CinDBSliders::setDatabase(CinDatabase *cdb)
 {
-    this->mCurDatabase = database;
-}
-
-bool CinDBSliders::isArtifactColumn(QString &name)
-{
-    bool ret = false;
-
-    if ( name == "FILE" ) 
+    if (cdb) 
     {
-        ret = true;
+        mCurDatabase = cdb;
+        buildSliders();
+    } else {
+        qWarning() << "ERROR: NULL database passed to CinDBSliders";
     }
-
-    return ret;
 }
 
-void CinDBSliders::build(QSqlDatabase &database, QObject *parent, const char *slotName) 
+/*! \brief Build the set of sliders
+ *
+ */
+void CinDBSliders::buildSliders()
 {
-    // TODO: put the table name somewhere better
-    this->mTableName = "cinema";
-    QSqlRecord record = database.record(this->mTableName);
-
-    // 
-    // build the set of sliders and add them to the layout
-    // 
     QSlider *slider = NULL;
-    QString column;
+    QString curColumn;
     QSqlQuery query;
-    for (int i=0;i<record.count();i++)
+    const QStringList &cols = mCurDatabase->getParameterColumnNames();
+    for (int i=0;i<cols.count();i++)
     {
-        column = record.field(i).name();
+        // get the min and max values
+        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + mCurDatabase->getTableName());
+        query.first();
 
-        if ( not isArtifactColumn(column) ) {
-            this->mColNames.push_back(column);
-            // get the min and max values
-            query.exec("SELECT MIN(" + column + ") , MAX(" + column + ") FROM " + this->mTableName);
-            query.first();
-
-            // create slider
-            slider = new QSlider(Qt::Horizontal);
-            slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            slider->setRange(query.value(0).toFloat(), query.value(1).toFloat());
-            QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
-            
-            // add these to the layout
-            this->mSliderLayout->addRow(column, slider);
-        }
+        // create slider
+        slider = new QSlider(Qt::Horizontal);
+        slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        slider->setRange(query.value(0).toFloat(), query.value(1).toFloat());
+        QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
+        
+        // add these to the layout
+        this->mSliderLayout->addRow(cols.at(i), slider);
     }
 
     constructQueryString();
@@ -80,9 +66,6 @@ void CinDBSliders::reset()
     {
         this->mSliderLayout->removeRow(i);
     }
-
-    // delete all the slider names
-    this->mColNames.clear();
 
     // clear the query
     this->mSliderQuery.clear();
@@ -107,7 +90,7 @@ void CinDBSliders::onSliderValueChanged(int value)
     QSqlQuery query;
 
     query.prepare(QString::fromStdString(this->mSliderQuery.toStdString()));
-    int numSliders = this->mColNames.size();
+    int numSliders = this->mCurDatabase->getNumParameterColumns();
     QString s;
     QSlider *slider = NULL;
     QSlider *label = NULL;
@@ -117,10 +100,11 @@ void CinDBSliders::onSliderValueChanged(int value)
         query.bindValue(s, this->getSliderAt(i)->value());
     }
     query.exec();
+
     if (query.first())
     {
         //get the last column which has the image name
-        QString imagePath = this->mCurDatabase;
+        QString imagePath = mCurDatabase->getPath();
         imagePath += "/";
         imagePath += query.value(numSliders).toString(); 
 
@@ -128,7 +112,7 @@ void CinDBSliders::onSliderValueChanged(int value)
         // return the 'empty' image
         if ( ! (QFileInfo::exists(imagePath) && QFileInfo(imagePath).isFile()) )
         {
-            imagePath = this->mCurDatabase;
+            imagePath = mCurDatabase->getPath();
             imagePath += "/";
             imagePath += "empty_image/empty.png";
         }
@@ -152,16 +136,17 @@ void CinDBSliders::popSlidersToValidValue()
     QSqlQuery minQuery, maxQuery;
     float minVal,maxVal;
 
-    int numSliders = this->mColNames.size();
+    const QStringList &cols = mCurDatabase->getParameterColumnNames();
+    int numSliders = mCurDatabase->getNumParameterColumns();
     QSlider *slider = NULL;
     for(int i=0;i<numSliders;i++)
     {
         slider = this->getSliderAt(i);
 
-        minText  = QString("SELECT min(%1) FROM %2 WHERE %3 >= %4").arg(this->mColNames[i], this->mTableName, this->mColNames[i], QString::number(slider->value()));
+        minText  = QString("SELECT min(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
         minQuery.exec(minText);
 
-        maxText  = QString("SELECT max(%1) FROM %2 WHERE %3 >= %4").arg(this->mColNames[i], this->mTableName, this->mColNames[i], QString::number(slider->value()));
+        maxText  = QString("SELECT max(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
         maxQuery.exec(maxText);
 
         while (minQuery.next())
@@ -189,18 +174,18 @@ void CinDBSliders::popSlidersToValidValue()
 void CinDBSliders::constructQueryString()
 {
     this->mSliderQuery = "SELECT * FROM ";
-    this->mSliderQuery += this->mTableName;
+    this->mSliderQuery += mCurDatabase->getTableName(); 
     this->mSliderQuery += " WHERE ";
 
-    int numSliders = this->mColNames.size();
+    const QStringList &cols = mCurDatabase->getParameterColumnNames();
+    int numSliders = this->mCurDatabase->getNumParameterColumns();
     for(int i=0;i<numSliders;i++)
     {
+        this->mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
+
         if (i<numSliders-1)
         {
-            this->mSliderQuery += this->mColNames[i] + "=:" + this->mColNames[i] + " AND ";
-        } else 
-        {
-            this->mSliderQuery += this->mColNames[i] + "=:" + this->mColNames[i];
+            this->mSliderQuery += " AND ";
         }
 
     }
