@@ -18,12 +18,14 @@ CinParamSliders::CinParamSliders()
     this->setLayout(this->mSliderLayout);
 }
 
-void CinParamSliders::setDatabase(CinDatabase *cdb)
+void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
 {
-    if (cdb) 
+    if (cdb && params) 
     {
         mCurDatabase = cdb;
+        mParameters  = params;
         buildSliders();
+        
     } else {
         qWarning() << "ERROR: NULL database passed to CinParamSliders";
     }
@@ -36,22 +38,25 @@ void CinParamSliders::buildSliders()
 {
     QSlider *slider = NULL;
     QString curColumn;
-    QSqlQuery query;
-    const QStringList &cols = mCurDatabase->getParameterColumnNames();
+    const QStringList &cols = mParameters->getParameterNames();
+    float min, max;
     for (int i=0;i<cols.count();i++)
     {
-        // get the min and max values
-        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + mCurDatabase->getTableName());
-        query.first();
-
-        // create slider
-        slider = new QSlider(Qt::Horizontal);
-        slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        slider->setRange(query.value(0).toFloat(), query.value(1).toFloat());
-        QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
+        if ( mParameters->getMinMax( cols.at(i), &min, &max ) )
+        {
+            // create slider
+            slider = new QSlider(Qt::Horizontal);
+            slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+            slider->setRange(min, max);
+            QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
         
-        // add these to the layout
-        this->mSliderLayout->addRow(cols.at(i), slider);
+            // add these to the layout
+            this->mSliderLayout->addRow(cols.at(i), slider);
+
+        } else {
+            qWarning() << "ERROR: failed to get min/max values from parameter set"; 
+        }
+
     }
 
     constructQueryString();
@@ -90,7 +95,7 @@ void CinParamSliders::onSliderValueChanged(int value)
     QSqlQuery query;
 
     query.prepare(QString::fromStdString(this->mSliderQuery.toStdString()));
-    int numSliders = this->mCurDatabase->getNumParameterColumns();
+    int numSliders = this->mParameters->getNumParameters();
     QString s;
     QSlider *slider = NULL;
     QSlider *label = NULL;
@@ -136,11 +141,12 @@ void CinParamSliders::popSlidersToValidValue()
     QSqlQuery minQuery, maxQuery;
     float minVal,maxVal;
 
-    const QStringList &cols = mCurDatabase->getParameterColumnNames();
-    int numSliders = mCurDatabase->getNumParameterColumns();
+    const QStringList &cols = mParameters->getParameterNames();
+    int numSliders = mParameters->getNumParameters();
     QSlider *slider = NULL;
     for(int i=0;i<numSliders;i++)
     {
+        // TODO: go over logic with SD
         slider = this->getSliderAt(i);
 
         minText  = QString("SELECT min(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
@@ -162,8 +168,11 @@ void CinParamSliders::popSlidersToValidValue()
         if ( qAbs(minVal - static_cast<float>(slider->value())) >= qAbs(maxVal - static_cast<float>(slider->value())) )
         {
             slider->setValue(maxVal);
+            mParameters->changeParameter(cols.at(i), maxVal);
+
         } else {
             slider->setValue(minVal);
+            mParameters->changeParameter(cols.at(i), minVal);
         }
     }
 }
@@ -177,8 +186,8 @@ void CinParamSliders::constructQueryString()
     this->mSliderQuery += mCurDatabase->getTableName(); 
     this->mSliderQuery += " WHERE ";
 
-    const QStringList &cols = mCurDatabase->getParameterColumnNames();
-    int numSliders = this->mCurDatabase->getNumParameterColumns();
+    const QStringList &cols = mParameters->getParameterNames();
+    int numSliders = this->mParameters->getNumParameters();
     for(int i=0;i<numSliders;i++)
     {
         this->mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
@@ -189,5 +198,10 @@ void CinParamSliders::constructQueryString()
         }
 
     }
+}
+
+void CinParamSliders::onParameterValueChanged(QString &name, float value)
+{
+    qDebug() << "CINPARAMSLIDERS: changed" << name << value;
 }
 

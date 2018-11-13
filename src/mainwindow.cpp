@@ -165,13 +165,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // Cin* class testing
     mCDB->loadDatabase(database, this->mTableName);
     CinParamSliders *dbSliders = new CinParamSliders();
-    dbSliders->setDatabase(mCDB);
+    mParamSet = new CinParamSet();
+    mParamSet->setDatabase(mCDB);
+    mParamSet->print();
+    dbSliders->connect(mCDB, mParamSet);
     this->mImageLayout->addWidget(dbSliders);
-    CinParamSet set;
-    set.add("one", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.add("two", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.add("three", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.print();
 
     // load database
     // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);

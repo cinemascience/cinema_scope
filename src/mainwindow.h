@@ -24,6 +24,7 @@
 #include <QGraphicsScene>
 #include "CinDBReader.h"
 #include "CinDatabase.h"
+#include "CinParamSet.h"
 
 
 #include <iostream>
@@ -78,6 +79,7 @@ private:
     QString   mCurDatabase;
 
     QSqlDatabase   *mDatabase=NULL;
+    CinParamSet    *mParamSet=NULL;
     MyImageView    *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
