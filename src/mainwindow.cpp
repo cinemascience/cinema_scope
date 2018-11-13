@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QSplitter>
 #include "CinDBReader.h"
-#include "CinDBSliders.h"
+#include "CinParamSliders.h"
 #include "CinDatabase.h"
 
 
@@ -155,10 +155,10 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     this->flushUI();
 
-    // CinDBSliders testing
+    // CinParamSliders testing
     // mCinDatabase = new CinDatabase;
     // mCinDatabase->loadDatabase(database, this->mTableName);
-    // CinDBSliders *dbSliders = new CinDBSliders();
+    // CinParamSliders *dbSliders = new CinParamSliders();
     // dbSliders->setDatabase(&cDatabase);
     // this->mImageLayout->addWidget(dbSliders);
 

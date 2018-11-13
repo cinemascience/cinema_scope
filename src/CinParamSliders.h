@@ -18,12 +18,12 @@
  *
  *    artifactSelected(QString &) 
 */
-class CinDBSliders : public QWidget
+class CinParamSliders : public QWidget
 {
     Q_OBJECT
 
 public:
-    CinDBSliders();
+    CinParamSliders();
     void setDatabase(CinDatabase *cdb);
 
 private:
