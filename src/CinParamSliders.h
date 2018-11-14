@@ -7,6 +7,7 @@
 #include <QSlider>
 #include <QLabel>
 #include "CinDatabase.h"
+#include "CinParamSet.h"
 
 /*! \brief Manages a set of parameter sliders for a Cinema Database
  *
@@ -24,7 +25,7 @@ class CinParamSliders : public QWidget
 
 public:
     CinParamSliders();
-    void setDatabase(CinDatabase *cdb);
+    void connect(CinDatabase *cdb, CinParamSet *params);
 
 private:
     void     buildSliders();
@@ -37,9 +38,11 @@ private:
     QFormLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
     QString      mSliderQuery;       /*!< Common query over all sliders */
     CinDatabase *mCurDatabase=NULL;  /*!< Common database object */ 
+    CinParamSet *mParameters=NULL;
     
 private slots:
     void onSliderValueChanged(int value);
+    void onParameterValueChanged(QString &name, float value);
 
 signals:
     void artifactSelected(QString &);

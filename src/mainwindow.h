@@ -63,6 +63,7 @@ private:
     QString   mCurDatabase;
 
     QSqlDatabase   *mDatabase=NULL;
+    CinParamSet    *mParamSet=NULL;
     MyImageView    *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
+#include "CinDatabase.h"
 #include "CinParameter.h"
 
 //! A class that manages a set of parameters 
@@ -18,15 +19,14 @@ class CinParamSet : public QObject
 
     public:
         CinParamSet();
-        void  add(const QString &name, CinParameter::Type type, float min, float max, float value);
+
+        void setDatabase(CinDatabase *database);
+        void add(const QString &name, CinParameter::Type type, float min, float max, float value);
         bool getValue(const QString &name, float *value); 
         bool getMinMax(const QString &name, float *min, float *max); 
         const QStringList &getParameterNames() const {return mParamNames;}
         int getNumParameters() {return mParamNames.count();}
         void print();
-
-
-    public slots:
         void changeParameter(const QString &name, float value);
 
     signals:
@@ -34,9 +34,11 @@ class CinParamSet : public QObject
 
     private:
         bool contains(const QString &name);
+        void initializeParameters();
 
         QStringList mParamNames;
         QMap<QString, CinParameter> mParameters;
+        CinDatabase *mDatabase;
 
 };
 

@@ -1,7 +1,10 @@
 #include "CinParamSet.h"
 #include "CinParameter.h"
-#include <QString>
+#include "CinDatabase.h"
 #include <QDebug>
+#include <QString>
+#include <QSqlQuery>
+#include <QStringList>
 
 CinParamSet::CinParamSet() 
 {
@@ -54,6 +57,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
     {
         found.value().setValue(value);
         emit parameterChanged(name, value);
+        qDebug() << "CINPARAMSET :" << name << value;
     }
 }
 
@@ -76,4 +80,32 @@ void CinParamSet::print()
         qDebug() << "  " << cur.value().getMin() << ", " << cur.value().getMax();
     }
     qDebug() << " ";
+}
+
+
+void CinParamSet::initializeParameters()
+{
+    // TODO: clear everything out first
+    QString curColumn;
+    QSqlQuery query;
+    const QStringList &cols = mDatabase->getParameterColumnNames();
+    for (int i=0;i<cols.count();i++)
+    {
+        // get the min and max values
+        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + mDatabase->getTableName());
+        query.first();
+
+        // create slider
+        float min = query.value(0).toFloat(); 
+        float max = query.value(1).toFloat(); 
+        add(cols.at(i), CinParameter::FLOAT, min, max, min); 
+    }
+
+}
+
+// TODO error checking
+void CinParamSet::setDatabase(CinDatabase *database)
+{
+    mDatabase = database;
+    initializeParameters();
 }
