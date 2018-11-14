@@ -83,7 +83,7 @@ void CinParamSet::print()
 }
 
 
-void CinParamSet::initializeParameters()
+void CinParamSet::initParameters()
 {
     // TODO: clear everything out first
     QString curColumn;
@@ -95,10 +95,24 @@ void CinParamSet::initializeParameters()
         query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + mDatabase->getTableName());
         query.first();
 
-        // create slider
+        // add the parameter 
         float min = query.value(0).toFloat(); 
         float max = query.value(1).toFloat(); 
         add(cols.at(i), CinParameter::FLOAT, min, max, min); 
+
+        // gather all the values
+        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + mDatabase->getTableName()); 
+        CinParameter *param = getParameter(cols.at(i));
+        if (param)
+        {
+            while (query.next())
+            {
+                param->recordValue(query.value(0).toFloat());
+                qDebug() << "PARAMSET: " << query.value(0).toFloat();
+            }
+        } else {
+            qWarning() << "PARAMSET: NULL pointer from getParameter";
+        }
     }
 
 }
@@ -107,5 +121,17 @@ void CinParamSet::initializeParameters()
 void CinParamSet::setDatabase(CinDatabase *database)
 {
     mDatabase = database;
-    initializeParameters();
+    initParameters();
+}
+
+
+CinParameter *CinParamSet::getParameter(const QString &name)
+{
+    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    if (found != mParameters.end())
+    {
+        return &(found.value());
+    }
+
+    return NULL;
 }

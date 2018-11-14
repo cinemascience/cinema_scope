@@ -28,13 +28,14 @@ class CinParamSet : public QObject
         int getNumParameters() {return mParamNames.count();}
         void print();
         void changeParameter(const QString &name, float value);
+        CinParameter *getParameter(const QString &name);
 
     signals:
         void parameterChanged(const QString &name, float value);
 
     private:
         bool contains(const QString &name);
-        void initializeParameters();
+        void initParameters();
 
         QStringList mParamNames;
         QMap<QString, CinParameter> mParameters;
