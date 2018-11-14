@@ -39,15 +39,15 @@ public:
 
     int currentXloc;
     int currentYloc;
-    int lastXloc;
-    int lastYloc;
-    const int slidePixel=35;
+    int lastXloc=0;
+    int lastYloc=0;
+    const int slidePixel=50;
     bool mLoadImage(QString, QPixmap*);
     std::string constructQueryString(QStringList);
     QString mTableName;
 
-    float currentPhi;
-    float currentTheta;
+    float currentPhi=0; //change later
+    float currentTheta=30; //change later
 
 protected:
 
