@@ -6,5 +6,7 @@ before_install:
   - brew install qt5
 
 script:
+  - export PATH="/usr/local/opt/qt/bin:$PATH"
+  - pwd && ls
   - qmake cinema_scope.pro
   - make
