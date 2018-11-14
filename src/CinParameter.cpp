@@ -24,7 +24,7 @@ float CinParameter::getClosestValue(float value)
 {
     float retVal = value;
 
-    std::vector<float>::iterator it = std::find(mValues.begin(), mValues.end(), value);
+    std::vector<float>::iterator it = std::lower_bound(mValues.begin(), mValues.end(), value);
 
     if (it != mValues.end()) 
     { 

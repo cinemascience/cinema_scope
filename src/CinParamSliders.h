@@ -42,7 +42,7 @@ private:
     
 private slots:
     void onSliderValueChanged(int value);
-    void onParameterValueChanged(QString &name, float value);
+    void onParameterValueChanged(const QString &name, float value);
 
 signals:
     void artifactSelected(QString &);

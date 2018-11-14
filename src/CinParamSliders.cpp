@@ -25,6 +25,8 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
         mCurDatabase = cdb;
         mParameters  = params;
         buildSliders();
+        QObject::connect(params, SIGNAL(parameterChanged(const QString &, float)), 
+                this, SLOT(onParameterValueChanged(const QString &, float)));
         
     } else {
         qWarning() << "ERROR: NULL database passed to CinParamSliders";
@@ -200,8 +202,19 @@ void CinParamSliders::constructQueryString()
     }
 }
 
-void CinParamSliders::onParameterValueChanged(QString &name, float value)
+void CinParamSliders::onParameterValueChanged(const QString &name, float value)
 {
     qDebug() << "CINPARAMSLIDERS: changed" << name << value;
+    int count = this->mSliderLayout->rowCount();
+    QLabel *label;
+    for (int i=0;i<count;i++)
+    {
+        label = getLabelAt(i);
+        if (label->text() == name)
+        {
+            getSliderAt(i)->setValue(value);
+            break;
+        }
+    }
 }
 

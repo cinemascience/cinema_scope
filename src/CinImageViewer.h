@@ -42,12 +42,15 @@ public:
     int lastXloc=0;
     int lastYloc=0;
     const int slidePixel=50;
-    bool mLoadImage(QString, QPixmap*);
+    bool loadImage(QString, QPixmap*);
     std::string constructQueryString(QStringList);
     QString mTableName;
 
     float currentPhi=0; //change later
     float currentTheta=30; //change later
+
+public slots:
+    void onLoadImage(QString &path);
 
 protected:
 

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QObject>
 #include <QSizePolicy>
 #include <QMenuBar>
 #include <QMenu>
@@ -117,6 +118,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mParamSet->print();
     dbSliders->connect(mCDB, mParamSet);
     this->mImageLayout->addWidget(dbSliders);
+    QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
 
@@ -185,13 +187,13 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     QString imagePath = database;
     imagePath += "/" + initFileID; //loads the first image from first row in the db
     QPixmap image;
-    if(!mImageView->mLoadImage(imagePath,&image))
+    if(!mImageView->loadImage(imagePath,&image))
     {
         //image.fill(Qt::transparent); // shows a blank screen
         cout<<"image loading failed"<<endl;
         imagePath = database;
         imagePath += "/empty_image/empty.png";
-        mImageView->mLoadImage(imagePath,&image);
+        mImageView->loadImage(imagePath,&image);
     }
 
     this->mScene->addPixmap(image);
@@ -288,13 +290,13 @@ void MainWindow::on_slider_valueChanged(int value)
         imagePath += val;
 
         QPixmap image;
-        if(!mImageView->mLoadImage(imagePath,&image))
+        if(!mImageView->loadImage(imagePath,&image))
         {
             cout<<"image loading failed!!"<<endl;
             imagePath = mCurDatabase;
             imagePath += "/";
             imagePath += "empty_image/empty.png";
-            mImageView->mLoadImage(imagePath,&image);
+            mImageView->loadImage(imagePath,&image);
         }
 
         mScene->addPixmap(image);

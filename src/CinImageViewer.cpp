@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool MyImageView::mLoadImage(QString path, QPixmap *image )
+bool MyImageView::loadImage(QString path, QPixmap *image )
 {
     return image->load(path);
 }
@@ -67,14 +67,14 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     }
 
     //get the current values of phi and theta
-    /*for(int i=0;i<paramNames.size();i++)
+    for(int i=0;i<paramNames.size();i++)
     {
         if(paramNames[i]=="phi")
             paramSet->getValue(paramNames[i],&currentPhi);
 
         if(paramNames[i]=="theta")
             paramSet->getValue(paramNames[i],&currentTheta);
-    }*/
+    }
 
     QSqlQuery qry;
     string queryText;
@@ -113,7 +113,8 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
                 imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
             }
 
-            //Modify the slider value at the end as a result of drag
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("phi", currentPhi);
         }
 
         else if((p.rx() - currentXloc) < 0  && lastXloc > p.rx()) //slide left
@@ -176,7 +177,7 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     }
 
     //Load the image finally
-    if(!mLoadImage(QString::fromStdString(imagePath),&image))
+    if(!loadImage(QString::fromStdString(imagePath),&image))
     {
         cout<<"image loading failed!!"<<endl;
     }
@@ -189,5 +190,13 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     lastYloc = p.ry();
 }
 
+void MyImageView::onLoadImage(QString &path)
+{
+    QPixmap pixmap;
 
+    qDebug() << "MYIMAGEVIEW: " << path;
+
+    loadImage(path, &pixmap);
+    this->sceneObj->addPixmap(pixmap);
+}
 

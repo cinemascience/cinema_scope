@@ -53,6 +53,7 @@ bool CinParamSet::getMinMax(const QString &name, float *min, float *max)
 void CinParamSet::changeParameter(const QString &name, float value)
 {
     QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    qDebug() << "CINPARAMSET: " << name;
     if (found != mParameters.end())
     {
         found.value().setValue(value);
