@@ -33,7 +33,8 @@ SOURCES += \
         src/CinParamSliders.cpp \
         src/CinParameter.cpp \
         src/CinParamSet.cpp \
-        src/CinDatabase.cpp
+        src/CinDatabase.cpp \
+        src/CinImageViewer.cpp
 
 HEADERS += \
         src/mainwindow.h \
@@ -41,4 +42,5 @@ HEADERS += \
         src/CinParamSliders.h \
         src/CinParameter.h \
         src/CinParamSet.h \
-        src/CinDatabase.h
+        src/CinDatabase.h \
+        src/CinImageViewer.h

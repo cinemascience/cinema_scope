@@ -12,6 +12,7 @@
 #include "CinDatabase.h"
 #include "CinParameter.h"
 #include "CinParamSet.h"
+#include "CinImageViewer.h"
 
 MainWindow::~MainWindow()
 {
@@ -38,93 +39,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
     cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
-}
-
-bool MyImageView::mLoadImage(QString path, QPixmap *image )
-{
-    return image->load(path);
-}
-
-void MyImageView::mouseMoveEvent(QMouseEvent *e)
-{
-    QPoint p = e->pos();
-    //cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
-
-    string path = "../data/volume-render.cdb"; //change later
-    string imagePath = path + "/" + "images/163.jpg";
-    QPixmap image;
-
-    QSqlQuery qry;
-    string queryText;
-
-    if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
-    {
-        if((p.rx() - currentXloc) > 0) //slide right
-        {
-            queryText = "SELECT MIN(phi) FROM " + mTableName.toStdString() + " WHERE phi > :phi";
-            qry.prepare(QString::fromStdString(queryText));
-            qry.bindValue(":phi", currentPhi);
-            qry.exec();
-            while (qry.next())
-            {
-                cout<<qry.value(0).toFloat()<<endl;
-                currentPhi = qry.value(0).toFloat();
-            }
-
-            cout<<"right"<<" "<<p.rx()<<" "<<currentXloc<<endl;
-
-        }
-        else if((p.rx() - currentXloc) < 0) //slide left
-        {
-            cout<<"left"<<" "<<p.rx()<<" "<<currentXloc<<endl;
-        }
-    }
-    else if(fabs(p.ry() - currentYloc) > slidePixel && fabs(p.rx() - currentXloc) < slidePixel) //only theta
-    {
-        if((p.ry() - currentYloc) < 0) //slide up
-        {
-            cout<<"up"<<" "<<p.ry()<<" "<<currentYloc<<endl;
-        }
-        else if((p.ry() - currentYloc) > 0) //slide down
-        {
-            cout<<"down"<<" "<<p.ry()<<" "<<currentYloc<<endl;
-        }
-    }
-    else if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) > slidePixel) //both theta and phi
-    {
-        cout<<"both"<<endl;
-    }
-
-
-
-    if(!mLoadImage(QString::fromStdString(imagePath),&image))
-    {
-        cout<<"image loading failed!!"<<endl;
-    }
-    else
-    {
-        this->sceneObj->addPixmap(image);
-    }
-}
-
-void MyImageView::mouseReleaseEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::LeftButton)
-    {
-        cout<<"MYIMAGE: n left mouse release"<<endl;
-        lastXloc = e->pos().rx();
-        lastYloc = e->pos().ry();
-    }
-}
-
-void MyImageView :: mousePressEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::LeftButton)
-    {
-        cout<<"MYIMAGE: on left mouse press"<<endl;
-        currentXloc = e->pos().rx();
-        currentYloc = e->pos().ry();
-    }
 }
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -200,11 +114,13 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     CinParamSliders *dbSliders = new CinParamSliders();
     dbSliders->setDatabase(mCDB);
     this->mImageLayout->addWidget(dbSliders);
-    CinParamSet set;
-    set.add("one", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.add("two", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.add("three", CinParameter::FLOAT, 0.0, 10.0, 5.0);
-    set.print();
+    CinParamSet *set = new CinParamSet();
+    set->add("one", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set->add("two", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set->add("three", CinParameter::FLOAT, 0.0, 10.0, 5.0);
+    set->print();
+
+    mImageView->paramSet = set; //pointing to parameter set
 
     // load database
     // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
