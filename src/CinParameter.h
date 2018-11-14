@@ -2,6 +2,7 @@
 #define CINPARAMETER_H
 
 #include <QString>
+#include <vector>
 
 //! A class that manages a parameter 
 /*!
@@ -16,8 +17,11 @@ class CinParameter
         static const char *TypeNames[NUMTYPES];
         static const char *GetNameForType(CinParameter::Type type);
 
+        // constructor
         CinParameter(const QString &name, CinParameter::Type type, float min, float max, float cur);
 
+        // member functions
+        float getClosestValue(float value);
         const QString &getName() const {return mName;}
         CinParameter::Type getType() const {return mType;}
         float getMin() const {return mMin;}
@@ -29,13 +33,16 @@ class CinParameter
         void  setMin(float min)                {mMin   = min;}
         void  setMax(float max)                {mMax   = max;}
         void  setValue(float value)            {mValue = value;}
+        void  recordValue(float value);
 
     private:
+        // member variables
         QString mName;
         CinParameter::Type mType=CinParameter::UNDEFINED;
         float   mMin;
         float   mMax;
         float   mValue;
+        std::vector<float> mValues;
 };
 
 #endif // CINPARAMETER_H
