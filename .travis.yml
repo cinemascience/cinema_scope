@@ -39,7 +39,7 @@ matrix:
       # Brew doesn't automatically set qt5 bins to PATH anymore
       env:
         - PATH="${PATH}:/usr/local/opt/qt/bin"
-        - osx_image="xcode10.1"
+        - osx_image="xcode10"
 
 # OPTIONAL - which components to cache 
 #cache components:
