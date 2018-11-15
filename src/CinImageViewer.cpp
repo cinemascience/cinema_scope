@@ -119,8 +119,6 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
 
         else if((p.rx() - currentXloc) < 0  && lastXloc > p.rx()) //slide left
         {
-
-
             queryText = "SELECT MAX(phi) FROM " + mTableName.toStdString() + " WHERE phi < :phi";
             qry.prepare(QString::fromStdString(queryText));
             qry.bindValue(":phi", currentPhi);
@@ -151,6 +149,7 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
                 imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
             }
 
+
             //If current phi is equal to minimum phi then set current phi to maximum phi
             //this may not be needed if we use sliders properly and do not need circular movement
             //hardcoded value for now
@@ -158,17 +157,87 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
                 currentPhi=165;
 
             //Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("phi", currentPhi);
         }
     }
     else if(fabs(p.ry() - currentYloc) > slidePixel && fabs(p.rx() - currentXloc) < slidePixel) //only theta
     {
-        if((p.ry() - currentYloc) < 0) //slide up
+        if((p.ry() - currentYloc) < 0 && lastYloc > p.ry()) //slide up
         {
-            cout<<"up"<<" "<<p.ry()<<" "<<currentYloc<<endl;
+            queryText = "SELECT MIN(theta) FROM " + mTableName.toStdString() + " WHERE theta > :theta";
+            qry.prepare(QString::fromStdString(queryText));
+            qry.bindValue(":theta", currentTheta);
+            qry.exec();
+            while (qry.next())
+            {
+                currentTheta = qry.value(0).toFloat();
+            }
+
+            //now get the correct image
+            queryText = constructQueryString(paramNames);
+            qry.prepare(QString::fromStdString(queryText));
+            for(int i=0;i<numSliders;i++)
+            {
+                if(paramNames[i].toStdString()=="theta")
+                    qry.bindValue(":theta", currentTheta);
+                else
+                {
+                    string s;
+                    s = ":"+paramNames[i].toStdString();
+                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
+                }
+            }
+            qry.exec();
+            while (qry.next())
+            {
+                //cout<<qry.value(numSliders).toString().toStdString()<<endl;
+                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
+            }
+
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("theta", currentTheta);
         }
-        else if((p.ry() - currentYloc) > 0) //slide down
+
+        else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
         {
-            cout<<"down"<<" "<<p.ry()<<" "<<currentYloc<<endl;
+            queryText = "SELECT MAX(theta) FROM " + mTableName.toStdString() + " WHERE theta < :theta";
+            qry.prepare(QString::fromStdString(queryText));
+            qry.bindValue(":theta", currentTheta);
+            qry.exec();
+            while (qry.next())
+            {
+                currentTheta = qry.value(0).toFloat();
+            }
+
+            //now get the correct image
+            queryText = constructQueryString(paramNames);
+            qry.prepare(QString::fromStdString(queryText));
+            for(int i=0;i<numSliders;i++)
+            {
+                if(paramNames[i].toStdString()=="theta")
+                    qry.bindValue(":theta", currentTheta);
+                else
+                {
+                    string s;
+                    s = ":"+paramNames[i].toStdString();
+                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
+                }
+            }
+            qry.exec();
+            while (qry.next())
+            {
+                //cout<<qry.value(numSliders).toString().toStdString()<<endl;
+                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
+            }
+
+            //If current phi is equal to minimum phi then set current phi to maximum phi
+            //this may not be needed if we use sliders properly and do not need circular movement
+            //hardcoded value for now
+            if(currentTheta==30)
+                currentTheta=150;
+
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("theta", currentTheta);
         }
     }
     else if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) > slidePixel) //both theta and phi

@@ -46,8 +46,8 @@ public:
     std::string constructQueryString(QStringList);
     QString mTableName;
 
-    float currentPhi=0; //change later
-    float currentTheta=30; //change later
+    float currentPhi;
+    float currentTheta;
 
 public slots:
     void onLoadImage(QString &path);
