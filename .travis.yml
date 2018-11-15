@@ -19,6 +19,7 @@ matrix:
           sources:
             - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
           packages:
+            - libgl1-mesa-dev
             - qt511base
     - os: osx
       addons:
