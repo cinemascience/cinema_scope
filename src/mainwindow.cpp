@@ -328,9 +328,6 @@ void MainWindow::createActions()
 void MainWindow::onOpenFile()
 {
 
-    mCurDatabase = QFileDialog::getExistingDirectory(this,
-                                                     tr("Open Cinema Database"), "/",
-                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     QString result = QFileDialog::getExistingDirectory(this,
                                                        tr("Open Cinema Database"), "/",
                                                        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
