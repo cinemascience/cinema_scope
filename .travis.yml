@@ -48,7 +48,7 @@ matrix:
 # Install dependencies here      
 # non-zero exit status: build status returns failed and exits immediately
 install:
-  - if[[ "$TRAVIS_OS_NAME" == "osx" ]]; brew install qt5
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; brew install qt5
 
 # OPTIONAL - After dependencies but before the build step
 # non-zero exit status: build status returns failed and exits immediately
