@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Installer>
-    <Name>CinemaScope</Name>
-    <Version>0.5.0</Version>
-    <Title>CinemaScope Installer</Title>
-    <Publisher>Los Alamos National Laboratory</Publisher>
-    <StartMenuDir>Application</StartMenuDir>
-    <TargetDir>@HomeDir@/InstallationDirectory</TargetDir>
-</Installer>
