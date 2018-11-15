@@ -22,6 +22,7 @@
 #include <QImage>
 #include <QPaintEvent>
 #include <QGraphicsScene>
+#include <QSplitter>
 
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -67,6 +68,8 @@ private:
     QGraphicsScene *mScene;
     QString         mTableName;
     CinDatabase    *mCDB=NULL;
+    QSplitter   *splitter=NULL;
+    QWidget     *sliderPanel=NULL;
 
     // components
 

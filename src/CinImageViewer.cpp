@@ -45,6 +45,16 @@ void MyImageView::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
+void MyImageView::onLoadImage(QString &path)
+{
+    QPixmap pixmap;
+
+    qDebug() << "MYIMAGEVIEW: " << path;
+
+    loadImage(path, &pixmap);
+    this->sceneObj->addPixmap(pixmap);
+}
+
 void MyImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
@@ -233,7 +243,6 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
             qry.exec();
             while (qry.next())
             {
-                //cout<<qry.value(numSliders).toString().toStdString()<<endl;
                 imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
             }
 
@@ -259,14 +268,3 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     lastXloc = p.rx();
     lastYloc = p.ry();
 }
-
-void MyImageView::onLoadImage(QString &path)
-{
-    QPixmap pixmap;
-
-    qDebug() << "MYIMAGEVIEW: " << path;
-
-    loadImage(path, &pixmap);
-    this->sceneObj->addPixmap(pixmap);
-}
-

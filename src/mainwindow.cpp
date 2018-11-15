@@ -62,8 +62,8 @@ void MainWindow::buildApplication(QWidget *parent)
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
-    QSplitter   *splitter         = new QSplitter(Qt::Horizontal, mainWidget);
-    QWidget     *sliderPanel      = new QWidget();
+    this->splitter         = new QSplitter(Qt::Horizontal, mainWidget);
+    this->sliderPanel      = new QWidget();
     this->mImagePanel   = new QWidget();
     this->mImageLayout  = new QVBoxLayout;
     this->mSliderLayout = new QFormLayout;
@@ -117,7 +117,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mParamSet->setDatabase(mCDB);
     mParamSet->print();
     dbSliders->connect(mCDB, mParamSet);
-    this->mImageLayout->addWidget(dbSliders);
+    this->mSliderLayout->addWidget(dbSliders);
     QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
