@@ -21,23 +21,23 @@ matrix:
           packages:
             - libgl1-mesa-dev
             - qt511base
-    - os: osx
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
-    - os: osx
-      osx_image: xcode10.1
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
+#     - os: osx
+#       addons:
+#         brew:
+#           update: true
+#           packages:
+#             - qt5
+#       # Brew doesn't automatically set qt5 bins to PATH anymore
+#       env: PATH="${PATH}:/usr/local/opt/qt/bin"    
+#     - os: osx
+#       osx_image: xcode10.1
+#       addons:
+#         brew:
+#           update: true
+#           packages:
+#             - qt5
+#       # Brew doesn't automatically set qt5 bins to PATH anymore
+#       env: PATH="${PATH}:/usr/local/opt/qt/bin"    
 
 # OPTIONAL - which components to cache 
 #cache components:
