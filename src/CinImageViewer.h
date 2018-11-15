@@ -41,7 +41,7 @@ public:
     int currentYloc;
     int lastXloc=0;
     int lastYloc=0;
-    const int slidePixel=50;
+    const int slidePixel=100;
     bool loadImage(QString, QPixmap*);
     std::string constructQueryString(QStringList);
     QString mTableName;

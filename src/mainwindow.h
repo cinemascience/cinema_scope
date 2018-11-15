@@ -43,10 +43,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     void loadCinemaDatabase(const QString &database);
-
-    vector<QSlider*> mListOfSliders;
-    vector<QLabel*> mListOfSliderLabels;
-    vector<string> mColumnNames;
     int numSliders;
     ~MainWindow();
 
@@ -68,7 +64,6 @@ private:
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
     QFormLayout    *mSliderLayout=NULL;
-    // CinDBReader    *mReader=NULL;
     QGraphicsScene *mScene;
     QString         mTableName;
     CinDatabase    *mCDB=NULL;
@@ -82,10 +77,6 @@ private slots:
     void mouseReleaseEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
 
-
-    void on_slider_valueChanged(int);
-    string constructQueryString();
-    void popSlidersOnValidValue();
     void onOpenFile();
     void onQuit();
     void onAbout();

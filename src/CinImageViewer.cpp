@@ -29,7 +29,7 @@ void MyImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        cout<<"MYIMAGE: on left mouse press"<<endl;
+        //cout<<"MYIMAGE: on left mouse press"<<endl;
         currentXloc = e->pos().rx();
         currentYloc = e->pos().ry();
     }
@@ -39,17 +39,15 @@ void MyImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        cout<<"MYIMAGE: n left mouse release"<<endl;
+        //cout<<"MYIMAGE: n left mouse release"<<endl;
         lastXloc = e->pos().rx();
         lastYloc = e->pos().ry();
     }
 }
 
-
 void MyImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
-    //cout<<"MYIMAGE: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 
     string path = "../data/volume-render.cdb"; //change later
     string imagePath;
@@ -78,6 +76,7 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
 
     QSqlQuery qry;
     string queryText;
+    float min,max;
 
     if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
     {
@@ -119,13 +118,20 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
 
         else if((p.rx() - currentXloc) < 0  && lastXloc > p.rx()) //slide left
         {
-            queryText = "SELECT MAX(phi) FROM " + mTableName.toStdString() + " WHERE phi < :phi";
-            qry.prepare(QString::fromStdString(queryText));
-            qry.bindValue(":phi", currentPhi);
-            qry.exec();
-            while (qry.next())
+            //If current phi is equal to minimum phi then set current phi to maximum phi
+            paramSet->getMinMax("phi",&min,&max);
+            if( (currentPhi-min) < 0.0000001)
+                currentPhi=max;
+            else
             {
-                currentPhi = qry.value(0).toFloat();
+                queryText = "SELECT MAX(phi) FROM " + mTableName.toStdString() + " WHERE phi < :phi";
+                qry.prepare(QString::fromStdString(queryText));
+                qry.bindValue(":phi", currentPhi);
+                qry.exec();
+                while (qry.next())
+                {
+                    currentPhi = qry.value(0).toFloat();
+                }
             }
 
             //now get the correct image
@@ -148,13 +154,6 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
                 cout<<qry.value(numSliders).toString().toStdString()<<endl;
                 imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
             }
-
-
-            //If current phi is equal to minimum phi then set current phi to maximum phi
-            //this may not be needed if we use sliders properly and do not need circular movement
-            //hardcoded value for now
-            if(currentPhi==0)
-                currentPhi=165;
 
             //Modify the slider value at the end as a result of drag
             paramSet->changeParameter("phi", currentPhi);
@@ -200,13 +199,21 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
 
         else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
         {
-            queryText = "SELECT MAX(theta) FROM " + mTableName.toStdString() + " WHERE theta < :theta";
-            qry.prepare(QString::fromStdString(queryText));
-            qry.bindValue(":theta", currentTheta);
-            qry.exec();
-            while (qry.next())
+            //If current theta is equal to minimum theta then set current theta to maximum theta
+            paramSet->getMinMax("theta",&min,&max);
+            if( (currentTheta-min) < 0.0000001)
+                currentTheta=max;
+            else
             {
-                currentTheta = qry.value(0).toFloat();
+                queryText = "SELECT MAX(theta) FROM " + mTableName.toStdString() + " WHERE theta < :theta";
+                qry.prepare(QString::fromStdString(queryText));
+                qry.bindValue(":theta", currentTheta);
+                qry.exec();
+
+                while (qry.next())
+                {
+                    currentTheta = qry.value(0).toFloat();
+                }
             }
 
             //now get the correct image
@@ -230,12 +237,6 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
                 imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
             }
 
-            //If current phi is equal to minimum phi then set current phi to maximum phi
-            //this may not be needed if we use sliders properly and do not need circular movement
-            //hardcoded value for now
-            if(currentTheta==30)
-                currentTheta=150;
-
             // Modify the slider value at the end as a result of drag
             paramSet->changeParameter("theta", currentTheta);
         }
@@ -248,7 +249,7 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     //Load the image finally
     if(!loadImage(QString::fromStdString(imagePath),&image))
     {
-        cout<<"image loading failed!!"<<endl;
+        cout<<"image loading failed over mouse move!!"<<endl;
     }
     else
     {
