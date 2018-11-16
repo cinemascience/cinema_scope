@@ -59,7 +59,7 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
 
-    string path = "../data/volume-render.cdb"; //change later
+    string path = dbPath.toStdString();
     string imagePath;
     QPixmap image;
 

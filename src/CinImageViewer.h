@@ -48,6 +48,7 @@ public:
 
     float currentPhi;
     float currentTheta;
+    QString dbPath;
 
 public slots:
     void onLoadImage(QString &path);

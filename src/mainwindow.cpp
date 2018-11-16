@@ -109,6 +109,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     // remember this DB
     this->mCurDatabase = database;
+    this->mImageView->dbPath = database;
 
     // Cin* class testing
     mCDB->loadDatabase(database, this->mTableName);
