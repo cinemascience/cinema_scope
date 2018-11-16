@@ -35,6 +35,21 @@ void MyImageView::onLoadImage(QString &path)
     this->sceneObj->addPixmap(pixmap);
 }
 
+void MyImageView::wheelEvent(QWheelEvent * event)
+{
+    this->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    // Scale the view / do the zoom
+    double scaleFactor = 1.15;
+    if(event->delta() > 0) {
+        // Zoom in
+        this->scale(scaleFactor, scaleFactor);
+
+    } else {
+        // Zooming out
+         this->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    }
+}
+
 void MyImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
@@ -268,3 +283,4 @@ void MyImageView::mouseMoveEvent(QMouseEvent *e)
     lastXloc = p.rx();
     lastYloc = p.ry();
 }
+
