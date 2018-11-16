@@ -1,0 +1,90 @@
+language: cpp
+
+# Get the repository
+git:
+  # Depth of commits to grab. Less is faster
+  depth: 3
+  # Init submodules
+  #submodules: false
+
+# Matrix of operating systems and dependencies
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      dist: xenial
+      addons:
+        apt:
+          update: true
+          sources:
+            - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
+          packages:
+            - libgl1-mesa-dev
+            - qt511base
+    - os: osx
+      addons:
+        brew:
+          update: true
+          packages:
+            - qt5
+      # Brew doesn't automatically set qt5 bins to PATH anymore
+      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
+    - os: osx
+      osx_image: xcode10
+      addons:
+        brew:
+          update: true
+          packages:
+            - qt5
+      # Brew doesn't automatically set qt5 bins to PATH anymore
+      env:
+        - PATH="${PATH}:/usr/local/opt/qt/bin"
+        - osx_image="xcode10"
+
+# OPTIONAL - which components to cache 
+#cache components:
+
+# Stuff to do before installing the dependencies          
+# non-zero exit status: build status returns failed and exits immediately
+before_install:
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt511/bin/qt511-env.sh; fi
+
+# Install dependencies here      
+# non-zero exit status: build status returns failed and exits immediately
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5; fi
+
+# OPTIONAL - After dependencies but before the build step
+# non-zero exit status: build status returns failed and exits immediately
+#before_script:
+
+# The build step
+# non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake cinema_scope.pro && make; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" == "xcode10" ]]; then qmake -spec macx-xcode cinema_scope.pro && xcodebuild -project CinemaScope.xcodeproj -target CinemaScope; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" != "xcode10" ]]; then qmake cinema_scope.pro && make; fi
+
+# OPTIONAL - Cleaning up the cache
+#before_cache:
+
+# What to do if success or failure
+# non-zero exit status: build status returns failed but continues running
+#after_success:
+#after_failure:
+
+# OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
+# non-zero exit status: build status returns failed but continues running
+#before_deploy:
+
+# OPTIONAL - Deployment
+# non-zero exit status: build status returns failed but continues running
+#deploy:
+
+# OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
+# non-zero exit status: build status returns failed but continues running
+#after_deploy:
+
+# Steps after script
+# non-zero exit status: build status returns failed but continues running
+#after_script:
