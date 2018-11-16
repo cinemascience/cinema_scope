@@ -25,6 +25,16 @@ string MyImageView::constructQueryString(QStringList currentParamnames)
     return query;
 }
 
+void MyImageView::onLoadImage(QString &path)
+{
+    QPixmap pixmap;
+
+    qDebug() << "MYIMAGEVIEW: " << path;
+
+    loadImage(path, &pixmap);
+    this->sceneObj->addPixmap(pixmap);
+}
+
 void MyImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
@@ -43,16 +53,6 @@ void MyImageView::mouseReleaseEvent(QMouseEvent *e)
         lastXloc = e->pos().rx();
         lastYloc = e->pos().ry();
     }
-}
-
-void MyImageView::onLoadImage(QString &path)
-{
-    QPixmap pixmap;
-
-    qDebug() << "MYIMAGEVIEW: " << path;
-
-    loadImage(path, &pixmap);
-    this->sceneObj->addPixmap(pixmap);
 }
 
 void MyImageView::mouseMoveEvent(QMouseEvent *e)
