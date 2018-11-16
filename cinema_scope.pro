@@ -1,10 +1,10 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-10-31T16:56:47
+# Project created by QtCreator
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core gui
 QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
