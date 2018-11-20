@@ -106,7 +106,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     CinParamSliders *dbSliders = new CinParamSliders();
     mParamSet = new CinParamSet();
     mParamSet->setDatabase(mCDB);
-    mParamSet->print();
+    // mParamSet->print();
     dbSliders->connect(mCDB, mParamSet);
     mSplitter->addWidget(dbSliders);
     QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
