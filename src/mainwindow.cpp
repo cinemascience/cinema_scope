@@ -59,18 +59,12 @@ void MainWindow::buildApplication(QWidget *parent)
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
     mSplitter     = new QSplitter(Qt::Horizontal, mainWidget);
-    mImagePanel   = new QWidget();
-    mImageLayout  = new QVBoxLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
     mainWidgetLayout->addWidget(mSplitter);
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mSplitter->addWidget(mImagePanel);
-
-    mImagePanel->setLayout(mImageLayout);
-    mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // colors for testing
     // mainWidget->setStyleSheet("background-color:red");
@@ -85,11 +79,11 @@ void MainWindow::buildApplication(QWidget *parent)
 
     // image and scene
     mScene = new QGraphicsScene();
-    mImageView = new CinImageView(mImagePanel);
+    mImageView = new CinImageView(mSplitter);
     mImageView->sceneObj = mScene;
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     mImageView->mTableName = mTableName;
+    mSplitter->addWidget(mImageView);
 }
 
 void MainWindow::loadCinemaDatabase(const QString &database)
@@ -103,13 +97,13 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     // Cin* class testing
     mCDB->loadDatabase(database, mTableName);
-    CinParamSliders *dbSliders = new CinParamSliders();
+    mSliders  = new CinParamSliders();
     mParamSet = new CinParamSet();
     mParamSet->setDatabase(mCDB);
     // mParamSet->print();
-    dbSliders->connect(mCDB, mParamSet);
-    mSplitter->addWidget(dbSliders);
-    QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
+    mSliders->connect(mCDB, mParamSet);
+    mSplitter->addWidget(mSliders);
+    QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
 
@@ -144,7 +138,6 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     mScene->addPixmap(image);
     mImageView->setScene(mScene);
-    mImageLayout->addWidget(mImageView);
 }
 
 

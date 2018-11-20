@@ -57,17 +57,13 @@ private:
 
     QString   mCurDatabase;
 
-    CinParamSet    *mParamSet=NULL;
-    CinImageView   *mImageView=NULL;
-    QWidget        *mImagePanel=NULL;
-    QVBoxLayout    *mImageLayout=NULL;
-    QGraphicsScene *mScene;
-    QString         mTableName;
-    CinDatabase    *mCDB=NULL;
-    QSplitter      *mSplitter=NULL;
-
-    // components
-
+    CinParamSet     *mParamSet=NULL;
+    CinImageView    *mImageView=NULL;
+    QGraphicsScene  *mScene;
+    CinDatabase     *mCDB=NULL;
+    QSplitter       *mSplitter=NULL;
+    CinParamSliders *mSliders=NULL;
+    QString          mTableName;
 
 private slots:
 
