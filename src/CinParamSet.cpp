@@ -53,12 +53,12 @@ bool CinParamSet::getMinMax(const QString &name, float *min, float *max)
 void CinParamSet::changeParameter(const QString &name, float value)
 {
     QMap<QString, CinParameter>::iterator found = mParameters.find(name);
-    qDebug() << "CINPARAMSET: " << name;
+    // qDebug() << "CINPARAMSET: " << name;
     if (found != mParameters.end())
     {
         found.value().setValue(value);
         emit parameterChanged(name, value);
-        qDebug() << "CINPARAMSET :" << name << value;
+        // qDebug() << "CINPARAMSET :" << name << value;
     }
 }
 
@@ -109,7 +109,7 @@ void CinParamSet::initParameters()
             while (query.next())
             {
                 param->recordValue(query.value(0).toFloat());
-                qDebug() << "PARAMSET: " << query.value(0).toFloat();
+                // qDebug() << "PARAMSET: " << query.value(0).toFloat();
             }
         } else {
             qWarning() << "PARAMSET: NULL pointer from getParameter";

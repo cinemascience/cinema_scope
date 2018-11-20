@@ -125,7 +125,7 @@ void CinParamSliders::onSliderValueChanged(int value)
         }
 
         emit artifactSelected(imagePath);
-        qDebug() << "DBSLIDER EMIT: " << imagePath;
+        // qDebug() << "DBSLIDER EMIT: " << imagePath;
     }
 
     popSlidersToValidValue();
@@ -204,7 +204,7 @@ void CinParamSliders::constructQueryString()
 
 void CinParamSliders::onParameterValueChanged(const QString &name, float value)
 {
-    qDebug() << "CINPARAMSLIDERS: changed" << name << value;
+    // qDebug() << "CINPARAMSLIDERS: changed" << name << value;
     int count = mSliderLayout->rowCount();
     QLabel *label;
     for (int i=0;i<count;i++)

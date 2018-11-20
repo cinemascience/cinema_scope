@@ -29,7 +29,7 @@ void CinImageView::onLoadImage(QString &path)
 {
     QPixmap pixmap;
 
-    qDebug() << "MYIMAGEVIEW: " << path;
+    // qDebug() << "CINIMAGEVIEW: " << path;
 
     loadImage(path, &pixmap);
     sceneObj->addPixmap(pixmap);
@@ -54,7 +54,7 @@ void CinImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        //cout<<"MYIMAGE: on left mouse press"<<endl;
+        //cout<<"CINIMAGE: on left mouse press"<<endl;
         currentXloc = e->pos().rx();
         currentYloc = e->pos().ry();
     }
@@ -64,7 +64,7 @@ void CinImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        //cout<<"MYIMAGE: n left mouse release"<<endl;
+        //cout<<"CINIMAGE: n left mouse release"<<endl;
         lastXloc = e->pos().rx();
         lastYloc = e->pos().ry();
     }
