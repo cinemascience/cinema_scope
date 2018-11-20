@@ -107,8 +107,9 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     {
         if((p.rx() - currentXloc) > 0 && lastXloc < p.rx()) //slide right
         {
-            queryText = "SELECT MIN(phi) FROM " + mTableName.toStdString() + " WHERE phi > :phi";
-            qry.prepare(QString::fromStdString(queryText));
+            // queryText = QString("SELECT MIN(phi) FROM %1 WHERE phi > :phi").arg(mTableName);
+            // qry.prepare(QString::fromStdString(queryText));
+            qry.prepare(QString("SELECT MIN(phi) FROM %1 WHERE phi > :phi").arg(mTableName));
             qry.bindValue(":phi", currentPhi);
             qry.exec();
             while (qry.next())

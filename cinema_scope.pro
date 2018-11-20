@@ -34,7 +34,8 @@ SOURCES += \
         src/CinParameter.cpp \
         src/CinParamSet.cpp \
         src/CinDatabase.cpp \
-        src/CinImageViewer.cpp
+        src/CinImageViewer.cpp \
+        src/CinArtifactSet.cpp
 
 HEADERS += \
         src/mainwindow.h \
@@ -43,4 +44,5 @@ HEADERS += \
         src/CinParameter.h \
         src/CinParamSet.h \
         src/CinDatabase.h \
-        src/CinImageViewer.h
+        src/CinImageViewer.h \
+        src/CinArtifactSet.h

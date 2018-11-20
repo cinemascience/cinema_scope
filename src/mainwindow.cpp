@@ -58,7 +58,10 @@ void MainWindow::buildApplication(QWidget *parent)
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
-    mSplitter     = new QSplitter(Qt::Horizontal, mainWidget);
+    mSplitter  = new QSplitter(Qt::Horizontal, mainWidget);
+    mSliders   = new CinParamSliders();
+    mParamSet  = new CinParamSet();
+    mImageView = new CinImageView(mSplitter);
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
@@ -66,24 +69,20 @@ void MainWindow::buildApplication(QWidget *parent)
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // colors for testing
-    // mainWidget->setStyleSheet("background-color:red");
-    // splitter->setStyleSheet("background-color:blue");
-
     // set up initial state
     setCentralWidget(mainWidget);
-    resize(1200,600);
+    resize(900,600);
     createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
 
     // image and scene
     mScene = new QGraphicsScene();
-    mImageView = new CinImageView(mSplitter);
     mImageView->sceneObj = mScene;
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mImageView->mTableName = mTableName;
     mSplitter->addWidget(mImageView);
+    mSplitter->addWidget(mSliders);
 }
 
 void MainWindow::loadCinemaDatabase(const QString &database)
@@ -95,14 +94,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mCurDatabase = database;
     mImageView->dbPath = database;
 
-    // Cin* class testing
+    // load database 
     mCDB->loadDatabase(database, mTableName);
-    mSliders  = new CinParamSliders();
-    mParamSet = new CinParamSet();
     mParamSet->setDatabase(mCDB);
     // mParamSet->print();
     mSliders->connect(mCDB, mParamSet);
-    mSplitter->addWidget(mSliders);
     QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
@@ -113,7 +109,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 
     //Get number of sliders = number of columns-1
     numSliders = qry.record().count()-1;
-    cout << "Number of columns: " << numSliders + 1 << endl;
+    // qDebug() << "Number of columns: " << numSliders + 1 << endl;
 
     //load and display an initial image
     queryText = "SELECT * FROM " + mTableName.toStdString();
@@ -130,7 +126,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     if(!mImageView->loadImage(imagePath,&image))
     {
         //image.fill(Qt::transparent); // shows a blank screen
-        cout<<"image loading failed"<<endl;
+        qWarning() << "image loading failed";
         imagePath = database;
         imagePath += "/empty_image/empty.png";
         mImageView->loadImage(imagePath,&image);

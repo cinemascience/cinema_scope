@@ -20,7 +20,6 @@ class CinDatabase
         int loadDatabase(const QString &dbPath, const QString &tableName);
         inline const QString &getTableName() {return mTableName;}
 
-        QSqlDatabase         *TEMPGetDatabase() {return &mDatabase;} /*!< TEMP for testing */
         void                  setParameterColumnNames();
         const QStringList    &getParameterColumnNames() {return mParameterColumnNames;}
         int                   getNumParameterColumns();
