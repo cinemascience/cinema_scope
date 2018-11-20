@@ -37,7 +37,7 @@ int CinDatabase::loadDatabase(const QString &dbPath, const QString &tableName)
     if (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir())
     {
         setTableName(tableName); 
-        result = mReader.readCinemaDatabase(this->mDatabase, dbPath, this->mTableName);
+        result = mReader.readCinemaDatabase(mDatabase, dbPath, mTableName);
         setParameterColumnNames();
     }
 

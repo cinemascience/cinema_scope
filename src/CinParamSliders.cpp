@@ -10,12 +10,12 @@
 
 CinParamSliders::CinParamSliders() 
 {
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    this->mSliderLayout = new QFormLayout(this);    
-    this->mSliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+    mSliderLayout = new QFormLayout(this);    
+    mSliderLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-    this->setLayout(this->mSliderLayout);
+    setLayout(mSliderLayout);
 }
 
 void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
@@ -53,7 +53,7 @@ void CinParamSliders::buildSliders()
             QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
         
             // add these to the layout
-            this->mSliderLayout->addRow(cols.at(i), slider);
+            mSliderLayout->addRow(cols.at(i), slider);
 
         } else {
             qWarning() << "ERROR: failed to get min/max values from parameter set"; 
@@ -67,25 +67,25 @@ void CinParamSliders::buildSliders()
 void CinParamSliders::reset()
 {
     // Remove all the rows. This deletes the children of the rows as well
-    int count = this->mSliderLayout->rowCount();
+    int count = mSliderLayout->rowCount();
     // qDebug() << "SLIDER COUNT: " << count;
     for (int i=(count-1);i>=0;i--)
     {
-        this->mSliderLayout->removeRow(i);
+        mSliderLayout->removeRow(i);
     }
 
     // clear the query
-    this->mSliderQuery.clear();
+    mSliderQuery.clear();
 }
 
 QSlider *CinParamSliders::getSliderAt(int i)
 {
-    return dynamic_cast<QSlider *>(this->mSliderLayout->itemAt(i, QFormLayout::FieldRole)->widget());
+    return dynamic_cast<QSlider *>(mSliderLayout->itemAt(i, QFormLayout::FieldRole)->widget());
 }
 
 QLabel *CinParamSliders::getLabelAt(int i)
 {
-    return dynamic_cast<QLabel *>(this->mSliderLayout->itemAt(i, QFormLayout::LabelRole)->widget());
+    return dynamic_cast<QLabel *>(mSliderLayout->itemAt(i, QFormLayout::LabelRole)->widget());
 }
 
 
@@ -96,15 +96,15 @@ void CinParamSliders::onSliderValueChanged(int value)
 {
     QSqlQuery query;
 
-    query.prepare(QString::fromStdString(this->mSliderQuery.toStdString()));
-    int numSliders = this->mParameters->getNumParameters();
+    query.prepare(QString::fromStdString(mSliderQuery.toStdString()));
+    int numSliders = mParameters->getNumParameters();
     QString s;
     QSlider *slider = NULL;
     QSlider *label = NULL;
     for(int i=0;i<numSliders;i++)
     {
-        s = ":" + this->getLabelAt(i)->text();
-        query.bindValue(s, this->getSliderAt(i)->value());
+        s = ":" + getLabelAt(i)->text();
+        query.bindValue(s, getSliderAt(i)->value());
     }
     query.exec();
 
@@ -149,7 +149,7 @@ void CinParamSliders::popSlidersToValidValue()
     for(int i=0;i<numSliders;i++)
     {
         // TODO: go over logic with SD
-        slider = this->getSliderAt(i);
+        slider = getSliderAt(i);
 
         minText  = QString("SELECT min(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
         minQuery.exec(minText);
@@ -184,19 +184,19 @@ void CinParamSliders::popSlidersToValidValue()
  */
 void CinParamSliders::constructQueryString()
 {
-    this->mSliderQuery = "SELECT * FROM ";
-    this->mSliderQuery += mCurDatabase->getTableName(); 
-    this->mSliderQuery += " WHERE ";
+    mSliderQuery = "SELECT * FROM ";
+    mSliderQuery += mCurDatabase->getTableName(); 
+    mSliderQuery += " WHERE ";
 
     const QStringList &cols = mParameters->getParameterNames();
-    int numSliders = this->mParameters->getNumParameters();
+    int numSliders = mParameters->getNumParameters();
     for(int i=0;i<numSliders;i++)
     {
-        this->mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
+        mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
 
         if (i<numSliders-1)
         {
-            this->mSliderQuery += " AND ";
+            mSliderQuery += " AND ";
         }
 
     }
@@ -205,7 +205,7 @@ void CinParamSliders::constructQueryString()
 void CinParamSliders::onParameterValueChanged(const QString &name, float value)
 {
     qDebug() << "CINPARAMSLIDERS: changed" << name << value;
-    int count = this->mSliderLayout->rowCount();
+    int count = mSliderLayout->rowCount();
     QLabel *label;
     for (int i=0;i<count;i++)
     {

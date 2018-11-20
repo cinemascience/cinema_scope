@@ -44,35 +44,35 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    this->buildApplication(parent);
+    buildApplication(parent);
 }
 
 void MainWindow::buildApplication(QWidget *parent)
 {
     // create the database and cinema reaader
-    this->mCDB = new CinDatabase();
-    this->mDatabase = this->mCDB->TEMPGetDatabase();
-    // this->mDatabase = QSqlDatabase::addDatabase("QSQLITE");
-    // this->mDatabase.open();
-    // this->mReader = new CinDBReader();
+    mCDB = new CinDatabase();
+    mDatabase = mCDB->TEMPGetDatabase();
+    // mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    // mDatabase.open();
+    // mReader = new CinDBReader();
 
     // remember the table name
-    this->mTableName = "cinema";
+    mTableName = "cinema";
 
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
-    this->splitter         = new QSplitter(Qt::Horizontal, mainWidget);
-    this->mImagePanel   = new QWidget();
-    this->mImageLayout  = new QVBoxLayout;
-    this->mSliderLayout = new QFormLayout;
+    mSplitter     = new QSplitter(Qt::Horizontal, mainWidget);
+    mImagePanel   = new QWidget();
+    mImageLayout  = new QVBoxLayout;
+    mSliderLayout = new QFormLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
-    mainWidgetLayout->addWidget(splitter);
+    mainWidgetLayout->addWidget(mSplitter);
 
-    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    splitter->addWidget(this->mImagePanel);
+    mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mSplitter->addWidget(mImagePanel);
 
     mImagePanel->setLayout(mImageLayout);
     mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -100,46 +100,46 @@ void MainWindow::buildApplication(QWidget *parent)
 void MainWindow::loadCinemaDatabase(const QString &database)
 {
     // clean up all UI components
-    this->flushUI();
+    flushUI();
 
     // remember this DB
-    this->mCurDatabase = database;
-    this->mImageView->dbPath = database;
+    mCurDatabase = database;
+    mImageView->dbPath = database;
 
     // Cin* class testing
-    mCDB->loadDatabase(database, this->mTableName);
+    mCDB->loadDatabase(database, mTableName);
     CinParamSliders *dbSliders = new CinParamSliders();
     mParamSet = new CinParamSet();
     mParamSet->setDatabase(mCDB);
     mParamSet->print();
     dbSliders->connect(mCDB, mParamSet);
-    this->splitter->addWidget(dbSliders);
+    mSplitter->addWidget(dbSliders);
     QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
 
     // load database
-    // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+    // mReader->readCinemaDatabase(mDatabase, database, mTableName);
     // mDatabase = mCinDatabase->TEMPGetDatabase();
-    // mReader->readCinemaDatabase(this->mDatabase, database, this->mTableName);
+    // mReader->readCinemaDatabase(mDatabase, database, mTableName);
     // mDatabase = mCinDatabase->TEMPGetDatabase();
 
     QSqlQuery qry;
-    string queryText = "SELECT * FROM " + this->mTableName.toStdString();
+    string queryText = "SELECT * FROM " + mTableName.toStdString();
     qry.exec(queryText.c_str());
 
     //Get number of sliders = number of columns-1
-    this->numSliders = qry.record().count()-1;
-    cout<<"Number of columns: "<<this->numSliders+1<<endl;
+    numSliders = qry.record().count()-1;
+    cout << "Number of columns: " << numSliders + 1 << endl;
 
     //load and display an initial image
-    queryText = "SELECT * FROM " + this->mTableName.toStdString();
+    queryText = "SELECT * FROM " + mTableName.toStdString();
     qry.exec(queryText.c_str());
     QString initFileID;
     qry.first();
     //get the value of last column which is the image path
     // TODO: query for FILE column
-    initFileID = qry.value(this->numSliders).toString();
+    initFileID = qry.value(numSliders).toString();
 
     QString imagePath = database;
     imagePath += "/" + initFileID; //loads the first image from first row in the db
@@ -153,9 +153,9 @@ void MainWindow::loadCinemaDatabase(const QString &database)
         mImageView->loadImage(imagePath,&image);
     }
 
-    this->mScene->addPixmap(image);
-    this->mImageView->setScene(this->mScene);
-    this->mImageLayout->addWidget(this->mImageView);
+    mScene->addPixmap(image);
+    mImageView->setScene(mScene);
+    mImageLayout->addWidget(mImageView);
 }
 
 
@@ -184,7 +184,7 @@ void MainWindow::onOpenFile()
                                                        tr("Open Cinema Database"), "/",
                                                        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    this->loadCinemaDatabase(result);
+    loadCinemaDatabase(result);
 }
 
 void MainWindow::onQuit()
@@ -202,5 +202,5 @@ void MainWindow::flushUI()
 {
     // flush the database
     QSqlQuery qry;
-    qry.exec("DROP TABLE " + this->mTableName);
+    qry.exec("DROP TABLE " + mTableName);
 }

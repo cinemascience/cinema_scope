@@ -32,21 +32,21 @@ void CinImageView::onLoadImage(QString &path)
     qDebug() << "MYIMAGEVIEW: " << path;
 
     loadImage(path, &pixmap);
-    this->sceneObj->addPixmap(pixmap);
+    sceneObj->addPixmap(pixmap);
 }
 
 void CinImageView::wheelEvent(QWheelEvent * event)
 {
-    this->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     // Scale the view / do the zoom
     double scaleFactor = 1.15;
     if(event->delta() > 0) {
         // Zoom in
-        this->scale(scaleFactor, scaleFactor);
+        scale(scaleFactor, scaleFactor);
 
     } else {
         // Zooming out
-         this->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
     }
 }
 
@@ -277,7 +277,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     }
     else
     {
-        this->sceneObj->addPixmap(image);
+        sceneObj->addPixmap(image);
     }
 
     lastXloc = p.rx();

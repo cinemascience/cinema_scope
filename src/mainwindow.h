@@ -68,7 +68,7 @@ private:
     QGraphicsScene *mScene;
     QString         mTableName;
     CinDatabase    *mCDB=NULL;
-    QSplitter   *splitter=NULL;
+    QSplitter      *mSplitter=NULL;
 
     // components
 

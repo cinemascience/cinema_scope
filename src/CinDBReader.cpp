@@ -25,11 +25,11 @@ CinDBReader::CinDBReader()
 
 void CinDBReader::setCurDatabase(const QString &path)
 {
-    this->mCurDatabase = path;
-    this->mCurCSVFile  = path;
-    this->mCurCSVFile  += "/" + CinDBReader::CSVFile;
-    this->mCurSettingsFile = path;
-    this->mCurSettingsFile += "/" + CinDBReader::SettingsFile;
+    mCurDatabase = path;
+    mCurCSVFile  = path;
+    mCurCSVFile  += "/" + CinDBReader::CSVFile;
+    mCurSettingsFile = path;
+    mCurSettingsFile += "/" + CinDBReader::SettingsFile;
 }
 
 int CinDBReader::VerifyDatabase(const QString &path)
@@ -43,8 +43,8 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
 {
     int res = CinDBReader::DatabaseLoadError; 
 
-    this->setCurDatabase(path);
-    std::ifstream input(this->getCurCSVFile().toStdString().c_str());
+    setCurDatabase(path);
+    std::ifstream input(getCurCSVFile().toStdString().c_str());
     std::vector<CinDBColData> coldata;
 
     // TODO: make this bulletproof
@@ -54,7 +54,7 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
         // get column names and create data structure for results 
         input.getline(str, 10000);
         std::vector<std::string> colnames;
-        this->split(str, ',', colnames);
+        split(str, ',', colnames);
         CinDBColData data;
         QString trimmer;
         for (std::vector<std::string>::iterator cur = colnames.begin(); 
@@ -72,7 +72,7 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
         while (input.getline(str, 10000))
         {
             // get values for the current line
-            this->split(str, ',', colvals);
+            split(str, ',', colvals);
 
             // save relevant metadata
             std::vector<CinDBColData>::iterator curColData = coldata.begin();
@@ -82,7 +82,7 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
                 // determine type
                 if (curColData->type == CinDBColData::UNDEFINED) {
                     QString value = cur->c_str();
-                    curColData->type = this->getType(value);
+                    curColData->type = getType(value);
                 }
 
                 curColData++;
@@ -98,7 +98,7 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
     }
 
     // now load data into the database
-    this->loadDB(db, tableName, coldata); 
+    loadDB(db, tableName, coldata); 
 
     return res;
 }
@@ -148,16 +148,16 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
 
 void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vector<CinDBColData> &coldata)
 {
-    std::ifstream input(this->getCurCSVFile().toStdString().c_str());
+    std::ifstream input(getCurCSVFile().toStdString().c_str());
     QSqlQuery query;
     QString command;
     QString insert;
 
     // read settings, if they exist
-    this->readSettings();
+    readSettings();
 
     // create the table from the columns
-    this->constructCommands(CinDBReader::InitTableName, coldata, command, insert);
+    constructCommands(CinDBReader::InitTableName, coldata, command, insert);
     bool success = query.exec(command); 
     // qDebug() << "Executing creation of \"" << dbname << "\" table" << success; 
 
@@ -176,7 +176,7 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
             query.prepare(insert);
 
             // get values for the current line, then iterate over them
-            this->split(str, ',', colvals);
+            split(str, ',', colvals);
             // iterate over the column names as well
             QString bindName;
             std::vector<CinDBColData>::iterator curColData = coldata.begin();
@@ -209,7 +209,7 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
     }
 
     QString newTableCommand;
-    this->constructNewTableCommand(newTableCommand, CinDBReader::InitTableName, tableName);
+    constructNewTableCommand(newTableCommand, CinDBReader::InitTableName, tableName);
     bool newTable = query.exec(newTableCommand); 
     // qDebug() << "NEWTABLE : " << newTable;
     bool dropTable = query.exec("DROP TABLE " + CinDBReader::InitTableName);
@@ -292,7 +292,7 @@ void CinDBReader::constructNewTableCommand(QString &newTableCommand, const QStri
 void CinDBReader::readSettings()
 {
     QString settings;
-    QFile file(this->getCurSettingsFile());
+    QFile file(getCurSettingsFile());
 
     mColOrder.clear();
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
