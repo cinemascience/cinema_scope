@@ -61,7 +61,6 @@ void MainWindow::buildApplication(QWidget *parent)
     mSplitter     = new QSplitter(Qt::Horizontal, mainWidget);
     mImagePanel   = new QWidget();
     mImageLayout  = new QVBoxLayout;
-    mSliderLayout = new QFormLayout;
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);

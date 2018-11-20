@@ -61,7 +61,6 @@ private:
     CinImageView   *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
-    QFormLayout    *mSliderLayout=NULL;
     QGraphicsScene *mScene;
     QString         mTableName;
     CinDatabase    *mCDB=NULL;
