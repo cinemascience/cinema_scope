@@ -21,7 +21,7 @@ class CinParamSet : public QObject
         CinParamSet();
 
         void setDatabase(CinDatabase *database);
-        void add(const QString &name, CinParameter::Type type, float min, float max, float value);
+        bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
         bool getValue(const QString &name, float *value); 
         bool getMinMax(const QString &name, float *min, float *max); 
         const QStringList &getParameterNames() const {return mParamNames;}

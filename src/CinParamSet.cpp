@@ -10,14 +10,18 @@ CinParamSet::CinParamSet()
 {
 }
 
-void CinParamSet::add(const QString &name, CinParameter::Type type, float min, float max, float value)
+bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, float max, float value)
 {
+    bool retVal = false;
+
     if (not contains(name)) 
     {
         mParamNames.push_back(name);
         mParameters.insert(name, CinParameter(name, type, min, max, value));
-    } else {
+        retVal = true;
     }
+
+    return retVal;
 }
 
 // Is there a better way to return a value and a success parameter?
