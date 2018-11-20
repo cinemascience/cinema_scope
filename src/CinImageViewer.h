@@ -28,12 +28,12 @@
 
 #include "CinParamSet.h"
 
-class MyImageView : public QGraphicsView
+class CinImageView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    MyImageView(QWidget *parent) : QGraphicsView(parent) {}
+    CinImageView(QWidget *parent) : QGraphicsView(parent) {}
     QGraphicsScene* sceneObj;
     CinParamSet *paramSet;
 

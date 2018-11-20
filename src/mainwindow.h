@@ -61,7 +61,7 @@ private:
 
     QSqlDatabase   *mDatabase=NULL;
     CinParamSet    *mParamSet=NULL;
-    MyImageView    *mImageView=NULL;
+    CinImageView   *mImageView=NULL;
     QWidget        *mImagePanel=NULL;
     QVBoxLayout    *mImageLayout=NULL;
     QFormLayout    *mSliderLayout=NULL;

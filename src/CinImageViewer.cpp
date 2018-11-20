@@ -5,12 +5,12 @@
 
 using namespace std;
 
-bool MyImageView::loadImage(QString path, QPixmap *image )
+bool CinImageView::loadImage(QString path, QPixmap *image )
 {
     return image->load(path);
 }
 
-string MyImageView::constructQueryString(QStringList currentParamnames)
+string CinImageView::constructQueryString(QStringList currentParamnames)
 {
     string query;
 
@@ -25,7 +25,7 @@ string MyImageView::constructQueryString(QStringList currentParamnames)
     return query;
 }
 
-void MyImageView::onLoadImage(QString &path)
+void CinImageView::onLoadImage(QString &path)
 {
     QPixmap pixmap;
 
@@ -35,7 +35,7 @@ void MyImageView::onLoadImage(QString &path)
     this->sceneObj->addPixmap(pixmap);
 }
 
-void MyImageView::wheelEvent(QWheelEvent * event)
+void CinImageView::wheelEvent(QWheelEvent * event)
 {
     this->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     // Scale the view / do the zoom
@@ -50,7 +50,7 @@ void MyImageView::wheelEvent(QWheelEvent * event)
     }
 }
 
-void MyImageView :: mousePressEvent(QMouseEvent *e)
+void CinImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
@@ -60,7 +60,7 @@ void MyImageView :: mousePressEvent(QMouseEvent *e)
     }
 }
 
-void MyImageView::mouseReleaseEvent(QMouseEvent *e)
+void CinImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
@@ -70,7 +70,7 @@ void MyImageView::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
-void MyImageView::mouseMoveEvent(QMouseEvent *e)
+void CinImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
 

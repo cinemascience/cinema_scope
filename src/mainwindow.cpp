@@ -90,7 +90,7 @@ void MainWindow::buildApplication(QWidget *parent)
 
     // image and scene
     mScene = new QGraphicsScene();
-    mImageView = new MyImageView(mImagePanel);
+    mImageView = new CinImageView(mImagePanel);
     mImageView->sceneObj = mScene;
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
