@@ -140,3 +140,9 @@ CinParameter *CinParamSet::getParameter(const QString &name)
 
     return NULL;
 }
+
+void CinParamSet::setArtifacts(CinArtifactSet *artifacts)
+{
+    mArtifacts = artifacts;
+}
+

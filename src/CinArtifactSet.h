@@ -1,9 +1,11 @@
-#ifndef CINARTIFACTSET_H
-#define CINARTIFACTSET_H
+#ifndef CINARTIFACTSET_H 
+#define CINARTIFACTSET_H 
 
 #include <QObject>
 #include <QString>
 #include <QMap>
+
+class CinParamSet;
 
 //! A class that manages a set of artifacts
 /*!
@@ -20,6 +22,7 @@ class CinArtifactSet : public QObject
         CinArtifactSet() {}
 
         // member functions
+        void setParameters(CinParamSet *params);
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
 
@@ -33,6 +36,7 @@ class CinArtifactSet : public QObject
 
         // member variables
         QMap<QString, QString> mArtifacts;
+        CinParamSet           *mParams=NULL;;
 };
 
 #endif // CINARTIFACTSET_H

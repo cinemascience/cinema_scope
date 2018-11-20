@@ -7,6 +7,8 @@
 #include "CinDatabase.h"
 #include "CinParameter.h"
 
+class CinArtifactSet;
+
 //! A class that manages a set of parameters 
 /*!
  *  A set of parameters defines the input values for a Cinema Database
@@ -22,6 +24,7 @@ class CinParamSet : public QObject
 
         void setDatabase(CinDatabase *database);
         bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
+        void setArtifacts(CinArtifactSet *artifacts);
 
         bool getValue(const QString &name, float *value); 
         bool getMinMax(const QString &name, float *min, float *max); 
@@ -40,9 +43,10 @@ class CinParamSet : public QObject
         bool contains(const QString &name);
         void initParameters();
 
-        QStringList mParamNames;
-        QMap<QString, CinParameter> mParameters;
-        CinDatabase *mDatabase;
+        QStringList                  mParamNames;
+        QMap<QString, CinParameter>  mParameters;
+        CinDatabase                 *mDatabase;
+        CinArtifactSet              *mArtifacts=NULL;
 
 };
 

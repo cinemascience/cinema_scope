@@ -1,4 +1,5 @@
 #include "CinArtifactSet.h"
+#include "CinParamSet.h"
 
 #include <QObject>
 #include <QString>
@@ -28,4 +29,9 @@ const QString &CinArtifactSet::get(const QString &key)
     }
 
     return CinArtifactSet::NOTFOUND; 
+}
+
+void CinArtifactSet::setParameters(CinParamSet *params)
+{
+    mParams = params;
 }
