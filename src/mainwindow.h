@@ -69,7 +69,6 @@ private:
     QString         mTableName;
     CinDatabase    *mCDB=NULL;
     QSplitter   *splitter=NULL;
-    QWidget     *sliderPanel=NULL;
 
     // components
 

@@ -63,7 +63,6 @@ void MainWindow::buildApplication(QWidget *parent)
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
     this->splitter         = new QSplitter(Qt::Horizontal, mainWidget);
-    this->sliderPanel      = new QWidget();
     this->mImagePanel   = new QWidget();
     this->mImageLayout  = new QVBoxLayout;
     this->mSliderLayout = new QFormLayout;
@@ -74,13 +73,9 @@ void MainWindow::buildApplication(QWidget *parent)
 
     splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     splitter->addWidget(this->mImagePanel);
-    splitter->addWidget(sliderPanel);
 
     mImagePanel->setLayout(mImageLayout);
     mImagePanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    sliderPanel->setLayout(mSliderLayout);
-    sliderPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // colors for testing
     // mainWidget->setStyleSheet("background-color:red");
@@ -118,7 +113,7 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mParamSet->setDatabase(mCDB);
     mParamSet->print();
     dbSliders->connect(mCDB, mParamSet);
-    this->mSliderLayout->addWidget(dbSliders);
+    this->splitter->addWidget(dbSliders);
     QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
