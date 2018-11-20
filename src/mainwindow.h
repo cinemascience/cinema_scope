@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QApplication>
-#include <QtSql>
 #include <QMainWindow>
 #include <QSlider>
 #include <QVBoxLayout>
@@ -12,7 +11,6 @@
 #include <QGraphicsView>
 #include <QDir>
 #include <QFormLayout>
-#include <QSqlField>
 #include <QStyleFactory>
 #include <QMouseEvent>
 #include <QMenuBar>
@@ -59,7 +57,6 @@ private:
 
     QString   mCurDatabase;
 
-    QSqlDatabase   *mDatabase=NULL;
     CinParamSet    *mParamSet=NULL;
     CinImageView   *mImageView=NULL;
     QWidget        *mImagePanel=NULL;

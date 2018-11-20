@@ -51,10 +51,6 @@ void MainWindow::buildApplication(QWidget *parent)
 {
     // create the database and cinema reaader
     mCDB = new CinDatabase();
-    mDatabase = mCDB->TEMPGetDatabase();
-    // mDatabase = QSqlDatabase::addDatabase("QSQLITE");
-    // mDatabase.open();
-    // mReader = new CinDBReader();
 
     // remember the table name
     mTableName = "cinema";
@@ -117,12 +113,6 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     QObject::connect(dbSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
     mImageView->paramSet = mParamSet; //pointing to parameter set
-
-    // load database
-    // mReader->readCinemaDatabase(mDatabase, database, mTableName);
-    // mDatabase = mCinDatabase->TEMPGetDatabase();
-    // mReader->readCinemaDatabase(mDatabase, database, mTableName);
-    // mDatabase = mCinDatabase->TEMPGetDatabase();
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + mTableName.toStdString();
