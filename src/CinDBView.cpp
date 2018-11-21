@@ -25,7 +25,7 @@ int CinDBView::load(const QString &db, const QString &table)
 
     if (mDatabase != NULL) {
         result = mDatabase->loadDatabase(db, table);
-            // TODO check result
+            // TODO check result of loading database
         mParams.init();
         mArtifacts.init();
 

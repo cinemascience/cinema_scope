@@ -123,10 +123,14 @@ void CinParamSet::init()
 
 }
 
-// TODO error checking
 void CinParamSet::setDatabase(CinDatabase *database)
 {
-    mDatabase = database;
+    if (mDatabase != NULL)
+    {
+        mDatabase = database;
+    } else {
+        qWarning("CinParamSet: database member variable already set");
+    }
 }
 
 

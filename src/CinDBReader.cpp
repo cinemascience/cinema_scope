@@ -12,6 +12,7 @@
 #include <iostream>
 #include <QtGlobal>
 #include <QtDebug>
+#include <QDir>
 #include <string>
 #include <vector>
 
@@ -19,16 +20,17 @@ const QString CinDBReader::CSVFile       = "data.csv";
 const QString CinDBReader::SettingsFile  = "csettings.json";
 const QString CinDBReader::InitTableName = "initial_table";
 
+// TODO remove std::strings and std::vectors ?
+
 CinDBReader::CinDBReader() 
 {
 }
 
 void CinDBReader::setCurDatabase(const QString &path)
 {
-    // TODO: cross-platform path construction
     mCurDatabase = path;
-    mCurCSVFile  = QString("%1/%2").arg(path, CinDBReader::CSVFile);
-    mCurSettingsFile = QString("%1/%2").arg(path, CinDBReader::SettingsFile);
+    mCurCSVFile      = QDir(path).filePath(CinDBReader::CSVFile);
+    mCurSettingsFile = QDir(path).filePath(CinDBReader::SettingsFile);
 }
 
 int CinDBReader::VerifyDatabase(const QString &path)
@@ -46,7 +48,7 @@ int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const
     std::ifstream input(getCurCSVFile().toStdString().c_str());
     std::vector<CinDBColData> coldata;
 
-    // TODO: make this bulletproof
+    // TODO read files in a bulletproof way. 
     char str[10000];
     if (input)
     {

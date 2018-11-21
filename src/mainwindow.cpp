@@ -119,7 +119,6 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     QString initFileID;
     qry.first();
     //get the value of last column which is the image path
-    // TODO: query for FILE column
     initFileID = qry.value(numSliders).toString();
 
     QString imagePath = database;
