@@ -97,6 +97,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mDBI->load(database, mTableName);
     mSliders->connect(mDBI->getDatabase(), mDBI->getParameters());
     QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
+    // Testing query string
+    // QString tempQuery;
+    // mDBI->getParameters()->getArtifactQueryString(tempQuery);
+    // qDebug() << "QUERY: " << tempQuery;
+    // mDBI->updateArtifacts();
 
     mImageView->paramSet = mDBI->getParameters();
 

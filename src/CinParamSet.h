@@ -31,6 +31,7 @@ class CinParamSet : public QObject
         const QStringList &getParameterNames() const {return mParamNames;}
         int  getNumParameters() {return mParamNames.count();}
         CinParameter *getParameter(const QString &name);
+        // void getArtifactQueryString(QString &query);
 
         void init();
 
@@ -48,6 +49,9 @@ class CinParamSet : public QObject
         QMap<QString, CinParameter>  mParameters;
         CinDatabase                 *mDatabase;
         CinArtifactSet              *mArtifacts=NULL;
+
+    public:
+        QMap<QString, CinParameter> &getParameters() {return mParameters;}
 
 };
 

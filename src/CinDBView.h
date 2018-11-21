@@ -7,7 +7,7 @@
 
 class CinDatabase;
 
-//! A class that manages a set of artifacts and parameters
+//! A class that manages a view of a cinema database 
 /*!
  *  This class manages an interface to a Cinema Database,
  *  which is a set of parameters and a set of artifacts
@@ -25,8 +25,12 @@ class CinDBView : public QObject
 
         void setDatabase(CinDatabase *db);
         int load(const QString &db, const QString &table);
+        void updateArtifacts();
 
     private:
+        void getArtifactQueryString(QString &query);
+        bool getFullPathToArtifact(const QString &artifact, QString &fullpath);
+
         CinArtifactSet mArtifacts;
         CinParamSet    mParams;
         CinDatabase   *mDatabase;

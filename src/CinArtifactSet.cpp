@@ -35,3 +35,5 @@ void CinArtifactSet::setParameters(CinParamSet *params)
 {
     mParams = params;
 }
+
+
