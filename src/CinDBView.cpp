@@ -11,9 +11,7 @@ void CinDBView::setDatabase(CinDatabase *db)
     if (mDatabase == NULL) {
         mDatabase = db;
         mParams.setDatabase(db);
-        mParams.setArtifacts(&mArtifacts);
         mArtifacts.setDatabase(db);
-        mArtifacts.setParameters(&mParams);
     } else {
         qWarning("CINDBVIEW: database already exists");
     }

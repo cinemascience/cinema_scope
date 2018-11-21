@@ -24,7 +24,6 @@ class CinParamSet : public QObject
 
         void setDatabase(CinDatabase *database);
         bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
-        void setArtifacts(CinArtifactSet *artifacts);
 
         bool getValue(const QString &name, float *value); 
         bool getMinMax(const QString &name, float *min, float *max); 
@@ -48,7 +47,6 @@ class CinParamSet : public QObject
         QStringList                  mParamNames;
         QMap<QString, CinParameter>  mParameters;
         CinDatabase                 *mDatabase;
-        CinArtifactSet              *mArtifacts=NULL;
 
     public:
         QMap<QString, CinParameter> &getParameters() {return mParameters;}

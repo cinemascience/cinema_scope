@@ -144,29 +144,3 @@ CinParameter *CinParamSet::getParameter(const QString &name)
 
     return NULL;
 }
-
-void CinParamSet::setArtifacts(CinArtifactSet *artifacts)
-{
-    mArtifacts = artifacts;
-}
-
-/*
-void CinParamSet::getArtifactQueryString(QString &query)
-{
-    query = QString("SELECT * FROM %1 WHERE ").arg(mDatabase->getTableName());
-
-    QMap<QString, CinParameter>::const_iterator i = mParameters.constBegin();
-    bool first = true;
-    while ( i != mParameters.constEnd() )
-    {
-        if (not first) 
-        {
-            query += " AND ";
-        } else {
-            first = false;
-        }
-        query += QString("%1 := %2").arg(i.key(), QString::number(i.value().getValue()));
-        ++i;
-    }
-}
-*/

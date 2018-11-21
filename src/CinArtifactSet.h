@@ -5,7 +5,6 @@
 #include <QString>
 #include <QMap>
 
-class CinParamSet;
 class CinDatabase;
 
 //! A class that manages a set of artifacts
@@ -34,7 +33,6 @@ class CinArtifactSet : public QObject
         // TODO all 'sets' should react if they already have a non-NULL pointer
         void init() {}
         void setDatabase(CinDatabase *db) {mDatabase = db;}
-        void setParameters(CinParamSet *params);
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
 
@@ -48,7 +46,6 @@ class CinArtifactSet : public QObject
 
         // member variables
         QMap<QString, QString> mArtifacts;
-        CinParamSet           *mParams=NULL;
         CinDatabase           *mDatabase=NULL;
 };
 
