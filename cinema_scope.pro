@@ -35,7 +35,9 @@ SOURCES += \
         src/CinParamSet.cpp \
         src/CinDatabase.cpp \
         src/CinImageViewer.cpp \
-        src/CinArtifactSet.cpp
+        src/CinArtifactSet.cpp \
+        src/CinDBInterface.cpp \
+        src/CinDBFactory.cpp
 
 HEADERS += \
         src/mainwindow.h \
@@ -45,4 +47,6 @@ HEADERS += \
         src/CinParamSet.h \
         src/CinDatabase.h \
         src/CinImageViewer.h \
-        src/CinArtifactSet.h
+        src/CinArtifactSet.h \
+        src/CinDBInterface.h \
+        src/CinDBFactory.h

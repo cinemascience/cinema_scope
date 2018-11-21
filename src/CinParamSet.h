@@ -32,6 +32,8 @@ class CinParamSet : public QObject
         int  getNumParameters() {return mParamNames.count();}
         CinParameter *getParameter(const QString &name);
 
+        void initParameters();
+
         void changeParameter(const QString &name, float value);
 
         void print();
@@ -41,7 +43,6 @@ class CinParamSet : public QObject
 
     private:
         bool contains(const QString &name);
-        void initParameters();
 
         QStringList                  mParamNames;
         QMap<QString, CinParameter>  mParameters;

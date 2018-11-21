@@ -126,7 +126,6 @@ void CinParamSet::initParameters()
 void CinParamSet::setDatabase(CinDatabase *database)
 {
     mDatabase = database;
-    initParameters();
 }
 
 

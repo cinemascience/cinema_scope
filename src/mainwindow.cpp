@@ -14,6 +14,7 @@
 #include "CinParameter.h"
 #include "CinParamSet.h"
 #include "CinImageViewer.h"
+#include "CinDBFactory.h"
 
 MainWindow::~MainWindow()
 {
@@ -49,8 +50,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::buildApplication(QWidget *parent)
 {
-    // create the database and cinema reaader
-    mCDB = new CinDatabase();
+    // build the DB and all its object
+    mDBI = CinDBFactory::BuildDBInterface();
 
     // remember the table name
     mTableName = "cinema";
@@ -60,7 +61,6 @@ void MainWindow::buildApplication(QWidget *parent)
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
     mSplitter  = new QSplitter(Qt::Horizontal, mainWidget);
     mSliders   = new CinParamSliders();
-    mParamSet  = new CinParamSet();
     mImageView = new CinImageView(mSplitter);
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -94,14 +94,11 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mCurDatabase = database;
     mImageView->dbPath = database;
 
-    // load database 
-    mCDB->loadDatabase(database, mTableName);
-    mParamSet->setDatabase(mCDB);
-    // mParamSet->print();
-    mSliders->connect(mCDB, mParamSet);
+    mDBI->load(database, mTableName);
+    mSliders->connect(mDBI->getDatabase(), mDBI->getParameters());
     QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
 
-    mImageView->paramSet = mParamSet; //pointing to parameter set
+    mImageView->paramSet = mDBI->getParameters();
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + mTableName.toStdString();
