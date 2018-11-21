@@ -13,6 +13,14 @@ class CinDatabase;
  *  A set of artifacts defines the output values for a Cinema Database
  *  This class manages communication about these artifacts as they
  *  change in a Qt application.
+ *
+ *  An artifact is a related set of data in permanent storage. It may be
+ *  a series of images, a set of data files - just about anything. This
+ *  class manages the 'current value' of an artifact. The meaning of
+ *  'current value' is defined by the artifact. For example, for a series
+ *  of images, the current value is the current image file. The value of
+ *  the current image is the URL to that image.
+ *
 */
 class CinArtifactSet : public QObject
 {
