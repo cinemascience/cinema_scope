@@ -16,10 +16,10 @@ int CinDBInterface::load(const QString &db, const QString &table)
     if (mDatabase) {
         result = mDatabase->loadDatabase(db, table);
         // TODO check result
-        mParams.initParameters();
-        mParams.print();
+        mParams.init();
+        // mParams.print();
+        mArtifacts.init();
         // TODO create init for this class; rename initParameters to init
-        // mArtifacts.init();
 
     } else {
         qWarning("CINDBINTERFACE: NULL database");

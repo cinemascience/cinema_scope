@@ -88,7 +88,7 @@ void CinParamSet::print()
 }
 
 
-void CinParamSet::initParameters()
+void CinParamSet::init()
 {
     // TODO: clear everything out first
     QString curColumn;

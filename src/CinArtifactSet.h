@@ -24,6 +24,7 @@ class CinArtifactSet : public QObject
 
         // member functions
         // TODO all 'sets' should react if they already have a non-NULL pointer
+        void init() {}
         void setDatabase(CinDatabase *db) {mDatabase = db;}
         void setParameters(CinParamSet *params);
         void set(const QString &key, const QString &value); 

@@ -9,6 +9,11 @@ class CinDatabase;
 
 //! A class that manages a set of artifacts and parameters
 /*!
+ *  This class manages an interface to a Cinema Database,
+ *  which is a set of parameters and a set of artifacts
+ *  There can be many different interfaces to the database,
+ *  which is why this class contains the parameters and
+ *  artifacts, but only points to the database 
 */
 class CinDBInterface : public QObject
 {

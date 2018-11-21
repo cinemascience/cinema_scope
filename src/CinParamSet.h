@@ -32,7 +32,7 @@ class CinParamSet : public QObject
         int  getNumParameters() {return mParamNames.count();}
         CinParameter *getParameter(const QString &name);
 
-        void initParameters();
+        void init();
 
         void changeParameter(const QString &name, float value);
 
