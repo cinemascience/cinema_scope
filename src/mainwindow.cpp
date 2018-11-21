@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void MainWindow::buildApplication(QWidget *parent)
 {
     // build the DB and all its object
-    mDBI = CinDBFactory::BuildDBInterface();
+    mDBI = CinDBFactory::BuildDBView();
 
     // remember the table name
     mTableName = "cinema";

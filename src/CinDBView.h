@@ -1,5 +1,5 @@
-#ifndef CINDBINTERFACE_H 
-#define CINDBINTERFACE_H 
+#ifndef CINDBVIEW_H 
+#define CINDBVIEW_H 
 
 #include <QObject>
 #include "CinArtifactSet.h"
@@ -15,13 +15,13 @@ class CinDatabase;
  *  which is why this class contains the parameters and
  *  artifacts, but only points to the database 
 */
-class CinDBInterface : public QObject
+class CinDBView : public QObject
 {
     Q_OBJECT
 
     public:
         // constructor
-        CinDBInterface() {}
+        CinDBView() {}
 
         void setDatabase(CinDatabase *db);
         int load(const QString &db, const QString &table);
@@ -40,4 +40,4 @@ class CinDBInterface : public QObject
 
 };
 
-#endif // CINDBINTERFACE_H
+#endif // CINDBVIEW_H

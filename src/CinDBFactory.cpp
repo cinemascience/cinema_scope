@@ -1,5 +1,5 @@
 #include "CinDBFactory.h"
-#include "CinDBInterface.h"
+#include "CinDBView.h"
 #include "CinDatabase.h"
 
 #include <QString>
@@ -8,12 +8,12 @@ CinDBFactory::CinDBFactory()
 {
 }
 
-CinDBInterface *CinDBFactory::BuildDBInterface()
+CinDBView *CinDBFactory::BuildDBView()
 {
-    CinDBInterface *interface = new CinDBInterface();
-    CinDatabase    *database  = new CinDatabase();
+    CinDBView   *view = new CinDBView();
+    CinDatabase *db   = new CinDatabase();
 
-    interface->setDatabase(database);
+    view->setDatabase(db);
 
-    return interface;
+    return view;
 }

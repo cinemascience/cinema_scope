@@ -28,7 +28,7 @@
 #include "CinParameter.h"
 #include "CinParamSet.h"
 #include "CinImageViewer.h"
-#include "CinDBInterface.h"
+#include "CinDBView.h"
 
 #include <iostream>
 #include <sstream>
@@ -58,7 +58,7 @@ private:
 
     QString   mCurDatabase;
 
-    CinDBInterface  *mDBI=NULL;
+    CinDBView  *mDBI=NULL;
     CinImageView    *mImageView=NULL;
     QGraphicsScene  *mScene;
     QSplitter       *mSplitter=NULL;

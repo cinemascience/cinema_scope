@@ -5,7 +5,7 @@
 
 
 class CinParamSet;
-class CinDBInterface;
+class CinDBView;
 
 //! Class that builds a set of objects needed to interact with Cinema data 
 /*!
@@ -17,7 +17,7 @@ class CinDBFactory
         CinDBFactory();
 
         // member functions
-        static CinDBInterface *BuildDBInterface();
+        static CinDBView *BuildDBView();
 
     private:
 };
