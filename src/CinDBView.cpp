@@ -1,5 +1,6 @@
 #include "CinDBView.h"
 #include "CinCore.h"
+#include "CinDatabase.h"
 #include <QtGlobal>
 #include <QSqlQuery>
 #include <QDebug>
@@ -10,8 +11,6 @@ void CinDBView::setDatabase(CinDatabase *db)
 {
     if (mDatabase == NULL) {
         mDatabase = db;
-        mParams.setDatabase(db);
-        mArtifacts.setDatabase(db);
     } else {
         qWarning("CINDBVIEW: database already exists");
     }
@@ -24,8 +23,8 @@ int CinDBView::load(const QString &db, const QString &table)
     if (mDatabase != NULL) {
         result = mDatabase->loadDatabase(db, table);
             // TODO check result of loading database
-        mParams.init();
-        mArtifacts.init();
+        mParams.init(*mDatabase);
+        mArtifacts.init(*mDatabase);
 
     } else {
         qWarning("CINDBVIEW: NULL database");
@@ -53,6 +52,8 @@ void CinDBView::updateArtifacts()
     QString path;
     bool result = getFullPathToArtifact(artifact, path);
     qDebug() << "VIEW: " << path << result;
+    
+    emit artifactChanged("FILE", path);
 }
 
 /*! \brief Get a fully qualified and verified path to an artifact

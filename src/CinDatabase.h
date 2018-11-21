@@ -8,11 +8,10 @@
 
 //! A class that manages the in-memory database created from a Cinema Database
 /*!
-    This class contains everything it needs to read a Cinema Database, retain
-    information about the Cinema Database, and an implementation of a database
-    that holds the in-memory database. 
+ *  This class contains everything it needs to read a Cinema Database, retain
+ *  information about the Cinema Database, and an implementation of a database
+ *  that holds the in-memory database. 
 */
-
 class CinDatabase 
 {
     public:

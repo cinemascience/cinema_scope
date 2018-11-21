@@ -4,10 +4,9 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
-#include "CinDatabase.h"
 #include "CinParameter.h"
 
-class CinArtifactSet;
+class CinDatabase;
 
 //! A class that manages a set of parameters 
 /*!
@@ -22,7 +21,6 @@ class CinParamSet : public QObject
     public:
         CinParamSet();
 
-        void setDatabase(CinDatabase *database);
         bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
 
         bool getValue(const QString &name, float *value); 
@@ -32,7 +30,8 @@ class CinParamSet : public QObject
         CinParameter *getParameter(const QString &name);
         // void getArtifactQueryString(QString &query);
 
-        void init();
+            // TODO make this a const reference
+        void init(CinDatabase &db);
 
         void changeParameter(const QString &name, float value);
 
@@ -46,7 +45,6 @@ class CinParamSet : public QObject
 
         QStringList                  mParamNames;
         QMap<QString, CinParameter>  mParameters;
-        CinDatabase                 *mDatabase;
 
     public:
         QMap<QString, CinParameter> &getParameters() {return mParameters;}

@@ -11,8 +11,6 @@ const QString CinArtifactSet::NOTFOUND = "CinArtifactSetNOTFOUND";
 void CinArtifactSet::set(const QString &key, const QString &value) 
 {
     mArtifacts.insert(key, value); 
-
-    emit artifactChanged(key, value);
 }
 
 bool CinArtifactSet::contains(const QString &key)
@@ -29,4 +27,8 @@ const QString &CinArtifactSet::get(const QString &key)
     }
 
     return CinArtifactSet::NOTFOUND; 
+}
+
+void CinArtifactSet::init(CinDatabase &db)
+{
 }

@@ -14,6 +14,9 @@ class CinDatabase;
  *  There can be many different interfaces to the database,
  *  which is why this class contains the parameters and
  *  artifacts, but only points to the database 
+ *
+ *  emits a SIGNAL (artifactChanged) when an artifact is
+ *  changed.
 */
 class CinDBView : public QObject
 {
@@ -26,6 +29,9 @@ class CinDBView : public QObject
         void setDatabase(CinDatabase *db);
         int load(const QString &db, const QString &table);
         void updateArtifacts();
+
+    signals:
+        void artifactChanged(const QString &key, const QString &value);
 
     private:
         void getArtifactQueryString(QString &query);

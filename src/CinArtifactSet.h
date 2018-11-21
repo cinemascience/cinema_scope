@@ -1,7 +1,6 @@
 #ifndef CINARTIFACTSET_H 
 #define CINARTIFACTSET_H 
 
-#include <QObject>
 #include <QString>
 #include <QMap>
 
@@ -21,32 +20,25 @@ class CinDatabase;
  *  the current image is the URL to that image.
  *
 */
-class CinArtifactSet : public QObject
+class CinArtifactSet
 {
-    Q_OBJECT
-
     public:
         // constructor
         CinArtifactSet() {}
 
         // member functions
         // TODO all 'sets' should react if they already have a non-NULL pointer
-        void init() {}
-        void setDatabase(CinDatabase *db) {mDatabase = db;}
+        void init(CinDatabase &db);
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
 
         static const QString NOTFOUND;
-
-    signals:
-        void artifactChanged(const QString &key, const QString &value);
 
     private:
         bool contains(const QString &key);
 
         // member variables
         QMap<QString, QString> mArtifacts;
-        CinDatabase           *mDatabase=NULL;
 };
 
 #endif // CINARTIFACTSET_H

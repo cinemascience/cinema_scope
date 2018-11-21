@@ -89,16 +89,16 @@ void CinParamSet::print()
 }
 
 
-void CinParamSet::init()
+void CinParamSet::init(CinDatabase &db)
 {
     // TODO: clear everything out first
     QString curColumn;
     QSqlQuery query;
-    const QStringList &cols = mDatabase->getParameterColumnNames();
+    const QStringList &cols = db.getParameterColumnNames();
     for (int i=0;i<cols.count();i++)
     {
         // get the min and max values
-        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + mDatabase->getTableName());
+        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + db.getTableName());
         query.first();
 
         // add the parameter 
@@ -107,7 +107,7 @@ void CinParamSet::init()
         add(cols.at(i), CinParameter::FLOAT, min, max, min); 
 
         // gather all the values
-        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + mDatabase->getTableName()); 
+        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + db.getTableName()); 
         CinParameter *param = getParameter(cols.at(i));
         if (param)
         {
@@ -122,17 +122,6 @@ void CinParamSet::init()
     }
 
 }
-
-void CinParamSet::setDatabase(CinDatabase *database)
-{
-    if (mDatabase != NULL)
-    {
-        mDatabase = database;
-    } else {
-        qWarning("CinParamSet: database member variable already set");
-    }
-}
-
 
 CinParameter *CinParamSet::getParameter(const QString &name)
 {
