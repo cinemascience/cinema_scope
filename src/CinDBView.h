@@ -39,7 +39,7 @@ class CinDBView : public QObject
 
         CinArtifactSet mArtifacts;
         CinParamSet    mParams;
-        CinDatabase   *mDatabase;
+        CinDatabase   *mDatabase=NULL;
 
     public:
         CinArtifactSet *getArtifacts()  {return &mArtifacts;}
