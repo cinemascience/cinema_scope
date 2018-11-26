@@ -22,6 +22,12 @@ development environment. Examples include:
 appropriate tools are installed). Edit the code and run `make` to create
 executables.
 
+## Settings
+
+This application looks for a settings file at `$HOME/.cinema/scope/settings.ini` for an INI-style settings file.
+
+
+
 ## Contacts
 
 Contact us at `cinema_dev@lanl.gov` with questions. Issues may be added to the
