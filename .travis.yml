@@ -8,11 +8,11 @@ language: cpp
 
 # Notification settings
 notifications:
-  email:
+  email: false
     # Default recipients are those with push or admin permissions of the repo
     #recipients:
-    on_success: never # default: change
-    on_failure: always # default: always
+    #on_success: never # default: change
+    #on_failure: always # default: always
 
 # Get the repository
 git:
