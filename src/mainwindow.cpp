@@ -8,6 +8,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QList>
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
@@ -83,6 +84,7 @@ void MainWindow::buildApplication(QWidget *parent)
     mImageView->mTableName = mTableName;
     mSplitter->addWidget(mImageView);
     mSplitter->addWidget(mSliders);
+    mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
 }
 
 void MainWindow::loadCinemaDatabase(const QString &database)
