@@ -64,6 +64,7 @@ private:
     QSplitter       *mSplitter=NULL;
     CinParamSliders *mSliders=NULL;
     QString          mTableName;
+    QString          mSettingsFile;
 
 private slots:
 

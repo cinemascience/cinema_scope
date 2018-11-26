@@ -8,6 +8,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QSettings>
 #include <QList>
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -46,6 +47,10 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    // settings
+    mSettingsFile = QDir::homePath() + "/.cinemascope/settings.ini";
+    QSettings settings(mSettingsFile, QSettings::IniFormat);
+
     buildApplication(parent);
 }
 
@@ -160,10 +165,13 @@ void MainWindow::createActions()
 
 void MainWindow::onOpenFile()
 {
+    QSettings settings(mSettingsFile, QSettings::IniFormat);
+    QString dataDir = settings.value("cinemascope/data").toString(); 
+    qDebug() << "SETTINGS: " << dataDir;
 
     QString result = QFileDialog::getExistingDirectory(this,
-                                                       tr("Open Cinema Database"), "/",
-                                                       QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                         tr("Open Cinema Database"), dataDir, 
+                         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     loadCinemaDatabase(result);
 }
