@@ -48,7 +48,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     // settings
-    mSettingsFile = QDir::homePath() + "/.cinemascope/settings.ini";
+    mSettingsFile = QDir::homePath() + "/.cinema/scope/settings.ini";
     QSettings settings(mSettingsFile, QSettings::IniFormat);
 
     buildApplication(parent);
