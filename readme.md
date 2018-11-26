@@ -1,4 +1,5 @@
 ## Cinema Scope v0.1 cross-platform application
+[![Build Status](https://travis-ci.org/EthanS94/cinema_scope.svg?branch=master)](https://travis-ci.org/EthanS94/cinema_scope)
 
 Note that Cinema:Scope is in pre-release development. Code should be considered
 for experimental use only.
