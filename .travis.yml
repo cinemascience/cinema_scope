@@ -1,5 +1,11 @@
 language: cpp
 
+#Which branches to build. Currently set for master and any tag
+#branches:
+#  only:
+#  - master
+#  - /v[0-9].*$/
+
 # Notification settings
 notifications:
   email:
@@ -84,10 +90,23 @@ script:
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
 #before_deploy:
+#  git clone https://github.com/${TRAVIS_REPO_SLUG}.git ${TRAVIS_TAG} && \
+#    cd ${TRAVIS_TAG} && git checkout ${TRAVIS_TAG} && cd ../ && \
+#    zip -r ${TRAVIS_TAG}.zip ${TRAVIS_TAG} && \
+#    tar czf ${TRAVIS_TAG}.tar.gz ${TRAVIS_TAG} 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
+# This deploys a zip and a tarball to Github Releases if it is a tagged push request
 #deploy:
+#  provider: releases
+#  api_key: "GITHUB OATH TOKEN"
+#  file:
+#    - "${TRAVIS_TAG}.zip"
+#    - "${TRAVIS_TAG}.tar.gz"
+#  skip_cleanup: true
+#  on:
+#    tags: true
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
