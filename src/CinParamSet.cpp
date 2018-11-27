@@ -26,29 +26,29 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, f
 }
 
 // Is there a better way to return a value and a success parameter?
-bool CinParamSet::getValue(const QString &name, float *value) 
+bool CinParamSet::getValue(const QString &name, float &value) 
 {
     bool success = false;
 
     QMap<QString, CinParameter>::iterator found = mParameters.find(name);
     if (found != mParameters.end())
     {
-        *value = found.value().getValue(); 
+        value = found.value().getValue(); 
         success = true;
     }
 
     return success;
 }
 
-bool CinParamSet::getMinMax(const QString &name, float *min, float *max)
+bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
 {
     bool success = false;
 
     QMap<QString, CinParameter>::iterator found = mParameters.find(name);
     if (found != mParameters.end())
     {
-        *min = found.value().getMin(); 
-        *max = found.value().getMax(); 
+        min = found.value().getMin(); 
+        max = found.value().getMax(); 
         success = true;
     }
 
@@ -107,7 +107,8 @@ void CinParamSet::init(CinDatabase &db)
         add(cols.at(i), CinParameter::FLOAT, min, max, min); 
 
         // gather all the values
-        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + db.getTableName()); 
+        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + db.getTableName() + " ORDER BY " + cols.at(i) ); 
+        // TODO make this a reference, instead of a pointer
         CinParameter *param = getParameter(cols.at(i));
         if (param)
         {
@@ -116,6 +117,8 @@ void CinParamSet::init(CinDatabase &db)
                 param->recordValue(query.value(0).toFloat());
                 // qDebug() << "PARAMSET: " << query.value(0).toFloat();
             }
+            param->sortValues();
+            param->print();
         } else {
             qWarning() << "PARAMSET: NULL pointer from getParameter";
         }
@@ -132,4 +135,28 @@ CinParameter *CinParamSet::getParameter(const QString &name)
     }
 
     return NULL;
+}
+
+bool CinParamSet::getNextValue(const QString &name, float value, float &next)
+{
+    CinParameter *p = getParameter(name);
+    if (p) 
+    {
+        return p->getNextValue(value, next);
+    } else 
+    {
+        return false;
+    }
+}
+
+bool CinParamSet::getPrevValue(const QString &name, float value, float &prev)
+{
+    CinParameter *p = getParameter(name);
+    if (p) 
+    {
+        return p->getPrevValue(value, prev);
+    } else 
+    {
+        return false;
+    }
 }

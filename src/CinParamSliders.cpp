@@ -44,7 +44,7 @@ void CinParamSliders::buildSliders()
     float min, max;
     for (int i=0;i<cols.count();i++)
     {
-        if ( mParameters->getMinMax( cols.at(i), &min, &max ) )
+        if ( mParameters->getMinMax( cols.at(i), min, max ) )
         {
             // create slider
             slider = new QSlider(Qt::Horizontal);

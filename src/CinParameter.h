@@ -20,8 +20,9 @@ class CinParameter
         // constructor
         CinParameter(const QString &name, CinParameter::Type type, float min, float max, float cur);
 
-        // member functions
-        float getClosestValue(float value);
+        // member function
+        bool getNextValue(float value, float &next);
+        bool getPrevValue(float value, float &prev);
         const QString &getName() const {return mName;}
         CinParameter::Type getType() const {return mType;}
         float getMin() const {return mMin;}
@@ -34,6 +35,9 @@ class CinParameter
         void  setMax(float max)                {mMax   = max;}
         void  setValue(float value)            {mValue = value;}
         void  recordValue(float value);
+
+        void  print();
+        void  sortValues();
 
     private:
         // member variables

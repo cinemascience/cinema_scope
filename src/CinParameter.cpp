@@ -1,5 +1,6 @@
 #include "CinParameter.h"
 #include <QString>
+#include <QDebug>
 
 const char *CinParameter::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
 
@@ -20,15 +21,31 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type, float m
     mValue = cur;
 }
 
-float CinParameter::getClosestValue(float value)
+bool CinParameter::getNextValue(float value, float &next)
 {
-    float retVal = value;
+    float retVal = false; 
+
+    std::vector<float>::iterator it = std::upper_bound(mValues.begin(), mValues.end(), value);
+
+    if (it != mValues.end()) 
+    { 
+        next = *it;
+        retVal = true;
+    }        
+         
+    return retVal; 
+}
+
+bool CinParameter::getPrevValue(float value, float &prev)
+{
+    float retVal = false; 
 
     std::vector<float>::iterator it = std::lower_bound(mValues.begin(), mValues.end(), value);
 
     if (it != mValues.end()) 
     { 
-        retVal = *it;
+        prev = *it;
+        retVal = true;
     }        
          
     return retVal; 
@@ -43,4 +60,19 @@ void CinParameter::recordValue(float value)
     {
         mValues.push_back(value);
     }
+}
+
+void CinParameter::sortValues()
+{
+    std::sort(mValues.begin(), mValues.end());
+}
+
+void CinParameter::print()
+{
+    qDebug() << "PARAMETER: " << mName;
+    for (std::vector<float>::iterator it = mValues.begin(); it != mValues.end(); ++it)
+    { 
+        qDebug() << "           " << *it;
+    }        
+    qDebug() << " ";
 }

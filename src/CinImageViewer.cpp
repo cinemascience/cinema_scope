@@ -85,7 +85,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     for(int i=0;i<paramNames.size();i++)
     {
         float val;
-        paramSet->getValue(paramNames[i],&val);
+        paramSet->getValue(paramNames[i], val);
         currentParamVals.push_back(val);
     }
 
@@ -93,10 +93,10 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     for(int i=0;i<paramNames.size();i++)
     {
         if(paramNames[i]=="phi")
-            paramSet->getValue(paramNames[i],&currentPhi);
+            paramSet->getValue(paramNames[i], currentPhi);
 
         if(paramNames[i]=="theta")
-            paramSet->getValue(paramNames[i],&currentTheta);
+            paramSet->getValue(paramNames[i], currentTheta);
     }
 
     QSqlQuery qry;
@@ -112,10 +112,22 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             qry.prepare(QString("SELECT MIN(phi) FROM %1 WHERE phi > :phi").arg(mTableName));
             qry.bindValue(":phi", currentPhi);
             qry.exec();
+                // begin testing
+            // float next;
+            // bool nbool = paramSet->getNextValue( "phi", currentPhi, next );
+            // float prev;
+            // bool pbool = paramSet->getPrevValue( "phi", currentPhi, prev );
+            // qDebug() << "PHI PREV QUERY (" << pbool << ") : " << currentPhi << ": " << prev;
+            // qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
+                // end testing
             while (qry.next())
             {
                 currentPhi = qry.value(0).toFloat();
             }
+                // begin testing
+            // qDebug() << "PHI NEXT QUERY: " << currentPhi;
+            // qDebug() << " ";
+                // end testing
 
             //now get the correct image
             queryText = constructQueryString(paramNames);
@@ -145,7 +157,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
         else if((p.rx() - currentXloc) < 0  && lastXloc > p.rx()) //slide left
         {
             //If current phi is equal to minimum phi then set current phi to maximum phi
-            paramSet->getMinMax("phi",&min,&max);
+            paramSet->getMinMax("phi", min, max);
             if( (currentPhi-min) < 0.0000001)
                 currentPhi=max;
             else
@@ -226,7 +238,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
         else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
         {
             //If current theta is equal to minimum theta then set current theta to maximum theta
-            paramSet->getMinMax("theta",&min,&max);
+            paramSet->getMinMax("theta", min, max);
             if( (currentTheta-min) < 0.0000001)
                 currentTheta=max;
             else
