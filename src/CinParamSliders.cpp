@@ -139,42 +139,33 @@ void CinParamSliders::onSliderValueChanged(int value)
  */
 void CinParamSliders::popSlidersToValidValue()
 {
-    QString minText, maxText;
-    QSqlQuery minQuery, maxQuery;
-    float minVal,maxVal;
+    // QString minText, maxText;
+    // QSqlQuery minQuery, maxQuery;
+    float prevVal, nextVal;
 
     const QStringList &cols = mParameters->getParameterNames();
     int numSliders = mParameters->getNumParameters();
     QSlider *slider = NULL;
+    QLabel *label = NULL;
+    QString name;
     for(int i=0;i<numSliders;i++)
     {
         // TODO: go over logic with SD
         slider = getSliderAt(i);
+        name   = cols.at(i);
+        float curVal = slider->value();
+        mParameters->getNextValue(name, curVal, nextVal);
+        mParameters->getPrevValue(name, curVal, prevVal);
 
-        minText  = QString("SELECT min(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
-        minQuery.exec(minText);
-
-        maxText  = QString("SELECT max(%1) FROM %2 WHERE %3 >= %4").arg(cols.at(i), mCurDatabase->getTableName(), cols.at(i), QString::number(slider->value()));
-        maxQuery.exec(maxText);
-
-        while (minQuery.next())
+        // if ( qAbs(prevVal - static_cast<float>(curVal)) >= qAbs(nextVal - static_cast<float>(curVal)) )
+        if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
         {
-            minVal = minQuery.value(0).toString().toFloat();
-        }
-
-        while (maxQuery.next())
-        {
-            maxVal = maxQuery.value(0).toString().toFloat();
-        }
-
-        if ( qAbs(minVal - static_cast<float>(slider->value())) >= qAbs(maxVal - static_cast<float>(slider->value())) )
-        {
-            slider->setValue(maxVal);
-            mParameters->changeParameter(cols.at(i), maxVal);
+            slider->setValue(nextVal);
+            mParameters->changeParameter(name, nextVal);
 
         } else {
-            slider->setValue(minVal);
-            mParameters->changeParameter(cols.at(i), minVal);
+            slider->setValue(prevVal);
+            mParameters->changeParameter(name, prevVal);
         }
     }
 }
