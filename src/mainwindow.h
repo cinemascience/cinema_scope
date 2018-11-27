@@ -58,7 +58,7 @@ private:
 
     QString   mCurDatabase;
 
-    CinDBView  *mDBI=NULL;
+    CinDBView       *mDBV=NULL;
     CinImageView    *mImageView=NULL;
     QGraphicsScene  *mScene;
     QSplitter       *mSplitter=NULL;

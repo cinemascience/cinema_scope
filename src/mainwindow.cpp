@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     // settings
     mSettingsFile = QDir::homePath() + "/.cinema/scope/settings.ini";
-    QSettings settings(mSettingsFile, QSettings::IniFormat);
+    // QSettings settings(mSettingsFile, QSettings::IniFormat);
 
     buildApplication(parent);
 }
@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void MainWindow::buildApplication(QWidget *parent)
 {
     // build the DB and all its object
-    mDBI = CinDBFactory::BuildDBView();
+    mDBV = CinDBFactory::BuildDBView();
 
     // remember the table name
     mTableName = "cinema";
@@ -101,16 +101,16 @@ void MainWindow::loadCinemaDatabase(const QString &database)
     mCurDatabase = database;
     mImageView->dbPath = database;
 
-    mDBI->load(database, mTableName);
-    mSliders->connect(mDBI->getDatabase(), mDBI->getParameters());
+    mDBV->load(database, mTableName);
+    mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
     QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
     // Testing query string
     // QString tempQuery;
-    // mDBI->getParameters()->getArtifactQueryString(tempQuery);
+    // mDBV->getParameters()->getArtifactQueryString(tempQuery);
     // qDebug() << "QUERY: " << tempQuery;
-    // mDBI->updateArtifacts();
+    // mDBV->updateArtifacts();
 
-    mImageView->paramSet = mDBI->getParameters();
+    mImageView->paramSet = mDBV->getParameters();
 
     QSqlQuery qry;
     string queryText = "SELECT * FROM " + mTableName.toStdString();
@@ -167,8 +167,7 @@ void MainWindow::onOpenFile()
 {
     QSettings settings(mSettingsFile, QSettings::IniFormat);
     QString dataDir = settings.value("cinemascope/data").toString(); 
-    qDebug() << "SETTINGS: " << dataDir;
-
+    // qDebug() << "SETTINGS: " << dataDir;
     QString result = QFileDialog::getExistingDirectory(this,
                          tr("Open Cinema Database"), dataDir, 
                          QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);

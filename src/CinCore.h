@@ -1,6 +1,8 @@
 #ifndef CINCORE_H 
 #define CINCORE_H 
 
+#include <QString>
+
 //! A class that manages Cinema-level data and methods 
 /*!
 */
@@ -8,6 +10,7 @@ class CinCore
 {
     public:
         static const int ERROR;
+        static const QString NOVALUE;
 
 };
 
