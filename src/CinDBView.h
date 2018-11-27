@@ -17,6 +17,7 @@ class CinDatabase;
  *
  *  emits a SIGNAL (artifactChanged) when an artifact is
  *  changed.
+ *
 */
 class CinDBView : public QObject
 {
