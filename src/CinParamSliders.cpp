@@ -144,11 +144,11 @@ void CinParamSliders::popSlidersToValidValue()
     float prevVal, nextVal;
 
     const QStringList &cols = mParameters->getParameterNames();
-    int numSliders = mParameters->getNumParameters();
     QSlider *slider = NULL;
     QLabel *label = NULL;
     QString name;
-    for(int i=0;i<numSliders;i++)
+
+    for (int i=0;i<cols.count();i++)
     {
         // TODO: go over logic with SD
         slider = getSliderAt(i);
@@ -180,12 +180,11 @@ void CinParamSliders::constructQueryString()
     mSliderQuery += " WHERE ";
 
     const QStringList &cols = mParameters->getParameterNames();
-    int numSliders = mParameters->getNumParameters();
-    for(int i=0;i<numSliders;i++)
+    for (int i=0;i<cols.count();i++)
     {
         mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
 
-        if (i<numSliders-1)
+        if (i < cols.count()-1)
         {
             mSliderQuery += " AND ";
         }
