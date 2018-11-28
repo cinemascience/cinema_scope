@@ -15,9 +15,6 @@
  * for a set of parameters in a Cinema Database. The set of paramaters
  * managed need not be the full set of parameters available in the database.
  * 
- * An instance of this class emits the following signals:
- *
- *    artifactSelected(QString &) 
 */
 class CinParamSliders : public QWidget
 {
@@ -41,9 +38,6 @@ private:
 private slots:
     void onSliderValueChanged(int value);
     void onParameterValueChanged(const QString &name, float value);
-
-signals:
-    void artifactSelected(QString &);
 };
 
 

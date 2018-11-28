@@ -10,10 +10,10 @@ class CinDatabase;
 //! A class that manages a view of a cinema database 
 /*!
  *  This class manages an interface to a Cinema Database,
- *  which is a set of parameters and a set of artifacts
- *  There can be many different interfaces to the database,
- *  which is why this class contains the parameters and
- *  artifacts, but only points to the database 
+ *  which is a set of parameters and a set of artifacts.
+ *  There can be multiple interfaces to the database,
+ *  which is why this class contains its own parameters and
+ *  artifacts, but only points to the database.
  *
  *  emits a SIGNAL (artifactChanged) when an artifact is
  *  changed.
