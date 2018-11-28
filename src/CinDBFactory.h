@@ -7,7 +7,7 @@
 class CinParamSet;
 class CinDBView;
 
-//! Class that builds a set of objects needed to interact with Cinema data 
+//! Builds a set of objects needed to interact with Cinema data 
 /*!
 */
 class CinDBFactory

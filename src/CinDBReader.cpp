@@ -20,8 +20,7 @@ const QString CinDBReader::CSVFile       = "data.csv";
 const QString CinDBReader::SettingsFile  = "csettings.json";
 const QString CinDBReader::InitTableName = "initial_table";
 
-// TODO remove std::strings and std::vectors ?
-
+// TODO remove std::strings and std::vectors
 CinDBReader::CinDBReader() 
 {
 }

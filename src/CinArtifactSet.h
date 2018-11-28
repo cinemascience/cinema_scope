@@ -4,9 +4,7 @@
 #include <QString>
 #include <QMap>
 
-class CinDatabase;
-
-//! A class that manages a set of artifacts
+//! Manages a set of artifacts
 /*!
  *  A set of artifacts defines the output values for a Cinema Database
  *  This class manages communication about these artifacts as they
@@ -24,11 +22,8 @@ class CinArtifactSet
 {
     public:
         // constructor
-        CinArtifactSet() {}
+        CinArtifactSet();
 
-        // member functions
-        // TODO all 'sets' should react if they already have a non-NULL pointer
-        void init(CinDatabase &db);
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
 

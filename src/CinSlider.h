@@ -4,7 +4,7 @@
 #include <QSlider>
 #include <QString>
 
-//! A slider that manages a parameter 
+//! A slider that knows the name of its parameter 
 /*!
  *
 */

@@ -4,7 +4,7 @@
 #include <QString>
 #include <vector>
 
-//! A class that manages a parameter 
+//! Manages a parameter 
 /*!
  *  A set of parameters defines the input values for a Cinema Database
  *  This class manages communication about these parameters as they

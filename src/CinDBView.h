@@ -7,7 +7,7 @@
 
 class CinDatabase;
 
-//! A class that manages a view of a cinema database 
+//! Manages a view of a cinema database 
 /*!
  *  This class manages an interface to a Cinema Database,
  *  which is a set of parameters and a set of artifacts.

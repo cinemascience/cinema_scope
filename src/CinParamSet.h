@@ -8,7 +8,7 @@
 
 class CinDatabase;
 
-//! A class that manages a set of parameters 
+//! Manages a set of parameters 
 /*!
  *  A set of parameters defines the input values for a Cinema Database
  *  This class manages communication about these parameters as they

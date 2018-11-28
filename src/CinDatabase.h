@@ -6,7 +6,7 @@
 #include <QString>
 #include <QStringList>
 
-//! A class that manages the in-memory database created from a Cinema Database
+//! Manages the in-memory database created from a Cinema Database
 /*!
  *  This class contains everything it needs to read a Cinema Database, retain
  *  information about the Cinema Database, and an implementation of a database

@@ -7,6 +7,9 @@
 
 const QString CinArtifactSet::NOTFOUND = "CinArtifactSetNOTFOUND";
 
+CinArtifactSet::CinArtifactSet()
+{
+}
 
 void CinArtifactSet::set(const QString &key, const QString &value) 
 {
@@ -27,8 +30,4 @@ const QString &CinArtifactSet::get(const QString &key)
     }
 
     return CinArtifactSet::NOTFOUND; 
-}
-
-void CinArtifactSet::init(CinDatabase &db)
-{
 }

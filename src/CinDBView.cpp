@@ -31,7 +31,6 @@ int CinDBView::load(const QString &db, const QString &table)
         result = mDatabase->loadDatabase(db, table);
             // TODO check result of loading database
         mParams.init(*mDatabase);
-        mArtifacts.init(*mDatabase);
 
     } else {
         qWarning("CINDBVIEW: NULL database");

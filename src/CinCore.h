@@ -3,7 +3,7 @@
 
 #include <QString>
 
-//! A class that manages Cinema-level data and methods 
+//! Manages Cinema-level data and methods 
 /*!
 */
 class CinCore
