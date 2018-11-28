@@ -12,6 +12,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CinemaScope
 TEMPLATE = app
 
+CONFIG += debug
+
 # debug/release
 CONFIG(debug, debug|release) {
     DESTDIR = build/debug
@@ -50,7 +52,8 @@ SOURCES += \
         src/CinArtifactSet.cpp \
         src/CinDBView.cpp \
         src/CinDBFactory.cpp \
-        src/CinCore.cpp
+        src/CinCore.cpp \
+        src/CinSlider.cpp
 
 HEADERS += \
         src/mainwindow.h \
@@ -63,4 +66,5 @@ HEADERS += \
         src/CinArtifactSet.h \
         src/CinDBView.h \
         src/CinDBFactory.h \
-        src/CinCore.h
+        src/CinCore.h \
+        src/CinSlider.h
