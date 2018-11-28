@@ -25,7 +25,7 @@ string CinImageView::constructQueryString(QStringList currentParamnames)
     return query;
 }
 
-void CinImageView::onLoadImage(QString &path)
+void CinImageView::onLoadImage(const QString &key, const QString &path)
 {
     QPixmap pixmap;
 

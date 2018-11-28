@@ -6,6 +6,13 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QObject>
+
+CinDBView::CinDBView()
+{
+    QObject::connect(&mParams, SIGNAL(parameterChanged(const QString &, float)), 
+                     this,    SLOT(onParameterChanged(const QString &, float)));
+}
 
 void CinDBView::setDatabase(CinDatabase *db)
 {
@@ -45,14 +52,16 @@ void CinDBView::updateArtifacts()
     QString artifact;
     while (q.next())
     {
-        qDebug() << "VIEW: " << q.value(0);
+        // qDebug() << "VIEW: " << q.value(0);
         artifact = q.value(0).toString();
     }
 
     QString path;
     bool result = getFullPathToArtifact(artifact, path);
-    qDebug() << "VIEW: " << path << result;
     
+    // for now, there is only one artifact that changes, but this should 
+    // but updated to a more general emit mechanism
+    // qDebug() << "CINDBVIEW emit: " << path << result;
     emit artifactChanged("FILE", path);
 }
 
@@ -91,5 +100,11 @@ void CinDBView::getArtifactQueryString(QString &query)
         ++i;
     }
 
-    qDebug() << "CINDBVIEW: " << query;
+    // qDebug() << "CINDBVIEW: " << query;
+}
+
+void CinDBView::onParameterChanged(const QString &key, float value)
+{
+    updateArtifacts(); 
+    // qDebug() << "ONPARAMCHANGED: " << key << ", " << value;
 }

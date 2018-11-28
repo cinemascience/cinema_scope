@@ -25,7 +25,6 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, f
     return retVal;
 }
 
-// Is there a better way to return a value and a success parameter?
 bool CinParamSet::getValue(const QString &name, float &value) 
 {
     bool success = false;
@@ -63,7 +62,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
     {
         found.value().setValue(value);
         emit parameterChanged(name, value);
-        // qDebug() << "CINPARAMSET :" << name << value;
+        // qDebug() << "CINPARAMSET emit:" << name << value;
     }
 }
 

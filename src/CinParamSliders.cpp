@@ -1,9 +1,6 @@
 #include "CinParamSliders.h"
 #include <QDebug>
 #include <QFileInfo>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlField>
 #include <QLabel>
 #include <QSlider>
 #include <QVector>
@@ -60,8 +57,6 @@ void CinParamSliders::buildSliders()
         }
 
     }
-
-    constructQueryString();
 }
 
 void CinParamSliders::reset()
@@ -73,9 +68,6 @@ void CinParamSliders::reset()
     {
         mSliderLayout->removeRow(i);
     }
-
-    // clear the query
-    mSliderQuery.clear();
 }
 
 QSlider *CinParamSliders::getSliderAt(int i)
@@ -94,43 +86,10 @@ QLabel *CinParamSliders::getLabelAt(int i)
  */
 void CinParamSliders::onSliderValueChanged(int value)
 {
-    QSqlQuery query;
-
-    query.prepare(QString::fromStdString(mSliderQuery.toStdString()));
-    int numSliders = mParameters->getNumParameters();
-    QString s;
-    QSlider *slider = NULL;
-    QSlider *label = NULL;
-    for(int i=0;i<numSliders;i++)
-    {
-        s = ":" + getLabelAt(i)->text();
-        query.bindValue(s, getSliderAt(i)->value());
-    }
-    query.exec();
-
-    if (query.first())
-    {
-        //get the last column which has the image name
-        QString imagePath = mCurDatabase->getPath();
-        imagePath += "/";
-        imagePath += query.value(numSliders).toString(); 
-
-        // if a file exists at this path, return it, otherwise, 
-        // return the 'empty' image
-        if ( ! (QFileInfo::exists(imagePath) && QFileInfo(imagePath).isFile()) )
-        {
-            imagePath = mCurDatabase->getPath();
-            imagePath += "/";
-            imagePath += "empty_image/empty.png";
-        }
-
-        emit artifactSelected(imagePath);
-        // qDebug() << "DBSLIDER EMIT: " << imagePath;
-    }
-
     popSlidersToValidValue();
 }
 
+// TODO this should only pop the current slider, not everything
 
 /*! \brief Manage sliders so they pop to valid values in UI
  * 
@@ -139,8 +98,6 @@ void CinParamSliders::onSliderValueChanged(int value)
  */
 void CinParamSliders::popSlidersToValidValue()
 {
-    // QString minText, maxText;
-    // QSqlQuery minQuery, maxQuery;
     float prevVal, nextVal;
 
     const QStringList &cols = mParameters->getParameterNames();
@@ -167,28 +124,6 @@ void CinParamSliders::popSlidersToValidValue()
             slider->setValue(prevVal);
             mParameters->changeParameter(name, prevVal);
         }
-    }
-}
-
-/*! \brief Construct a common part of the slider query 
- * 
- */
-void CinParamSliders::constructQueryString()
-{
-    mSliderQuery = "SELECT * FROM ";
-    mSliderQuery += mCurDatabase->getTableName(); 
-    mSliderQuery += " WHERE ";
-
-    const QStringList &cols = mParameters->getParameterNames();
-    for (int i=0;i<cols.count();i++)
-    {
-        mSliderQuery += cols.at(i) + "=:" + cols.at(i); 
-
-        if (i < cols.count()-1)
-        {
-            mSliderQuery += " AND ";
-        }
-
     }
 }
 

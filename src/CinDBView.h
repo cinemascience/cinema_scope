@@ -25,7 +25,7 @@ class CinDBView : public QObject
 
     public:
         // constructor
-        CinDBView() {}
+        CinDBView();
 
         void setDatabase(CinDatabase *db);
         int load(const QString &db, const QString &table);
@@ -47,8 +47,8 @@ class CinDBView : public QObject
         CinParamSet    *getParameters() {return &mParams;}
         CinDatabase    *getDatabase()   {return mDatabase;}
 
-    signals:
-
+    public slots:
+        void onParameterChanged(const QString &key, float value);
 };
 
 #endif // CINDBVIEW_H

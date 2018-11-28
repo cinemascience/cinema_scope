@@ -30,13 +30,11 @@ public:
 private:
     void     buildSliders();
     void     reset();
-    void     constructQueryString();
     void     popSlidersToValidValue();
     QSlider *getSliderAt(int i);
     QLabel  *getLabelAt(int i);
 
     QFormLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
-    QString      mSliderQuery;       /*!< Common query over all sliders */
     CinDatabase *mCurDatabase=NULL;  /*!< Common database object */ 
     CinParamSet *mParameters=NULL;
     
