@@ -91,7 +91,11 @@ void CinParamSliders::onSliderValueChanged(int value)
 {
     CinSlider *slider = qobject_cast<CinSlider *>(QObject::sender());
 
-    popSliderToValidValue(slider);
+    if (slider) {
+        popSliderToValidValue(slider);
+    } else {
+        qWarning() << "ERROR: NULL CinSlider in signal/slot communication";
+    }
 }
 
 // TODO this should only pop the current slider, not everything
