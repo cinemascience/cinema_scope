@@ -1,4 +1,5 @@
 #include "CinParamSliders.h"
+#include "CinSlider.h"
 #include <QDebug>
 #include <QFileInfo>
 #include <QLabel>
@@ -35,7 +36,7 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
  */
 void CinParamSliders::buildSliders()
 {
-    QSlider *slider = NULL;
+    CinSlider *slider = NULL;
     QString curColumn;
     const QStringList &cols = mParameters->getParameterNames();
     float min, max;
@@ -44,9 +45,11 @@ void CinParamSliders::buildSliders()
         if ( mParameters->getMinMax( cols.at(i), min, max ) )
         {
             // create slider
-            slider = new QSlider(Qt::Horizontal);
+            slider = new CinSlider();
+            slider->setOrientation(Qt::Horizontal);
             slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
             slider->setRange(min, max);
+            slider->setKey(const_cast<QString &>(cols.at(i)));
             QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
         
             // add these to the layout
@@ -86,7 +89,9 @@ QLabel *CinParamSliders::getLabelAt(int i)
  */
 void CinParamSliders::onSliderValueChanged(int value)
 {
-    popSlidersToValidValue();
+    CinSlider *slider = qobject_cast<CinSlider *>(QObject::sender());
+
+    popSliderToValidValue(slider);
 }
 
 // TODO this should only pop the current slider, not everything
@@ -96,34 +101,22 @@ void CinParamSliders::onSliderValueChanged(int value)
  * Pop sliders to a valid value during drag: To overcome Qt's default behavior of sliders 
  * that increment step by 1. But our step is not always 1.
  */
-void CinParamSliders::popSlidersToValidValue()
+void CinParamSliders::popSliderToValidValue(CinSlider *slider)
 {
     float prevVal, nextVal;
+    float curVal = slider->value();
+    QString name = slider->getKey();
+    mParameters->getNextValue(name, curVal, nextVal);
+    mParameters->getPrevValue(name, curVal, prevVal);
 
-    const QStringList &cols = mParameters->getParameterNames();
-    QSlider *slider = NULL;
-    QLabel *label = NULL;
-    QString name;
-
-    for (int i=0;i<cols.count();i++)
+    if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
     {
-        // TODO: go over logic with SD
-        slider = getSliderAt(i);
-        name   = cols.at(i);
-        float curVal = slider->value();
-        mParameters->getNextValue(name, curVal, nextVal);
-        mParameters->getPrevValue(name, curVal, prevVal);
+        slider->setValue(nextVal);
+        mParameters->changeParameter(name, nextVal);
 
-        // if ( qAbs(prevVal - static_cast<float>(curVal)) >= qAbs(nextVal - static_cast<float>(curVal)) )
-        if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
-        {
-            slider->setValue(nextVal);
-            mParameters->changeParameter(name, nextVal);
-
-        } else {
-            slider->setValue(prevVal);
-            mParameters->changeParameter(name, prevVal);
-        }
+    } else {
+        slider->setValue(prevVal);
+        mParameters->changeParameter(name, prevVal);
     }
 }
 
