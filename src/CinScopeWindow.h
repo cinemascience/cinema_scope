@@ -56,8 +56,7 @@ private:
     QAction  *mQuitAction=NULL;
     QAction  *mAboutAction=NULL;
 
-    QString   mCurDatabase;
-
+    QString          mCurDatabase;
     CinDBView       *mDBV=NULL;
     CinImageView    *mImageView=NULL;
     QGraphicsScene  *mScene;

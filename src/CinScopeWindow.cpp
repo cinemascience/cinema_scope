@@ -138,17 +138,19 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
 
     QString imagePath = database;
     imagePath += "/" + initFileID; //loads the first image from first row in the db
-    QPixmap image;
-    if(!mImageView->loadImage(imagePath,&image))
+    // QPixmap image;
+    // if (!mImageView->loadImage(imagePath,&image))
+    if (!mImageView->loadImage(imagePath))
     {
         //image.fill(Qt::transparent); // shows a blank screen
         qWarning() << "image loading failed";
         imagePath = database;
         imagePath += "/empty_image/empty.png";
-        mImageView->loadImage(imagePath,&image);
+        // mImageView->loadImage(imagePath,&image);
+        mImageView->loadImage(imagePath);
     }
 
-    mScene->addPixmap(image);
+    // mScene->addPixmap(image);
     mImageView->setScene(mScene);
 }
 

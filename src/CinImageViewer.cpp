@@ -1,13 +1,35 @@
 #include "CinImageViewer.h"
-
+#include <QPixmapCache>
 #include <string>
 #include <iostream>
 
 using namespace std;
 
-bool CinImageView::loadImage(QString path, QPixmap *image )
+bool CinImageView::loadImage(const QString &path)
 {
-    return image->load(path);
+    QPixmap pixmap;
+    QPixmap *found = NULL;
+    bool result = true;
+
+    // is it in the cache?
+    if (mCache.find(path, found)) {
+        // yes, just put it in the scene
+        pixmap.load(path);
+        mCache.insert(path, pixmap);
+        sceneObj->addPixmap(pixmap);
+        result = true;
+        qDebug() << "CINIMAGEVIEW found: " << path;
+    } else {
+        // no, create a new one 
+        found = new QPixmap();
+        found->load(path);
+        mCache.insert(path, *found);
+        sceneObj->addPixmap(*found);
+        result = true;
+        qDebug() << "CINIMAGEVIEW load : " << path;
+    }
+
+    return result; 
 }
 
 string CinImageView::constructQueryString(QStringList currentParamnames)
@@ -25,14 +47,10 @@ string CinImageView::constructQueryString(QStringList currentParamnames)
     return query;
 }
 
+// key is ignored for now, since we're only loading one artifact 
 void CinImageView::onLoadImage(const QString &key, const QString &path)
 {
-    QPixmap pixmap;
-
-    // qDebug() << "CINIMAGEVIEW: " << path;
-
-    loadImage(path, &pixmap);
-    sceneObj->addPixmap(pixmap);
+    loadImage(path);
 }
 
 void CinImageView::wheelEvent(QWheelEvent * event)
@@ -76,7 +94,6 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
 
     string path = dbPath.toStdString();
     string imagePath;
-    QPixmap image;
 
     int numSliders = paramSet->getNumParameters();
     QStringList paramNames = paramSet->getParameterNames();
@@ -283,15 +300,8 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
         cout<<"both"<<endl;
     }
 
-    //Load the image finally
-    if(!loadImage(QString::fromStdString(imagePath),&image))
-    {
-        cout<<"image loading failed over mouse move!!"<<endl;
-    }
-    else
-    {
-        sceneObj->addPixmap(image);
-    }
+    // Load the image
+    loadImage(QString::fromStdString(imagePath));
 
     lastXloc = p.rx();
     lastYloc = p.ry();

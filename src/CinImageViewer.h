@@ -22,6 +22,7 @@
 #include <QImage>
 #include <QPaintEvent>
 #include <QGraphicsScene>
+#include <QPixmapCache>
 
 #include <iostream>
 #include <cstring>
@@ -42,13 +43,14 @@ public:
     int lastXloc=0;
     int lastYloc=0;
     const int slidePixel=100;
-    bool loadImage(QString, QPixmap*);
+    bool loadImage(const QString &path);
     std::string constructQueryString(QStringList);
     QString mTableName;
 
     float currentPhi;
     float currentTheta;
     QString dbPath;
+    QPixmapCache mCache;
 
 public slots:
     // TODO discuss use of const
@@ -60,6 +62,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent *);
     void wheelEvent(QWheelEvent * event);
+
 };
 
 #endif
