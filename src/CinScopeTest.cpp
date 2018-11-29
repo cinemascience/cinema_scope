@@ -17,8 +17,8 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
     void previous();
-
 };
+
 
 CinScopeTest::CinScopeTest()
 {
@@ -42,6 +42,7 @@ void CinScopeTest::cleanupTestCase()
 
 void CinScopeTest::previous()
 {
+    // testing CinParameter class
     CinParameter param("test", CinParameter::FLOAT);
     param.recordValue(1.0);
     param.recordValue(4.0);
@@ -52,6 +53,7 @@ void CinScopeTest::previous()
     float fResult = 0.0;
     bool result = false;
 
+    // previous
     result = param.getPrevValue(1.0, fResult);
     QVERIFY(result == false);
 
@@ -62,6 +64,21 @@ void CinScopeTest::previous()
     result = param.getPrevValue(4.5, fResult);
     QVERIFY(result == true);
     QVERIFY(fResult == 4.0);
+
+    // next
+    result = param.getNextValue(4.0, fResult);
+    QVERIFY(result == false);
+
+    result = param.getNextValue(5.0, fResult);
+    QVERIFY(result == false);
+
+    result = param.getNextValue(0.0, fResult);
+    QVERIFY(result == true);
+    QVERIFY(fResult == 1.0);
+
+    result = param.getNextValue(2.5, fResult);
+    QVERIFY(result == true);
+    QVERIFY(fResult == 3.0);
 }
 
 QTEST_MAIN(CinScopeTest)

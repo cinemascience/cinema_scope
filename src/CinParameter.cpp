@@ -24,6 +24,13 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type, float m
     mValue = cur;
 }
 
+/*! \brief Returns next biggest value of parameter
+ *
+ *  Sets value for 'next' if successful
+ *
+ *  False if biggest value in array or bigger than largest value
+ *  True otherwise
+ */
 bool CinParameter::getNextValue(float value, float &next)
 {
     float retVal = false; 
@@ -32,7 +39,7 @@ bool CinParameter::getNextValue(float value, float &next)
 
     if (it != mValues.end()) 
     { 
-        next = *it;
+        next   = *it;
         retVal = true;
     }        
 
