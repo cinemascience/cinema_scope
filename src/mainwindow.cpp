@@ -10,6 +10,7 @@
 #include <QSplitter>
 #include <QSettings>
 #include <QList>
+#include "CinCore.h"
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
@@ -53,7 +54,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     buildApplication(parent);
 
     // testing
-    CinParameter::TestClass();
+    CinCore::RUN_TESTS = true;
+    if (CinCore::RUN_TESTS) {
+        CinParameter::TestClass();
+    }
 }
 
 void MainWindow::buildApplication(QWidget *parent)

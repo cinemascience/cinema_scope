@@ -11,7 +11,7 @@ class CinCore
     public:
         static const int ERROR;
         static const QString NOVALUE;
-
+        static bool RUN_TESTS; 
 };
 
 #endif // CINCORE_H
