@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QSlider>
 #include <QVector>
+#include <QSignalBlocker>
 
 CinParamSliders::CinParamSliders() 
 {
@@ -107,20 +108,33 @@ void CinParamSliders::onSliderValueChanged(int value)
  */
 void CinParamSliders::popSliderToValidValue(CinSlider *slider)
 {
+    // block signals for the duration of this call 
+    const QSignalBlocker blocker(slider);
+
     float prevVal, nextVal;
     float curVal = slider->value();
     QString name = slider->getKey();
-    mParameters->getNextValue(name, curVal, nextVal);
-    mParameters->getPrevValue(name, curVal, prevVal);
+    bool bNext = mParameters->getNextValue(name, curVal, nextVal);
+    bool bPrev = mParameters->getPrevValue(name, curVal, prevVal);
 
-    if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
-    {
+    if (bNext && bPrev) {
+        if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
+        {
+            slider->setValue(nextVal);
+            mParameters->changeParameter(name, nextVal);
+
+        } else {
+            slider->setValue(prevVal);
+            mParameters->changeParameter(name, prevVal);
+        }
+    } else if (bNext) {
         slider->setValue(nextVal);
         mParameters->changeParameter(name, nextVal);
-
-    } else {
+    } else if (bPrev) {
         slider->setValue(prevVal);
         mParameters->changeParameter(name, prevVal);
+    } else {
+        // what?
     }
 }
 
