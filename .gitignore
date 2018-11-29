@@ -1,3 +1,4 @@
+target_wrapper.sh
 .DS_Store
 .qmake.stash
 Debug/
@@ -6,7 +7,9 @@ Makefile
 XCBuildData/
 cinemascope.app/
 cinema_scope.build/
+CinemaScope.xcodeproj/
 cinema_scope.xcodeproj/
+cinema_scope_test.xcodeproj/
 moc_mainwindow.cpp
 moc_predefs.h
 doc/html/
