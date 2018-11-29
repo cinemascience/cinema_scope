@@ -1,6 +1,6 @@
 // To create an empty database in command line type: sqlite3 testSqlite.db "create table aTable(field1 int); drop table aTable;"
 
-#include "mainwindow.h"
+#include "CinScopeWindow.h"
 #include "CinDBReader.h"
 #include <QCoreApplication>
 #include <QCommandLineParser>
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     parser.process(cinemaViewer);
     const QStringList args = parser.positionalArguments();
 
-    MainWindow mainWindow(NULL);
+    CinScopeWindow mainWindow(NULL);
     mainWindow.setWindowTitle("CinemaScope");
     mainWindow.show();
 

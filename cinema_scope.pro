@@ -42,7 +42,7 @@ CONFIG += console
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp \
+        src/CinScopeWindow.cpp \
         src/CinDBReader.cpp \
         src/CinParamSliders.cpp \
         src/CinParameter.cpp \
@@ -56,7 +56,7 @@ SOURCES += \
         src/CinSlider.cpp
 
 HEADERS += \
-        src/mainwindow.h \
+        src/CinScopeWindow.h \
         src/CinDBReader.h \
         src/CinParamSliders.h \
         src/CinParameter.h \
