@@ -20,7 +20,6 @@
 
 MainWindow::~MainWindow()
 {
-
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
@@ -52,6 +51,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     // QSettings settings(mSettingsFile, QSettings::IniFormat);
 
     buildApplication(parent);
+
+    // testing
+    CinParameter::TestClass();
 }
 
 void MainWindow::buildApplication(QWidget *parent)
