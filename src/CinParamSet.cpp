@@ -62,7 +62,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
     {
         found.value().setValue(value);
         emit parameterChanged(name, value);
-        // qDebug() << "CINPARAMSET emit:" << name << value;
+        qDebug() << "CINPARAMSET emit:" << name << value;
     }
 }
 

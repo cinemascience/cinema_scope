@@ -35,6 +35,8 @@ bool CinParameter::getNextValue(float value, float &next)
         next = *it;
         retVal = true;
     }        
+
+    qDebug()<<"in getNextValue: "<<value<<" "<<next<<" "<<retVal;
          
     return retVal; 
 }
@@ -68,6 +70,8 @@ bool CinParameter::getPrevValue(float value, float &prev)
             // how do we reach this?
         }
     }
+
+    qDebug()<<"in getPrevValue: "<<value<<" "<<prev<<" "<<retVal;
          
     return retVal; 
 }

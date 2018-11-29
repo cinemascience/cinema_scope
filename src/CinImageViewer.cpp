@@ -125,7 +125,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     string queryText;
     float min,max;
 
-    if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
+    /*if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
     {
         if((p.rx() - currentXloc) > 0 && lastXloc < p.rx()) //slide right
         {
@@ -306,7 +306,57 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     }
 
     // Load the image
-    loadImage(QString::fromStdString(imagePath));
+    //loadImage(QString::fromStdString(imagePath));*/
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
+    {
+        if((p.rx() - currentXloc) > 0) //slide right
+        {
+            qDebug()<<"slide right";
+
+            float next;
+            bool nbool = paramSet->getNextValue( "phi", currentPhi, next );
+
+            if(!nbool)
+            {
+                paramSet->getMinMax("phi", min, max);
+                qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                next=min;
+            }
+
+            qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
+
+
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("phi", next);
+        }
+
+        else if((p.rx() - currentXloc) < 0) //slide left
+        {
+            qDebug()<<"slide left";
+
+            float prev;
+            bool nbool = paramSet->getPrevValue( "phi", currentPhi, prev );
+            if(!nbool)
+            {
+                paramSet->getMinMax("phi", min, max);
+                qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                prev=max;
+            }
+
+            qDebug() << "PHI PREV QUERY (" << nbool << ") : " << currentPhi << ": " << prev;
+
+
+            //Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("phi", prev);
+        }
+    }
+
 
     lastXloc = p.rx();
     lastYloc = p.ry();
