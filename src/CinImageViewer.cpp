@@ -1,5 +1,6 @@
 #include "CinImageViewer.h"
 #include <QPixmapCache>
+#include <QFileInfo>
 #include <string>
 #include <iostream>
 
@@ -18,7 +19,9 @@ bool CinImageView::loadImage(const QString &path)
         mCache.insert(path, pixmap);
         sceneObj->addPixmap(pixmap);
         result = true;
-        qDebug() << "CINIMAGEVIEW found: " << path;
+        // debug
+        QFileInfo imFile(path);
+        qDebug() << "CINIMAGEVIEW found: " << imFile.fileName(); 
     } else {
         // no, create a new one 
         found = new QPixmap();
@@ -26,7 +29,9 @@ bool CinImageView::loadImage(const QString &path)
         mCache.insert(path, *found);
         sceneObj->addPixmap(*found);
         result = true;
-        qDebug() << "CINIMAGEVIEW load : " << path;
+        // debug
+        QFileInfo imFile(path);
+        qDebug() << "CINIMAGEVIEW load : " << imFile.fileName(); 
     }
 
     return result; 
