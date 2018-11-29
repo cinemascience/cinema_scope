@@ -15,10 +15,16 @@ class CinParameter
     public:
         enum Type{UNDEFINED=0, STRING, FLOAT, INT, NUMTYPES};
         static const char *TypeNames[NUMTYPES];
+        static const float NO_PREV;
+        static const float NO_NEXT;
+        static const float NOT_SET;
         static const char *GetNameForType(CinParameter::Type type);
+        static bool TestClass();
 
         // constructor
-        CinParameter(const QString &name, CinParameter::Type type, float min, float max, float cur);
+        CinParameter(const QString &name, CinParameter::Type type=CinParameter::UNDEFINED, 
+                        float min=CinParameter::NOT_SET, float max=CinParameter::NOT_SET, 
+                        float cur=CinParameter::NOT_SET);
 
         // member function
         bool getNextValue(float value, float &next);
