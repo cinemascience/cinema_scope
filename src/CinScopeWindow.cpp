@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "CinScopeWindow.h"
 #include <QObject>
 #include <QSizePolicy>
 #include <QMenuBar>
@@ -19,11 +19,11 @@
 #include "CinImageViewer.h"
 #include "CinDBFactory.h"
 
-MainWindow::~MainWindow()
+CinScopeWindow::~CinScopeWindow()
 {
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+void CinScopeWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
@@ -31,7 +31,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *e)
+void CinScopeWindow::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
@@ -39,13 +39,13 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *e)
+void CinScopeWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
     cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
 }
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+CinScopeWindow::CinScopeWindow(QWidget *parent) : QMainWindow(parent)
 {
     // settings
     mSettingsFile = QDir::homePath() + "/.cinema/scope/settings.ini";
@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     }
 }
 
-void MainWindow::buildApplication(QWidget *parent)
+void CinScopeWindow::buildApplication(QWidget *parent)
 {
     // build the DB and all its object
     mDBV = CinDBFactory::BuildDBView();
@@ -98,7 +98,7 @@ void MainWindow::buildApplication(QWidget *parent)
     mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
 }
 
-void MainWindow::loadCinemaDatabase(const QString &database)
+void CinScopeWindow::loadCinemaDatabase(const QString &database)
 {
     // clean up all UI components
     flushUI();
@@ -153,25 +153,25 @@ void MainWindow::loadCinemaDatabase(const QString &database)
 }
 
 
-void MainWindow::createActions()
+void CinScopeWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 
-    mOpenAction = fileMenu->addAction(tr("&Open ..."), this, &MainWindow::onOpenFile);
+    mOpenAction = fileMenu->addAction(tr("&Open ..."), this, &CinScopeWindow::onOpenFile);
     mOpenAction->setShortcut(QKeySequence::Open);
     mOpenAction->setStatusTip(tr("Open a file"));
 
     fileMenu->addSeparator();
 
-    mQuitAction = fileMenu->addAction(tr("E&xit"), this, &MainWindow::onQuit);
+    mQuitAction = fileMenu->addAction(tr("E&xit"), this, &CinScopeWindow::onQuit);
     mQuitAction->setShortcut(tr("Ctrl+Q"));
     mQuitAction->setStatusTip(tr("Quit application"));
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
-    helpMenu->addAction(tr("&About"), this, &MainWindow::onAbout);
+    helpMenu->addAction(tr("&About"), this, &CinScopeWindow::onAbout);
 }
 
-void MainWindow::onOpenFile()
+void CinScopeWindow::onOpenFile()
 {
     QSettings settings(mSettingsFile, QSettings::IniFormat);
     QString dataDir = settings.value("cinemascope/data").toString(); 
@@ -183,18 +183,18 @@ void MainWindow::onOpenFile()
     loadCinemaDatabase(result);
 }
 
-void MainWindow::onQuit()
+void CinScopeWindow::onQuit()
 {
     QApplication::quit();
 }
 
-void MainWindow::onAbout()
+void CinScopeWindow::onAbout()
 {
     QMessageBox::about(this, tr("CinemaScope"),
                        tr("This is the about message"));
 }
 
-void MainWindow::flushUI()
+void CinScopeWindow::flushUI()
 {
     // flush the database
     QSqlQuery qry;

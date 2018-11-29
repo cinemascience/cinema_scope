@@ -36,15 +36,15 @@
 
 using namespace std;
 
-class MainWindow : public QMainWindow
+class CinScopeWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit CinScopeWindow(QWidget *parent = 0);
     void loadCinemaDatabase(const QString &database);
     int numSliders;
-    ~MainWindow();
+    ~CinScopeWindow();
 
 private:
     void createActions();
