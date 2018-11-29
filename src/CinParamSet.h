@@ -23,12 +23,12 @@ class CinParamSet : public QObject
 
         // add/remove
         bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
-        // bool remove(conast QString &name);
+        // bool remove(const QString &name);
 
         // parameter value query API
-        bool getNextValue(const QString &key, float value, float &next);        /*!< get the next value; report success/faliure */
-        bool getPrevValue(const QString &key, float value, float &prex);        /*!< get the prev value; report success/faliure */
-        bool getValue(const QString &name, float &value);   /*!< get the current value of a parameter */
+        bool getNextValue(const QString &key, float value, float &next);
+        bool getPrevValue(const QString &key, float value, float &prex);
+        bool getValue(const QString &name, float &value);
         bool getMinMax(const QString &name, float &min, float &max); 
 
         // constituent data access

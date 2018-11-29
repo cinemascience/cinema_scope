@@ -68,3 +68,4 @@ HEADERS += \
         src/CinDBFactory.h \
         src/CinCore.h \
         src/CinSlider.h
+

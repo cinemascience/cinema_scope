@@ -1,5 +1,3 @@
-// To create an empty database in command line type: sqlite3 testSqlite.db "create table aTable(field1 int); drop table aTable;"
-
 #include "CinScopeWindow.h"
 #include "CinDBReader.h"
 #include <QCoreApplication>
