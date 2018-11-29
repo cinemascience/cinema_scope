@@ -93,12 +93,7 @@ void CinParameter::sortValues()
 
 void CinParameter::print()
 {
-    qDebug() << "PARAMETER: " << mName;
-    for (std::vector<float>::iterator it = mValues.begin(); it != mValues.end(); ++it)
-    { 
-        qDebug() << "           " << *it;
-    }        
-    qDebug() << " ";
+    qDebug() << "PARAMETER: " << mName << mValues;
 }
 
 
