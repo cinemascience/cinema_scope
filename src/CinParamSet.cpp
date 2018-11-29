@@ -11,6 +11,11 @@ CinParamSet::CinParamSet()
 {
 }
 
+/*! \brief Add uniquely named parameters
+ *
+ *  Adds uniquely named parameters. The class maintains a list of parameter names in the 
+ *  order they were added as well.
+ */
 bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, float max, float value)
 {
     bool retVal = false;
@@ -122,7 +127,6 @@ void CinParamSet::init(CinDatabase &db)
             qWarning() << "PARAMSET: NULL pointer from getParameter";
         }
     }
-
 }
 
 CinParameter *CinParamSet::getParameter(const QString &name)
@@ -139,11 +143,11 @@ CinParameter *CinParamSet::getParameter(const QString &name)
 bool CinParamSet::getNextValue(const QString &name, float value, float &next)
 {
     CinParameter *p = getParameter(name);
+
     if (p) 
     {
         return p->getNextValue(value, next);
-    } else 
-    {
+    } else {
         return false;
     }
 }
