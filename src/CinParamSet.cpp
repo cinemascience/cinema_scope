@@ -163,3 +163,15 @@ bool CinParamSet::getPrevValue(const QString &name, float value, float &prev)
         return false;
     }
 }
+
+bool CinParamSet::valueExists(const QString &key, float value)
+{
+    CinParameter *p = getParameter(key);
+    if (p) 
+    {
+        return p->valueExists(value);
+    } else 
+    {
+        return false;
+    }
+}

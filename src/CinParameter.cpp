@@ -149,3 +149,8 @@ bool CinParameter::TestClass()
 
     return retVal;
 }
+
+bool CinParameter::valueExists(float value)
+{
+    return (std::find(mValues.begin(), mValues.end(), value) != mValues.end());
+}

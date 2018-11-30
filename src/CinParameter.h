@@ -41,6 +41,7 @@ class CinParameter
         void  setMax(float max)                {mMax   = max;}
         void  setValue(float value)            {mValue = value;}
         void  recordValue(float value);
+        bool  valueExists(float value);
 
         void  print();
         void  sortValues();

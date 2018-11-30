@@ -117,24 +117,29 @@ void CinParamSliders::popSliderToValidValue(CinSlider *slider)
     bool bNext = mParameters->getNextValue(name, curVal, nextVal);
     bool bPrev = mParameters->getPrevValue(name, curVal, prevVal);
 
-    if (bNext && bPrev) {
-        if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
-        {
+    if (not mParameters->valueExists(name, curVal))
+    {
+        if (bNext && bPrev) {
+            if ( qAbs(prevVal - curVal) >= qAbs(nextVal - curVal) )
+            {
+                slider->setValue(nextVal);
+                mParameters->changeParameter(name, nextVal);
+
+            } else {
+                slider->setValue(prevVal);
+                mParameters->changeParameter(name, prevVal);
+            }
+        /*
+        } else if (bNext) {
             slider->setValue(nextVal);
             mParameters->changeParameter(name, nextVal);
-
-        } else {
+        } else if (bPrev) {
             slider->setValue(prevVal);
             mParameters->changeParameter(name, prevVal);
+        } else {
+            // what?
+        */
         }
-    } else if (bNext) {
-        slider->setValue(nextVal);
-        mParameters->changeParameter(name, nextVal);
-    } else if (bPrev) {
-        slider->setValue(prevVal);
-        mParameters->changeParameter(name, prevVal);
-    } else {
-        // what?
     }
 }
 
