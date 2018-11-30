@@ -30,6 +30,13 @@
 
 #include "CinParamSet.h"
 
+//! Manages the imageviewer and interactions on it.
+/*!
+ *  This class contains everything it needs to show the right image given the current
+ *  parameter values. It is also responsible for controlling the mouse drag event, which 
+ *  is another way of interacting and changing the images while exploring the database.
+*/
+
 class CinImageView : public QGraphicsView
 {
     Q_OBJECT
@@ -46,7 +53,6 @@ public:
     const int slidePixelHor=20;
     const int slidePixelVer=20;
     bool loadImage(const QString &path);
-    std::string constructQueryString(QStringList);
     QString mTableName;
 
     float currentPhi;

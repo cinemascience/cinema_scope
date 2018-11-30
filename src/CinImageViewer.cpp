@@ -2,6 +2,9 @@
 
 using namespace std;
 
+/*! \brief Given a path to an image, this function loads the image. If the image was loaded previously, then it uses the image from cache. 
+ *
+ */
 bool CinImageView::loadImage(const QString &path)
 {
     QPixmap pixmap;
@@ -33,33 +36,26 @@ bool CinImageView::loadImage(const QString &path)
     return result;
 }
 
-string CinImageView::constructQueryString(QStringList currentParamnames)
-{
-    string query;
 
-    query = "SELECT * FROM " + mTableName.toStdString() + " WHERE ";
-    for(int i=0;i<currentParamnames.size();i++)
-    {
-        if(i<currentParamnames.size()-1)
-            query = query + currentParamnames[i].toStdString() + "=:" + currentParamnames[i].toStdString() + " AND ";
-        else
-            query = query + currentParamnames[i].toStdString() + "=:" + currentParamnames[i].toStdString();
-    }
-    return query;
-}
-
-// key is ignored for now, since we're only loading one artifact 
+/*! \brief This slot gets called when a parameter is changed and a new image needs to be loaded. key is ignored for now, since we're only loading one artifact 
+ *
+ */
 void CinImageView::onLoadImage(const QString &key, const QString &path)
 {
     loadImage(path);
 }
 
+
+/*! \brief Mouse wheel event. Performs zooming ina and out.
+ *
+ */
 void CinImageView::wheelEvent(QWheelEvent * event)
 {
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     // Scale the view / do the zoom
     double scaleFactor = 1.15;
-    if(event->delta() > 0) {
+    if(event->delta() > 0)
+    {
         // Zoom in
         scale(scaleFactor, scaleFactor);
 
@@ -69,6 +65,9 @@ void CinImageView::wheelEvent(QWheelEvent * event)
     }
 }
 
+/*! \brief Mouse press event handler.
+ *
+ */
 void CinImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
@@ -79,6 +78,9 @@ void CinImageView :: mousePressEvent(QMouseEvent *e)
     }
 }
 
+/*! \brief Mouse release event handler.
+ *
+ */
 void CinImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
@@ -89,6 +91,9 @@ void CinImageView::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
+/*! \brief Mouse move event handler. This controls the dragging event.
+ *
+ */
 void CinImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
