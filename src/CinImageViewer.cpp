@@ -1,8 +1,4 @@
 #include "CinImageViewer.h"
-#include <QPixmapCache>
-#include <QFileInfo>
-#include <string>
-#include <iostream>
 
 using namespace std;
 
@@ -21,9 +17,9 @@ bool CinImageView::loadImage(const QString &path)
         result = true;
         // debug
         QFileInfo imFile(path);
-        qDebug() << "CINIMAGEVIEW found: " << imFile.fileName(); 
+        qDebug() << "CINIMAGEVIEW found: " << imFile.fileName();
     } else {
-        // no, create a new one 
+        // no, create a new one
         found = new QPixmap();
         found->load(path);
         mCache.insert(path, *found);
@@ -31,10 +27,10 @@ bool CinImageView::loadImage(const QString &path)
         result = true;
         // debug
         QFileInfo imFile(path);
-        qDebug() << "CINIMAGEVIEW load : " << imFile.fileName(); 
+        qDebug() << "CINIMAGEVIEW load : " << imFile.fileName();
     }
 
-    return result; 
+    return result;
 }
 
 string CinImageView::constructQueryString(QStringList currentParamnames)
@@ -69,7 +65,7 @@ void CinImageView::wheelEvent(QWheelEvent * event)
 
     } else {
         // Zooming out
-         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+        scale(1.0 / scaleFactor, 1.0 / scaleFactor);
     }
 }
 
@@ -97,13 +93,10 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint p = e->pos();
 
-    string path = dbPath.toStdString();
-    string imagePath;
-
-    int numSliders = paramSet->getNumParameters();
+    float min,max;
     QStringList paramNames = paramSet->getParameterNames();
-
     vector<float> currentParamVals;
+
     for(int i=0;i<paramNames.size();i++)
     {
         float val;
@@ -121,203 +114,11 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             paramSet->getValue(paramNames[i], currentTheta);
     }
 
-    QSqlQuery qry;
-    string queryText;
-    float min,max;
-
-    /*if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
+    if(fabs(p.rx() - currentXloc) > slidePixelHor && fabs(p.ry() - currentYloc) < slidePixelHor) //only phi
     {
         if((p.rx() - currentXloc) > 0 && lastXloc < p.rx()) //slide right
         {
-            // queryText = QString("SELECT MIN(phi) FROM %1 WHERE phi > :phi").arg(mTableName);
-            // qry.prepare(QString::fromStdString(queryText));
-            qry.prepare(QString("SELECT MIN(phi) FROM %1 WHERE phi > :phi").arg(mTableName));
-            qry.bindValue(":phi", currentPhi);
-            qry.exec();
-                // begin testing
-            // float next;
-            // bool nbool = paramSet->getNextValue( "phi", currentPhi, next );
-            // float prev;
-            // bool pbool = paramSet->getPrevValue( "phi", currentPhi, prev );
-            // qDebug() << "PHI PREV QUERY (" << pbool << ") : " << currentPhi << ": " << prev;
-            // qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
-                // end testing
-            while (qry.next())
-            {
-                currentPhi = qry.value(0).toFloat();
-            }
-                // begin testing
-            // qDebug() << "PHI NEXT QUERY: " << currentPhi;
-            // qDebug() << " ";
-                // end testing
-
-            //now get the correct image
-            queryText = constructQueryString(paramNames);
-            qry.prepare(QString::fromStdString(queryText));
-            for(int i=0;i<numSliders;i++)
-            {
-                if(paramNames[i].toStdString()=="phi")
-                    qry.bindValue(":phi", currentPhi);
-                else
-                {
-                    string s;
-                    s = ":"+paramNames[i].toStdString();
-                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
-                }
-            }
-            qry.exec();
-            while (qry.next())
-            {
-                //cout<<qry.value(numSliders).toString().toStdString()<<endl;
-                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
-            }
-
-            // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("phi", currentPhi);
-        }
-
-        else if((p.rx() - currentXloc) < 0  && lastXloc > p.rx()) //slide left
-        {
-            //If current phi is equal to minimum phi then set current phi to maximum phi
-            paramSet->getMinMax("phi", min, max);
-            if( (currentPhi-min) < 0.0000001)
-                currentPhi=max;
-            else
-            {
-                queryText = "SELECT MAX(phi) FROM " + mTableName.toStdString() + " WHERE phi < :phi";
-                qry.prepare(QString::fromStdString(queryText));
-                qry.bindValue(":phi", currentPhi);
-                qry.exec();
-                while (qry.next())
-                {
-                    currentPhi = qry.value(0).toFloat();
-                }
-            }
-
-            //now get the correct image
-            queryText = constructQueryString(paramNames);
-            qry.prepare(QString::fromStdString(queryText));
-            for(int i=0;i<numSliders;i++)
-            {
-                if(paramNames[i].toStdString()=="phi")
-                    qry.bindValue(":phi", currentPhi);
-                else
-                {
-                    string s;
-                    s = ":"+paramNames[i].toStdString();
-                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
-                }
-            }
-            qry.exec();
-            while (qry.next())
-            {
-                cout<<qry.value(numSliders).toString().toStdString()<<endl;
-                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
-            }
-
-            //Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("phi", currentPhi);
-        }
-    }
-    else if(fabs(p.ry() - currentYloc) > slidePixel && fabs(p.rx() - currentXloc) < slidePixel) //only theta
-    {
-        if((p.ry() - currentYloc) < 0 && lastYloc > p.ry()) //slide up
-        {
-            queryText = "SELECT MIN(theta) FROM " + mTableName.toStdString() + " WHERE theta > :theta";
-            qry.prepare(QString::fromStdString(queryText));
-            qry.bindValue(":theta", currentTheta);
-            qry.exec();
-            while (qry.next())
-            {
-                currentTheta = qry.value(0).toFloat();
-            }
-
-            //now get the correct image
-            queryText = constructQueryString(paramNames);
-            qry.prepare(QString::fromStdString(queryText));
-            for(int i=0;i<numSliders;i++)
-            {
-                if(paramNames[i].toStdString()=="theta")
-                    qry.bindValue(":theta", currentTheta);
-                else
-                {
-                    string s;
-                    s = ":"+paramNames[i].toStdString();
-                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
-                }
-            }
-            qry.exec();
-            while (qry.next())
-            {
-                //cout<<qry.value(numSliders).toString().toStdString()<<endl;
-                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
-            }
-
-            // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("theta", currentTheta);
-        }
-
-        else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
-        {
-            //If current theta is equal to minimum theta then set current theta to maximum theta
-            paramSet->getMinMax("theta", min, max);
-            if( (currentTheta-min) < 0.0000001)
-                currentTheta=max;
-            else
-            {
-                queryText = "SELECT MAX(theta) FROM " + mTableName.toStdString() + " WHERE theta < :theta";
-                qry.prepare(QString::fromStdString(queryText));
-                qry.bindValue(":theta", currentTheta);
-                qry.exec();
-
-                while (qry.next())
-                {
-                    currentTheta = qry.value(0).toFloat();
-                }
-            }
-
-            //now get the correct image
-            queryText = constructQueryString(paramNames);
-            qry.prepare(QString::fromStdString(queryText));
-            for(int i=0;i<numSliders;i++)
-            {
-                if(paramNames[i].toStdString()=="theta")
-                    qry.bindValue(":theta", currentTheta);
-                else
-                {
-                    string s;
-                    s = ":"+paramNames[i].toStdString();
-                    qry.bindValue(QString::fromStdString(s), currentParamVals[i]);
-                }
-            }
-            qry.exec();
-            while (qry.next())
-            {
-                imagePath = path + "/" + qry.value(numSliders).toString().toStdString();
-            }
-
-            // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("theta", currentTheta);
-        }
-    }
-    else if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) > slidePixel) //both theta and phi
-    {
-        cout<<"both"<<endl;
-    }
-
-    // Load the image
-    //loadImage(QString::fromStdString(imagePath));*/
-
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    if(fabs(p.rx() - currentXloc) > slidePixel && fabs(p.ry() - currentYloc) < slidePixel) //only phi
-    {
-        if((p.rx() - currentXloc) > 0) //slide right
-        {
-            qDebug()<<"slide right";
+            //qDebug()<<"slide right";
 
             float next;
             bool nbool = paramSet->getNextValue( "phi", currentPhi, next );
@@ -325,38 +126,72 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             if(!nbool)
             {
                 paramSet->getMinMax("phi", min, max);
-                qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 next=min;
             }
 
-            qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
-
+            //qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
 
             // Modify the slider value at the end as a result of drag
             paramSet->changeParameter("phi", next);
         }
 
-        else if((p.rx() - currentXloc) < 0) //slide left
+        else if((p.rx() - currentXloc) < 0 && lastXloc > p.rx()) //slide left
         {
-            qDebug()<<"slide left";
+            //qDebug()<<"slide left";
 
             float prev;
             bool nbool = paramSet->getPrevValue( "phi", currentPhi, prev );
             if(!nbool)
             {
                 paramSet->getMinMax("phi", min, max);
-                qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 prev=max;
             }
 
-            qDebug() << "PHI PREV QUERY (" << nbool << ") : " << currentPhi << ": " << prev;
-
+            //qDebug() << "PHI PREV QUERY (" << nbool << ") : " << currentPhi << ": " << prev;
 
             //Modify the slider value at the end as a result of drag
             paramSet->changeParameter("phi", prev);
         }
     }
+    else if(fabs(p.ry() - currentYloc) > slidePixelVer && fabs(p.rx() - currentXloc) < slidePixelVer) //only theta
+    {
+        if((p.ry() - currentYloc) < 0 && lastYloc > p.ry()) //slide up
+        {
+            float next;
+            bool nbool = paramSet->getNextValue( "theta", currentTheta, next );
 
+            if(!nbool)
+            {
+                paramSet->getMinMax("theta", min, max);
+                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                next=min;
+            }
+
+            //qDebug() << "THETA NEXT QUERY (" << nbool << ") : " << currentTheta << ": " << next;
+
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("theta", next);
+        }
+
+        else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
+        {
+            float prev;
+            bool nbool = paramSet->getPrevValue( "theta", currentTheta, prev );
+            if(!nbool)
+            {
+                paramSet->getMinMax("theta", min, max);
+                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
+                prev=max;
+            }
+
+            //qDebug() << "THETA PREV QUERY (" << nbool << ") : " << currentTheta << ": " << prev;
+
+            // Modify the slider value at the end as a result of drag
+            paramSet->changeParameter("theta", prev);
+        }
+    }
 
     lastXloc = p.rx();
     lastYloc = p.ry();
