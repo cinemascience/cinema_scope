@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>Open Readme Example</Name>
+    <Name>CinemaScope</Name>
     <Version>1.0.0</Version>
-    <Title>Open Readme Example</Title>
-    <Publisher>Qt-Project</Publisher>
+    <Title>CinemaScope</Title>
+    <Publisher>Los Alamos National Laboratory</Publisher>
     <StartMenuDir>Qt IFW Examples</StartMenuDir>
-    <TargetDir>@HomeDir@/IfwExamples/openreadme</TargetDir>
+    <TargetDir>@HomeDir@/CinemaScope</TargetDir>
 </Installer>
