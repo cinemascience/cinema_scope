@@ -11,26 +11,31 @@ bool CinImageView::loadImage(const QString &path)
     QPixmap *found = NULL;
     bool result = true;
 
-    // is it in the cache?
-    if (mCache.find(path, found)) {
-        // yes, just put it in the scene
-        pixmap.load(path);
-        mCache.insert(path, pixmap);
-        sceneObj->addPixmap(pixmap);
-        result = true;
-        // debug
-        QFileInfo imFile(path);
-        qDebug() << "CINIMAGEVIEW found: " << imFile.fileName();
-    } else {
-        // no, create a new one
-        found = new QPixmap();
-        found->load(path);
-        mCache.insert(path, *found);
-        sceneObj->addPixmap(*found);
-        result = true;
-        // debug
-        QFileInfo imFile(path);
-        qDebug() << "CINIMAGEVIEW load : " << imFile.fileName();
+    // is this the current image?
+    if (mCurImage != path) {
+        // is it in the cache?
+        if (mCache.find(path, found)) {
+            // yes, just put it in the scene
+            pixmap.load(path);
+            mCache.insert(path, pixmap);
+            sceneObj->addPixmap(pixmap);
+            mCurImage = path;
+            result = true;
+            // debug
+            // QFileInfo imFile(path);
+            // qDebug() << "CINIMAGEVIEW found: " << imFile.fileName();
+        } else {
+            // no, create a new one
+            found = new QPixmap();
+            found->load(path);
+            mCache.insert(path, *found);
+            sceneObj->addPixmap(*found);
+            mCurImage = path;
+            result = true;
+            // debug
+            // QFileInfo imFile(path);
+            // qDebug() << "CINIMAGEVIEW load : " << imFile.fileName();
+        }
     }
 
     return result;

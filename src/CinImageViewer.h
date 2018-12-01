@@ -42,7 +42,10 @@ class CinImageView : public QGraphicsView
     Q_OBJECT
 
 public:
-    CinImageView(QWidget *parent) : QGraphicsView(parent) {}
+    CinImageView(QWidget *parent) : QGraphicsView(parent)
+    {
+        mCurImage = "NONE";
+    }
     QGraphicsScene* sceneObj;
     CinParamSet *paramSet;
 
@@ -71,6 +74,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void wheelEvent(QWheelEvent * event);
 
+    QString mCurImage; /* the current image */
 };
 
 #endif
