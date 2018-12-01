@@ -19,7 +19,6 @@ class CinParameter
         static const float NO_NEXT;
         static const float NOT_SET;
         static const char *GetNameForType(CinParameter::Type type);
-        static bool TestClass();
 
         // constructor
         CinParameter(const QString &name, CinParameter::Type type=CinParameter::UNDEFINED, 

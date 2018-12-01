@@ -43,8 +43,6 @@ bool CinParameter::getNextValue(float value, float &next)
         retVal = true;
     }        
 
-    qDebug()<<"in getNextValue: "<<value<<" "<<next<<" "<<retVal;
-         
     return retVal; 
 }
 
@@ -78,8 +76,6 @@ bool CinParameter::getPrevValue(float value, float &prev)
         }
     }
 
-    qDebug()<<"in getPrevValue: "<<value<<" "<<prev<<" "<<retVal;
-         
     return retVal; 
 }
 
@@ -107,48 +103,6 @@ void CinParameter::print()
     qDebug() << "PARAMETER: " << mName << mValues;
 }
 
-
-/*! \brief Run a test of this class 
- *
- */
-bool CinParameter::TestClass()
-{
-    bool retVal = false;
-
-    CinParameter param("test", CinParameter::FLOAT);
-    param.recordValue(1.0);
-    param.recordValue(4.0);
-    param.recordValue(2.0);
-    param.recordValue(3.0);
-    param.sortValues();
-
-    std::vector<float> data = {0.0, 1.0, 1.5, 2.0, 3.5, 4.0, 4.5};
-
-    qDebug() << "TESTING Class CinParameter (begin)";
-    param.print();
-    qDebug() << "data: " << data;
-    qDebug() << "output is \"TEST TYPE (return value) : value : result\"";
-
-    // Prev
-    bool result = false;
-    float fResult = 0.0;
-    for (std::vector<float>::iterator it = data.begin(); it != data.end(); it++)
-    {
-        result = param.getPrevValue(*it, fResult);
-        qDebug() << "PREV TEST (" << result << ") : " << *it << ": " << fResult;
-    }
-
-    // Next
-    for (std::vector<float>::iterator it = data.begin(); it != data.end(); it++)
-    {
-        result = param.getNextValue(*it, fResult);
-        qDebug() << "NEXT TEST (" << result << ") : " << *it << ": " << fResult;
-    }
-    qDebug() << "TESTING Class CinParameter (complete)";
-    qDebug() << "";
-
-    return retVal;
-}
 
 bool CinParameter::valueExists(float value)
 {

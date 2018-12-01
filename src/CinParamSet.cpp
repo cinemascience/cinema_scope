@@ -67,7 +67,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
     {
         found.value().setValue(value);
         emit parameterChanged(name, value);
-        qDebug() << "CINPARAMSET emit:" << name << value;
+        // qDebug() << "CINPARAMSET emit:" << name << value;
     }
 }
 
@@ -81,7 +81,7 @@ bool CinParamSet::contains(const QString &name)
 void CinParamSet::print()
 {
     QMap<QString, CinParameter>::iterator cur;
-    qDebug() << "CINPARAMSET: (parameters)";
+    // qDebug() << "CINPARAMSET: (parameters)";
     for (cur = mParameters.begin(); cur != mParameters.end(); ++cur)
     {
         qDebug() << cur.value().getName();

@@ -52,12 +52,6 @@ CinScopeWindow::CinScopeWindow(QWidget *parent) : QMainWindow(parent)
     // QSettings settings(mSettingsFile, QSettings::IniFormat);
 
     buildApplication(parent);
-
-    // testing
-    CinCore::RUN_TESTS = true;
-    if (CinCore::RUN_TESTS) {
-        CinParameter::TestClass();
-    }
 }
 
 void CinScopeWindow::buildApplication(QWidget *parent)
