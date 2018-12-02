@@ -61,7 +61,14 @@ void CinDBView::updateArtifacts()
     // for now, there is only one artifact that changes, but this should 
     // but updated to a more general emit mechanism
     // qDebug() << "CINDBVIEW emit: " << path << result;
-    emit artifactChanged("FILE", path);
+    if (mArtifacts.get("FILE") != path)
+    {
+        mArtifacts.set("FILE", path);
+        emit artifactChanged("FILE", path);
+        // qDebug() << "setting artifact    : " << path;
+    } else {
+        // qDebug() << "artifact already set: " << path;
+    }
 }
 
 /*! \brief Get a fully qualified and verified path to an artifact
