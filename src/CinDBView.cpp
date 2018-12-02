@@ -56,7 +56,10 @@ void CinDBView::updateArtifacts()
     }
 
     QString path;
-    bool result = getFullPathToArtifact(artifact, path);
+    if (not  getFullPathToArtifact(artifact, path))
+    {
+        qDebug() << "CINDBVIEW: Artifact check error";
+    }
     
     // for now, there is only one artifact that changes, but this should 
     // but updated to a more general emit mechanism

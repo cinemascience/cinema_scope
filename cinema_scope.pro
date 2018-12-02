@@ -13,6 +13,7 @@ TARGET = CinemaScope
 TEMPLATE = app
 
 CONFIG += debug
+CONFIG += release
 
 # debug/release
 CONFIG(debug, debug|release) {

@@ -158,8 +158,10 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
 
     // create the table from the columns
     constructCommands(CinDBReader::InitTableName, coldata, command, insert);
-    bool success = query.exec(command); 
-    // qDebug() << "Executing creation of \"" << dbname << "\" table" << success; 
+    if (query.exec(command) )
+    {
+        qDebug() << "CINDBREADER: ERROR EXECUTING query";
+    }
 
     // perform value-based insert
     char str[10000];
@@ -209,10 +211,13 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
 
     QString newTableCommand;
     constructNewTableCommand(newTableCommand, CinDBReader::InitTableName, tableName);
-    bool newTable = query.exec(newTableCommand); 
-    // qDebug() << "NEWTABLE : " << newTable;
-    bool dropTable = query.exec("DROP TABLE " + CinDBReader::InitTableName);
-    // qDebug() << "DROPTABLE: " << dropTable; 
+    if (not query.exec(newTableCommand)) {
+        qDebug() << "NEWTABLE : error in CinDBReader";
+    }
+    if (not query.exec("DROP TABLE " + CinDBReader::InitTableName))
+    {
+        qDebug() << "DROPTABLE: error in CinDBReader";
+    }
 }
 
 void CinDBReader::constructCommands(const QString &tableName, std::vector<CinDBColData> &coldata, QString &create, QString &insert)
