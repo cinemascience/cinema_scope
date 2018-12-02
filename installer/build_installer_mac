@@ -9,7 +9,7 @@ echo "Cleaning packages/cinemascope/data ..."
 rm -rf packages/cinemascope/data/$APP
 
 echo "Copying current build ..."
-cp -rf ../Debug/$APP packages/cinemascope/data
+cp -rf ../build/release/$APP packages/cinemascope/data
 
 echo "Running mac delpoyment ..."
 $DEPLOY packages/cinemascope/data/$APP
