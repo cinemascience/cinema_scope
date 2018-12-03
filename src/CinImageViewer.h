@@ -48,18 +48,8 @@ public:
     }
     void setParameters(CinParamSet *paramset) {mParamSet = paramset;}
 
-    int currentXloc;
-    int currentYloc;
-    int lastXloc=0;
-    int lastYloc=0;
-    const int slidePixelHor=20;
-    const int slidePixelVer=20;
     bool loadImage(const QString &path);
-    QString mTableName;
 
-    float currentPhi;
-    float currentTheta;
-    QPixmapCache mCache;
 
 public slots:
     // TODO discuss use of const
@@ -74,6 +64,17 @@ protected:
 
     QString mCurImage; /* the current image */
     CinParamSet *mParamSet=NULL;
+
+private:
+    int currentXloc;
+    int currentYloc;
+    int lastXloc=0;
+    int lastYloc=0;
+    const int slidePixelHor=20;
+    const int slidePixelVer=20;
+    float currentPhi;
+    float currentTheta;
+    QPixmapCache mCache;
 };
 
 #endif
