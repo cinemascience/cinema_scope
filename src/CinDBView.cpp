@@ -117,3 +117,11 @@ void CinDBView::onParameterChanged(const QString &key, float value)
     updateArtifacts(); 
     // qDebug() << "ONPARAMCHANGED: " << key << ", " << value;
 }
+
+void CinDBView::reset()
+{
+    // flush the database
+    QSqlQuery qry;
+    // TODO correct abstraction for knowledge of table names
+    qry.exec("DROP TABLE cinema");
+}

@@ -30,6 +30,7 @@ class CinDBView : public QObject
         void setDatabase(CinDatabase *db);
         int load(const QString &db, const QString &table);
         void updateArtifacts();
+        void reset();
 
     signals:
         void artifactChanged(const QString &key, const QString &value);
