@@ -7,7 +7,7 @@
 #include <QSlider>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QGraphicsScene>
+// #include <QGraphicsScene>
 #include <QPixmap>
 #include <QGraphicsView>
 #include <QDir>
@@ -21,7 +21,7 @@
 #include <QPainter>
 #include <QImage>
 #include <QPaintEvent>
-#include <QGraphicsScene>
+// #include <QGraphicsScene>
 #include <QPixmapCache>
 #include <QFileInfo>
 
@@ -46,7 +46,6 @@ public:
     {
         mCurImage = "NONE";
     }
-    QGraphicsScene* sceneObj;
     void setParameters(CinParamSet *paramset) {mParamSet = paramset;}
 
     int currentXloc;

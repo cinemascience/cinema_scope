@@ -84,7 +84,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     // image and scene
     mScene = new QGraphicsScene();
-    mImageView->sceneObj = mScene;
+    mImageView->setScene(mScene);
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mImageView->mTableName = mTableName;
     mSplitter->addWidget(mImageView);
@@ -99,53 +99,14 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
 
     // remember this DB
     mCurDatabase = database;
-    mImageView->dbPath = database;
 
     mDBV->load(database, mTableName);
     mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
-    // QObject::connect(mSliders, SIGNAL(artifactSelected(QString &)), mImageView, SLOT(onLoadImage(QString &)));
     QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
                      mImageView, SLOT(onLoadImage(const QString &, const QString &)));
-    // Testing query string
-    // QString tempQuery;
-    // mDBV->getParameters()->getArtifactQueryString(tempQuery);
-    // qDebug() << "QUERY: " << tempQuery;
-    // mDBV->updateArtifacts();
-
-    mImageView->paramSet = mDBV->getParameters();
-
-    QSqlQuery qry;
-    string queryText = "SELECT * FROM " + mTableName.toStdString();
-    qry.exec(queryText.c_str());
-
-    //Get number of sliders = number of columns-1
-    numSliders = qry.record().count()-1;
-    // qDebug() << "Number of columns: " << numSliders + 1 << endl;
-
-    //load and display an initial image
-    queryText = "SELECT * FROM " + mTableName.toStdString();
-    qry.exec(queryText.c_str());
-    QString initFileID;
-    qry.first();
-    //get the value of last column which is the image path
-    initFileID = qry.value(numSliders).toString();
-
-    QString imagePath = database;
-    imagePath += "/" + initFileID; //loads the first image from first row in the db
-    // QPixmap image;
-    // if (!mImageView->loadImage(imagePath,&image))
-    if (!mImageView->loadImage(imagePath))
-    {
-        //image.fill(Qt::transparent); // shows a blank screen
-        qWarning() << "image loading failed";
-        imagePath = database;
-        imagePath += "/empty_image/empty.png";
-        // mImageView->loadImage(imagePath,&image);
-        mImageView->loadImage(imagePath);
-    }
-
-    // mScene->addPixmap(image);
+    mImageView->setParameters( mDBV->getParameters());
     mImageView->setScene(mScene);
+    mDBV->updateArtifacts();
 }
 
 
@@ -192,7 +153,5 @@ void CinScopeWindow::onAbout()
 
 void CinScopeWindow::flushUI()
 {
-    // flush the database
-    QSqlQuery qry;
-    qry.exec("DROP TABLE " + mTableName);
+    mDBV->reset();
 }

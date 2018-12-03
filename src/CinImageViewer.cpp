@@ -18,7 +18,7 @@ bool CinImageView::loadImage(const QString &path)
             // yes, just put it in the scene
             pixmap.load(path);
             mCache.insert(path, pixmap);
-            sceneObj->addPixmap(pixmap);
+            scene()->addPixmap(pixmap);
             mCurImage = path;
             result = true;
             // debug
@@ -29,7 +29,7 @@ bool CinImageView::loadImage(const QString &path)
             found = new QPixmap();
             found->load(path);
             mCache.insert(path, *found);
-            sceneObj->addPixmap(*found);
+            scene()->addPixmap(*found);
             mCurImage = path;
             result = true;
             // debug
