@@ -86,7 +86,6 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mScene = new QGraphicsScene();
     mImageView->setScene(mScene);
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mImageView->mTableName = mTableName;
     mSplitter->addWidget(mImageView);
     mSplitter->addWidget(mSliders);
     mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
