@@ -104,13 +104,13 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     QPoint p = e->pos();
 
     float min,max;
-    QStringList paramNames = paramSet->getParameterNames();
+    QStringList paramNames = mParamSet->getParameterNames();
     vector<float> currentParamVals;
 
     for(int i=0;i<paramNames.size();i++)
     {
         float val;
-        paramSet->getValue(paramNames[i], val);
+        mParamSet->getValue(paramNames[i], val);
         currentParamVals.push_back(val);
     }
 
@@ -118,10 +118,10 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     for(int i=0;i<paramNames.size();i++)
     {
         if(paramNames[i]=="phi")
-            paramSet->getValue(paramNames[i], currentPhi);
+            mParamSet->getValue(paramNames[i], currentPhi);
 
         if(paramNames[i]=="theta")
-            paramSet->getValue(paramNames[i], currentTheta);
+            mParamSet->getValue(paramNames[i], currentTheta);
     }
 
     if(fabs(p.rx() - currentXloc) > slidePixelHor && fabs(p.ry() - currentYloc) < slidePixelHor) //only phi
@@ -131,11 +131,11 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug()<<"slide right";
 
             float next;
-            bool nbool = paramSet->getNextValue( "phi", currentPhi, next );
+            bool nbool = mParamSet->getNextValue( "phi", currentPhi, next );
 
             if(!nbool)
             {
-                paramSet->getMinMax("phi", min, max);
+                mParamSet->getMinMax("phi", min, max);
                 //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 next=min;
             }
@@ -143,7 +143,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << currentPhi << ": " << next;
 
             // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("phi", next);
+            mParamSet->changeParameter("phi", next);
         }
 
         else if((p.rx() - currentXloc) < 0 && lastXloc > p.rx()) //slide left
@@ -151,10 +151,10 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug()<<"slide left";
 
             float prev;
-            bool nbool = paramSet->getPrevValue( "phi", currentPhi, prev );
+            bool nbool = mParamSet->getPrevValue( "phi", currentPhi, prev );
             if(!nbool)
             {
-                paramSet->getMinMax("phi", min, max);
+                mParamSet->getMinMax("phi", min, max);
                 //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 prev=max;
             }
@@ -162,7 +162,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug() << "PHI PREV QUERY (" << nbool << ") : " << currentPhi << ": " << prev;
 
             //Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("phi", prev);
+            mParamSet->changeParameter("phi", prev);
         }
     }
     else if(fabs(p.ry() - currentYloc) > slidePixelVer && fabs(p.rx() - currentXloc) < slidePixelVer) //only theta
@@ -170,11 +170,11 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
         if((p.ry() - currentYloc) < 0 && lastYloc > p.ry()) //slide up
         {
             float next;
-            bool nbool = paramSet->getNextValue( "theta", currentTheta, next );
+            bool nbool = mParamSet->getNextValue( "theta", currentTheta, next );
 
             if(!nbool)
             {
-                paramSet->getMinMax("theta", min, max);
+                mParamSet->getMinMax("theta", min, max);
                 //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 next=min;
             }
@@ -182,16 +182,16 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug() << "THETA NEXT QUERY (" << nbool << ") : " << currentTheta << ": " << next;
 
             // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("theta", next);
+            mParamSet->changeParameter("theta", next);
         }
 
         else if((p.ry() - currentYloc) > 0 && lastYloc < p.ry()) //slide down
         {
             float prev;
-            bool nbool = paramSet->getPrevValue( "theta", currentTheta, prev );
+            bool nbool = mParamSet->getPrevValue( "theta", currentTheta, prev );
             if(!nbool)
             {
-                paramSet->getMinMax("theta", min, max);
+                mParamSet->getMinMax("theta", min, max);
                 //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
                 prev=max;
             }
@@ -199,7 +199,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             //qDebug() << "THETA PREV QUERY (" << nbool << ") : " << currentTheta << ": " << prev;
 
             // Modify the slider value at the end as a result of drag
-            paramSet->changeParameter("theta", prev);
+            mParamSet->changeParameter("theta", prev);
         }
     }
 

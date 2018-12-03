@@ -47,7 +47,7 @@ public:
         mCurImage = "NONE";
     }
     QGraphicsScene* sceneObj;
-    CinParamSet *paramSet;
+    void setParameters(CinParamSet *paramset) {mParamSet = paramset;}
 
     int currentXloc;
     int currentYloc;
@@ -60,7 +60,6 @@ public:
 
     float currentPhi;
     float currentTheta;
-    QString dbPath;
     QPixmapCache mCache;
 
 public slots:
@@ -75,6 +74,7 @@ protected:
     void wheelEvent(QWheelEvent * event);
 
     QString mCurImage; /* the current image */
+    CinParamSet *mParamSet=NULL;
 };
 
 #endif
