@@ -7,7 +7,6 @@
 #include <QSlider>
 #include <QVBoxLayout>
 #include <QLabel>
-// #include <QGraphicsScene>
 #include <QPixmap>
 #include <QGraphicsView>
 #include <QDir>
@@ -21,7 +20,6 @@
 #include <QPainter>
 #include <QImage>
 #include <QPaintEvent>
-// #include <QGraphicsScene>
 #include <QPixmapCache>
 #include <QFileInfo>
 
@@ -66,14 +64,14 @@ protected:
     CinParamSet *mParamSet=NULL;
 
 private:
-    int currentXloc;
-    int currentYloc;
-    int lastXloc=0;
-    int lastYloc=0;
-    const int slidePixelHor=20;
-    const int slidePixelVer=20;
-    float currentPhi;
-    float currentTheta;
+    int          mCurrentXloc;
+    int          mCurrentYloc;
+    int          mLastXloc=0;
+    int          mLastYloc=0;
+    const int    mSlidePixelHor=20;
+    const int    mSlidePixelVer=20;
+    float        mCurrentPhi;
+    float        mCurrentTheta;
     QPixmapCache mCache;
 };
 
