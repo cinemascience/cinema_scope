@@ -28,7 +28,7 @@ class CinDBView : public QObject
         CinDBView();
 
         void setDatabase(CinDatabase *db);
-        int load(const QString &db, const QString &table);
+        int load(const QString &db);
         void updateArtifacts();
         void reset();
 

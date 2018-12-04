@@ -23,12 +23,12 @@ void CinDBView::setDatabase(CinDatabase *db)
     }
 }
 
-int CinDBView::load(const QString &db, const QString &table)
+int CinDBView::load(const QString &db)
 {
     int result = CinCore::ERROR; 
 
     if (mDatabase != NULL) {
-        result = mDatabase->loadDatabase(db, table);
+        result = mDatabase->load(db);
             // TODO check result of loading database
         mParams.init(*mDatabase);
 

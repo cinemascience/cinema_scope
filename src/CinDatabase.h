@@ -16,7 +16,7 @@ class CinDatabase
 {
     public:
         CinDatabase();
-        int loadDatabase(const QString &dbPath, const QString &tableName);
+        int load(const QString &dbPath);
         inline const QString &getTableName() {return mTableName;}
 
         void                  setParameterColumnNames();

@@ -31,7 +31,7 @@ class CinDBReader
 {
     public:
         CinDBReader();
-        int readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName);
+        int load(QSqlDatabase &db, const QString &path, const QString &tableName);
         static int VerifyDatabase(const QString &path);
 
         enum Results{DatabaseLoaded=1, DatabaseInvalid, DatabaseLoadError};

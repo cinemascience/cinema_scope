@@ -29,15 +29,14 @@ CinDatabase::CinDatabase()
 /*! \brief Load Cinema database from disk into this object 
  *
  */
-int CinDatabase::loadDatabase(const QString &dbPath, const QString &tableName)
+int CinDatabase::load(const QString &dbPath)
 {
     int result = CinDBReader::DatabaseLoadError; 
-    qDebug() << "CINDATABASE :" << dbPath << tableName;
+    qDebug() << "CINDATABASE :" << dbPath; 
 
     if (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir())
     {
-        setTableName(tableName); 
-        result = mReader.readCinemaDatabase(mDatabase, dbPath, mTableName);
+        result = mReader.load(mDatabase, dbPath, mTableName);
         setParameterColumnNames();
     }
 

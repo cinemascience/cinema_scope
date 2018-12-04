@@ -59,9 +59,6 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     // build the DB and all its object
     mDBV = CinDBFactory::BuildDBView();
 
-    // remember the table name
-    mTableName = "cinema";
-
     // create the basic components
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
@@ -99,7 +96,7 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     // remember this DB
     mCurDatabase = database;
 
-    mDBV->load(database, mTableName);
+    mDBV->load(database);
     mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
     QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
                      mImageView, SLOT(onLoadImage(const QString &, const QString &)));

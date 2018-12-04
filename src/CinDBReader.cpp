@@ -39,7 +39,7 @@ int CinDBReader::VerifyDatabase(const QString &path)
     return res;
 }
 
-int CinDBReader::readCinemaDatabase(QSqlDatabase &db, const QString &path, const QString &tableName)
+int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tableName)
 {
     int res = CinDBReader::DatabaseLoadError; 
 
