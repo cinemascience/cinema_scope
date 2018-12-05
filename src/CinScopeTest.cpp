@@ -16,7 +16,8 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void previous();
+    void parameter();
+    void databaseReader();
 };
 
 
@@ -40,7 +41,7 @@ void CinScopeTest::cleanupTestCase()
 
 }
 
-void CinScopeTest::previous()
+void CinScopeTest::parameter()
 {
     // testing CinParameter class
     CinParameter param("test", CinParameter::FLOAT);
@@ -81,6 +82,14 @@ void CinScopeTest::previous()
     QVERIFY(fResult == 3.0);
 }
 
+void CinScopeTest::databaseReader()
+{
+    // test of database reader to be inserted here
+
+    QVERIFY(true == true);
+}
+
 QTEST_MAIN(CinScopeTest)
 
-#include "tst_cinscopetest.moc"
+// #include "tst_cinscopetest.moc"
+#include "CinScopeTest.moc"
