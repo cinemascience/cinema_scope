@@ -19,10 +19,14 @@
 const QString CinDBReader::CSVFile       = "data.csv";
 const QString CinDBReader::SettingsFile  = "csettings.json";
 const QString CinDBReader::InitTableName = "initial_table";
+const QString CinDBReader::NOFILE        = "CDBReaderNOFILE";
 
 // TODO remove std::strings and std::vectors
 CinDBReader::CinDBReader() 
 {
+    mCurDatabase     = CinDBReader::NOFILE;
+    mCurCSVFile      = CinDBReader::NOFILE;
+    mCurSettingsFile = CinDBReader::NOFILE;
 }
 
 void CinDBReader::setCurDatabase(const QString &path)

@@ -22,22 +22,36 @@ class CinDBColData
 
 //! Reads a Cinema database from disk into an in-memory database 
 /*!
- * The class could read data into many types of in-memory databases,
- * as it does not own the implementation of the in-memory database.
- * Instead, the database is handed to this class during the read
- * operation.
+ *  This class reads a cinema database from disk and places the data
+ *  in a QSqlDatabase. Possible operations on the database include
+ *  filtering (via data stored in a file within the cinema database).
+ *
+ *  Filtering is accomplished by reading all data from disk into an
+ *  initial table,  then copying the filtered data into a final table.
+ *  The name of the final table is provided to this object (see public
+ *  functions.
+ *
+ *  The class could read data into many types of in-memory databases,
+ *  as it does not own the implementation of the in-memory database.
+ *  Instead, the database is handed to this class during the read
+ *  operation.
 */
 class CinDBReader
 {
     public:
         CinDBReader();
         int load(QSqlDatabase &db, const QString &path, const QString &tableName);
-        static int VerifyDatabase(const QString &path);
 
+        static int VerifyDatabase(const QString &path);
         enum Results{DatabaseLoaded=1, DatabaseInvalid, DatabaseLoadError};
-        const QString &getCurDatabase() {return mCurDatabase;}
-        const QString &getCurCSVFile() {return mCurCSVFile;}
+        static const QString NOFILE;
+
+        const QString &getCurDatabase()     {return mCurDatabase;}
+        const QString &getCurCSVFile()      {return mCurCSVFile;}
         const QString &getCurSettingsFile() {return mCurSettingsFile;}
+
+        bool hasCSVFile() {return mCurCSVFile == CinDBReader::NOFILE;}
+        bool hasSettingsFile() {return mCurSettingsFile == CinDBReader::NOFILE;}
 
     private:
         CinDBColData::Type getType(QString &value);

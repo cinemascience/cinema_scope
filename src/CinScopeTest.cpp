@@ -1,5 +1,6 @@
 #include <QtTest>
 #include <QCoreApplication>
+#include <QSqlDatabase>
 
 // add necessary includes here
 #include "CinParameter.h"
@@ -87,6 +88,14 @@ void CinScopeTest::databaseReader()
 {
     // test of database reader to be inserted here
     CinDBReader reader;
+    QString dbPath = "../unittesting/simple_load.cdb";
+    QString table  = "cinema";
+    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
+    database.open();
+
+    int result = reader.load(database, dbPath, table);
+    QVERIFY(result == CinDBReader::DatabaseLoaded);
+
 
     QVERIFY(true == true);
 }
