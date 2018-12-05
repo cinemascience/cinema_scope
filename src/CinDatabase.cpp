@@ -45,7 +45,7 @@ int CinDatabase::load(const QString &dbPath)
 
 const QString &CinDatabase::getPath()
 {
-    return mReader.getCurDatabase();
+    return mReader.getDatabase();
 }
 
 /*! \brief Save a local list of column names from the database 
