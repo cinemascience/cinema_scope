@@ -3,6 +3,7 @@
 
 // add necessary includes here
 #include "CinParameter.h"
+#include "CinDBReader.h"
 #include <vector>
 
 class CinScopeTest : public QObject
@@ -85,6 +86,7 @@ void CinScopeTest::parameter()
 void CinScopeTest::databaseReader()
 {
     // test of database reader to be inserted here
+    CinDBReader reader;
 
     QVERIFY(true == true);
 }
