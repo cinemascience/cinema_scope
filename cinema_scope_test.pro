@@ -8,7 +8,9 @@ TEMPLATE = app
 
 SOURCES +=  src/CinParameter.cpp \
             src/CinDBReader.cpp \
-            src/CinScopeTest.cpp
+            src/CinScopeTest.cpp \
+            src/CinParameterMap.cpp
 
 HEADERS +=  src/CinParameter.h \
-            src/CinDBReader.h
+            src/CinDBReader.h \
+            src/CinParameterMap.h

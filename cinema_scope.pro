@@ -54,7 +54,8 @@ SOURCES += \
         src/CinDBView.cpp \
         src/CinDBFactory.cpp \
         src/CinCore.cpp \
-        src/CinSlider.cpp
+        src/CinSlider.cpp \
+        src/CinParameterMap.cpp
 
 HEADERS += \
         src/CinScopeWindow.h \
@@ -68,5 +69,6 @@ HEADERS += \
         src/CinDBView.h \
         src/CinDBFactory.h \
         src/CinCore.h \
-        src/CinSlider.h
+        src/CinSlider.h \
+        src/CinParameterMap.h
 

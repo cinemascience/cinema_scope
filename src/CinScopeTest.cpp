@@ -5,6 +5,7 @@
 // add necessary includes here
 #include "CinParameter.h"
 #include "CinDBReader.h"
+#include "CinParameterMap.h"
 #include <vector>
 
 class CinScopeTest : public QObject
@@ -20,6 +21,7 @@ private slots:
     void cleanupTestCase();
     void parameter();
     void databaseReader();
+    void parameterMap();
 };
 
 
@@ -97,8 +99,29 @@ void CinScopeTest::databaseReader()
     QVERIFY(result == CinDBReader::DatabaseLoaded);
     QVERIFY(reader.hasCSVFile() == true);
     QVERIFY(reader.hasSettingsFile() == true);
+}
 
-    QVERIFY(true == true);
+
+void CinScopeTest::parameterMap()
+{
+    CinParameterMap map;
+    QString phiString, thetaString, failString;
+
+    // check initial
+    QVERIFY(not map.getInput("phi", phiString));
+    QVERIFY(not map.getInput("theta", thetaString));
+    QVERIFY(not map.getInput("fail", failString));
+
+    // insert some data
+    map.map("zhi", "phi");
+    map.map("zheta", "theta");
+
+    // recheck 
+    QVERIFY(map.getInput("phi", phiString));
+    QVERIFY(phiString == "zhi");
+    QVERIFY(map.getInput("theta", thetaString));
+    QVERIFY(thetaString == "zheta");
+    QVERIFY(not map.getInput("fail", failString));
 }
 
 QTEST_MAIN(CinScopeTest)
