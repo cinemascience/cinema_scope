@@ -40,11 +40,11 @@ class CinImageView : public QGraphicsView
     Q_OBJECT
 
 public:
-    CinImageView(QWidget *parent) : QGraphicsView(parent)
-    {
-        mCurImage = "NONE";
-    }
+    CinImageView(QWidget *parent);
+    
     void setParameters(CinParamSet *paramset) {mParamSet = paramset;}
+    void setHorizontalParameter(const QString &h) {mCurHorParam = h;}
+    void setVerticalParameter(const QString &v)   {mCurVerParam = v;}
 
     bool loadImage(const QString &path);
 
@@ -70,9 +70,11 @@ private:
     int          mLastYloc=0;
     const int    mSlidePixelHor=20;
     const int    mSlidePixelVer=20;
-    float        mCurrentPhi;
-    float        mCurrentTheta;
+    float        mCurrentHor;
+    float        mCurrentVer;
     QPixmapCache mCache;
+    QString      mCurHorParam;
+    QString      mCurVerParam;
 };
 
 #endif
