@@ -46,12 +46,12 @@ class CinDBReader
         enum Results{DatabaseLoaded=1, DatabaseInvalid, DatabaseLoadError};
         static const QString NOFILE;
 
-        const QString &getCurDatabase()     {return mCurDatabase;}
-        const QString &getCurCSVFile()      {return mCurCSVFile;}
-        const QString &getCurSettingsFile() {return mCurSettingsFile;}
+        const QString &getDatabase()     {return mCurDatabase;}
+        const QString &getCSVFile()      {return mCurCSVFile;}
+        const QString &getSettingsFile() {return mCurSettingsFile;}
 
-        bool hasCSVFile() {return mCurCSVFile == CinDBReader::NOFILE;}
-        bool hasSettingsFile() {return mCurSettingsFile == CinDBReader::NOFILE;}
+        bool hasCSVFile() {return mCurCSVFile != CinDBReader::NOFILE;}
+        bool hasSettingsFile() {return mCurSettingsFile != CinDBReader::NOFILE;}
 
     private:
         CinDBColData::Type getType(QString &value);

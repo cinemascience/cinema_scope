@@ -95,7 +95,8 @@ void CinScopeTest::databaseReader()
 
     int result = reader.load(database, dbPath, table);
     QVERIFY(result == CinDBReader::DatabaseLoaded);
-
+    QVERIFY(reader.hasCSVFile() == true);
+    QVERIFY(reader.hasSettingsFile() == true);
 
     QVERIFY(true == true);
 }

@@ -48,7 +48,7 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
     int res = CinDBReader::DatabaseLoadError; 
 
     setCurDatabase(path);
-    std::ifstream input(getCurCSVFile().toStdString().c_str());
+    std::ifstream input(getCSVFile().toStdString().c_str());
     std::vector<CinDBColData> coldata;
 
     // TODO read files in a bulletproof way. 
@@ -152,7 +152,7 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
 
 void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vector<CinDBColData> &coldata)
 {
-    std::ifstream input(getCurCSVFile().toStdString().c_str());
+    std::ifstream input(getCSVFile().toStdString().c_str());
     QSqlQuery query;
     QString command;
     QString insert;
@@ -291,7 +291,7 @@ void CinDBReader::constructNewTableCommand(QString &newTableCommand, const QStri
 void CinDBReader::readSettings()
 {
     QString settings;
-    QFile file(getCurSettingsFile());
+    QFile file(getSettingsFile());
 
     mColOrder.clear();
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
