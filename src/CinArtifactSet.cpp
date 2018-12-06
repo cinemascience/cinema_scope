@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
+#include <QDebug>
 
 const QString CinArtifactSet::NOTFOUND = "CinArtifactSetNOTFOUND";
 
@@ -26,8 +27,18 @@ const QString &CinArtifactSet::get(const QString &key)
     QMap<QString, QString>::iterator found = mArtifacts.find(key);
     if (found != mArtifacts.end())
     {
+        qDebug() << "FOUND: " << found.value();
         return found.value();
     }
 
     return CinArtifactSet::NOTFOUND; 
+}
+
+void CinArtifactSet::init(CinDatabase &db)
+{
+    const QStringList &cols = db.getArtifactColumnNames();
+    for (int i=0;i<cols.count();i++)
+    {
+        set(cols.at(i), "InitialValue"); 
+    }
 }

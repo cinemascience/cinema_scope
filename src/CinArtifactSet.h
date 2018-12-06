@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QMap>
+#include "CinDatabase.h"
 
 //! Manages a set of artifacts
 /*!
@@ -26,6 +27,8 @@ class CinArtifactSet
 
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
+
+        void init(CinDatabase &db);
 
         static const QString NOTFOUND;
 
