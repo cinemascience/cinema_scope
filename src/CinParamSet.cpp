@@ -122,7 +122,7 @@ void CinParamSet::init(CinDatabase &db)
                 // qDebug() << "PARAMSET: " << query.value(0).toFloat();
             }
             param->sortValues();
-            param->print();
+            // param->print();
         } else {
             qWarning() << "PARAMSET: NULL pointer from getParameter";
         }
