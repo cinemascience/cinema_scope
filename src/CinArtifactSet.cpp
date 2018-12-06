@@ -27,7 +27,6 @@ const QString &CinArtifactSet::get(const QString &key)
     QMap<QString, QString>::iterator found = mArtifacts.find(key);
     if (found != mArtifacts.end())
     {
-        qDebug() << "FOUND: " << found.value();
         return found.value();
     }
 
