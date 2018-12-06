@@ -33,6 +33,7 @@ int CinDBView::load(const QString &db)
         result = mDatabase->load(db);
             // TODO check result of loading database
         mParams.init(*mDatabase);
+        mArtifacts.init(*mDatabase);
 
     } else {
         qWarning("CINDBVIEW: NULL database");
@@ -126,3 +127,18 @@ void CinDBView::reset()
     // TODO correct abstraction for knowledge of table names
     query.exec("DROP TABLE cinema");
 }
+
+// TODO parameterSet and ArtifactSet should have the same base class
+//      of 'set-ness'
+bool CinDBView::parameterExists(const QString &parameter)
+{
+    float value;
+    return mParams.getValue(parameter, value);
+}
+
+bool CinDBView::artifactExists(const QString &artifact)
+{
+    return (mArtifacts.get(artifact) != CinArtifactSet::NOTFOUND);
+}
+
+

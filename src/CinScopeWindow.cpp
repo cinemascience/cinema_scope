@@ -90,13 +90,31 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
 void CinScopeWindow::loadCinemaDatabase(const QString &database)
 {
-    // clean up all UI components
-    flushUI();
-
     // remember this DB
     mCurDatabase = database;
 
+    // determine if there are phi, theta and FILE parameters, or map them
+    mDBV->reset();
     mDBV->load(database);
+
+    bool pBool = mDBV->parameterExists("phi");
+    bool tBool = mDBV->parameterExists("theta");
+    bool fBool = mDBV->artifactExists("FILE");
+    qDebug() << "BOOL CHECK:" << pBool << tBool << fBool;
+    // if (mDBV->parameterExists("phi") && mDBV->parameterExists("theta") && mDBV->artifactExists("FILE"))
+    if (pBool && tBool && fBool)
+    {
+        // we are fine 
+        qDebug() << "DATABASE PASSES";
+    } else {
+        // remap the variables
+        qDebug() << "DATABASE REMAP needed";
+    }
+
+    // clean up all UI components
+    flushUI();
+
+    //
     mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
     QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
                      mImageView, SLOT(onLoadImage(const QString &, const QString &)));
@@ -149,5 +167,4 @@ void CinScopeWindow::onAbout()
 
 void CinScopeWindow::flushUI()
 {
-    mDBV->reset();
 }

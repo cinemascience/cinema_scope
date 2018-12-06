@@ -7,6 +7,8 @@
 #include "CinDBReader.h"
 #include "CinParameterMap.h"
 #include "CinDatabase.h"
+#include "CinDBView.h"
+#include "CinDBFactory.h"
 #include <vector>
 
 class CinScopeTest : public QObject
@@ -24,6 +26,7 @@ private slots:
     void databaseReader();
     void parameterMap();
     void cinDatabase();
+    void cinDBView();
 };
 
 
@@ -140,6 +143,16 @@ void CinScopeTest::cinDatabase()
 
     QVERIFY(db.getParameterColumnNames() == parameters);
     QVERIFY(db.getArtifactColumnNames() == artifacts);
+}
+
+void CinScopeTest::cinDBView()
+{
+    CinDBView *view = CinDBFactory::BuildDBView();
+    view->load("../unittesting/simple_load.cdb");
+
+    QVERIFY(view->parameterExists("phi"));
+    QVERIFY(view->parameterExists("theta"));
+    QVERIFY(view->artifactExists("FILE"));
 }
 
 

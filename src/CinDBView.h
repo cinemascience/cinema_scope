@@ -32,6 +32,8 @@ class CinDBView : public QObject
         int load(const QString &db);
         void updateArtifacts();
         void reset();
+        bool parameterExists(const QString &parameter);
+        bool artifactExists(const QString &artifact);
 
     signals:
         void artifactChanged(const QString &key, const QString &value);
