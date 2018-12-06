@@ -10,6 +10,8 @@
 
 CinDBView::CinDBView()
 {
+    mArtifact = "FILE";
+    
     QObject::connect(&mParams, SIGNAL(parameterChanged(const QString &, float)), 
                      this,    SLOT(onParameterChanged(const QString &, float)));
 }
@@ -64,10 +66,10 @@ void CinDBView::updateArtifacts()
     // for now, there is only one artifact that changes, but this should 
     // but updated to a more general emit mechanism
     // qDebug() << "CINDBVIEW emit: " << path << result;
-    if (mArtifacts.get("FILE") != path)
+    if (mArtifacts.get(mArtifact) != path)
     {
-        mArtifacts.set("FILE", path);
-        emit artifactChanged("FILE", path);
+        mArtifacts.set(mArtifact, path);
+        emit artifactChanged(mArtifact, path);
         // qDebug() << "setting artifact    : " << path;
     } else {
         // qDebug() << "artifact already set: " << path;
@@ -92,8 +94,7 @@ bool CinDBView::getFullPathToArtifact(const QString &artifact, QString &fullpath
 
 void CinDBView::getArtifactQueryString(QString &query)
 {
-    // TODO: abstract out FILE here
-    query = QString("SELECT %1 FROM %2 WHERE ").arg("FILE", mDatabase->getTableName());
+    query = QString("SELECT %1 FROM %2 WHERE ").arg(mArtifact, mDatabase->getTableName());
 
     QMap<QString, CinParameter>::const_iterator i = mParams.getParameters().constBegin();
     bool first = true;

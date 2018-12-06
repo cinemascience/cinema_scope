@@ -28,6 +28,7 @@ class CinDBView : public QObject
         CinDBView();
 
         void setDatabase(CinDatabase *db);
+        void setArtifact(const QString &artifact) {mArtifact = artifact;}
         int load(const QString &db);
         void updateArtifacts();
         void reset();
@@ -42,6 +43,7 @@ class CinDBView : public QObject
         CinArtifactSet mArtifacts;
         CinParamSet    mParams;
         CinDatabase   *mDatabase=NULL;
+        QString        mArtifact;
 
     public:
         CinArtifactSet *getArtifacts()  {return &mArtifacts;}

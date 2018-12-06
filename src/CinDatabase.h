@@ -21,9 +21,9 @@ class CinDatabase
 
         void                  setParameterColumnNames();
         const QStringList    &getParameterColumnNames() {return mParameterColumnNames;}
-        int                   getNumParameterColumns();
         const QString        &getPath();
-        const QString        &getArtifactColumnName() {return CinDatabase::ArtifactColumnName;}
+        const QString        &getArtifactColumnName() {return mArtifactColName;} 
+        void                  setArtifactColumnName(const QString &name) {mArtifactColName = name;}
 
 
     private:
@@ -34,8 +34,8 @@ class CinDatabase
         CinDBReader  mReader;       /*!< The reader object for the database on disk */ 
         QString      mTableName;    /*!< The name of the table created */
         QStringList  mParameterColumnNames;  /*!< List of non-artifact column names */
+        QString      mArtifactColName;/*!< Name of the column that holds the artifacts */
 
-        static QString ArtifactColumnName;/*!< Name of the column that holds the artifacts */
         static QString DefaultTableName;  /*!< Name of the column that holds the artifacts */
 };
 

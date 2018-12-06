@@ -9,7 +9,6 @@
 
 
 // class statics
-QString CinDatabase::ArtifactColumnName = "FILE";
 QString CinDatabase::DefaultTableName   = "cinema";
 
 
@@ -24,6 +23,7 @@ CinDatabase::CinDatabase()
 
     // other
     mTableName = CinDatabase::DefaultTableName; 
+    mArtifactColName = "FILE"; // defined in the Cinema Specification
 }
 
 /*! \brief Load Cinema database from disk into this object 
@@ -67,13 +67,5 @@ void CinDatabase::setParameterColumnNames()
 
 bool CinDatabase::isArtifactColumn(const QString &name)
 {
-    return (name == CinDatabase::ArtifactColumnName);
+    return (name == mArtifactColName); 
 }
-
-int CinDatabase::getNumParameterColumns()
-{
-    return mParameterColumnNames.count();
-}
-
-
-
