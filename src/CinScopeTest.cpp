@@ -122,6 +122,18 @@ void CinScopeTest::parameterMap()
     QVERIFY(map.getInput("theta", thetaString));
     QVERIFY(thetaString == "zheta");
     QVERIFY(not map.getInput("fail", failString));
+
+    // now test it with a database 
+    CinDBReader reader;
+    QString dbPath = "../unittesting/test_parameter_mapping.cdb";
+    QString table  = "cinema";
+    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
+    database.open();
+
+    int result = reader.load(database, dbPath, table);
+    QVERIFY(result == CinDBReader::DatabaseLoaded);
+    QVERIFY(reader.hasCSVFile() == true);
+    QVERIFY(reader.hasSettingsFile() == true);
 }
 
 QTEST_MAIN(CinScopeTest)
