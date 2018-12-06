@@ -16,27 +16,31 @@ class CinDatabase
 {
     public:
         CinDatabase();
-        int load(const QString &dbPath);
+        ~CinDatabase();
+
+        int                   load(const QString &dbPath);
         inline const QString &getTableName() {return mTableName;}
 
-        void                  setParameterColumnNames();
-        const QStringList    &getParameterColumnNames() {return mParameterColumnNames;}
         const QString        &getPath();
-        const QString        &getArtifactColumnName() {return mArtifactColName;} 
-        void                  setArtifactColumnName(const QString &name) {mArtifactColName = name;}
+        const QStringList    &getParameterColumnNames() {return mParameterColNames;}
+        const QStringList    &getArtifactColumnNames() {return mArtifactColNames;} 
+        void                  addArtifactColumnName(const QString &name);
+        QSqlDatabase         &getDatabase() {return mDatabase;}
 
 
     private:
-        bool isArtifactColumn(const QString &name);
+        bool        isArtifactColumn(const QString &name);
         inline void setTableName(const QString &name) {mTableName = name;}
+        void        setColumnNames();
+        void        getUniqueConnectionName(QString &connect);
 
-        QSqlDatabase mDatabase;     /*!< The Sql back end for this database object */
-        CinDBReader  mReader;       /*!< The reader object for the database on disk */ 
-        QString      mTableName;    /*!< The name of the table created */
-        QStringList  mParameterColumnNames;  /*!< List of non-artifact column names */
-        QString      mArtifactColName;/*!< Name of the column that holds the artifacts */
+        QSqlDatabase mDatabase;             /*!< The Sql back end for this database object */
+        CinDBReader  mReader;               /*!< The reader object for the database on disk */ 
+        QString      mTableName;            /*!< The name of the table created */
+        QStringList  mParameterColNames;    /*!< List of non-artifact column names */
+        QStringList  mArtifactColNames;     /*!< Name of the column that holds the artifacts */
 
-        static QString DefaultTableName;  /*!< Name of the column that holds the artifacts */
+        static QString DefaultTableName;    /*!< Default name of the table for this database*/
 };
 
 #endif // CINDATABASE_H

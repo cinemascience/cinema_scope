@@ -97,7 +97,7 @@ void CinParamSet::init(CinDatabase &db)
 {
     // TODO: clear everything out first
     QString curColumn;
-    QSqlQuery query;
+    QSqlQuery query(db.getDatabase());
     const QStringList &cols = db.getParameterColumnNames();
     for (int i=0;i<cols.count();i++)
     {

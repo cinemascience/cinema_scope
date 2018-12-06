@@ -5,6 +5,8 @@
 #include <QSqlDatabase>
 #include <QSqlField>
 #include <QSqlRecord>
+#include <QRegExp>
+#include <QRandomGenerator>
 
 
 
@@ -18,12 +20,28 @@ QString CinDatabase::DefaultTableName   = "cinema";
 CinDatabase::CinDatabase() 
 {
     // database
-    mDatabase = QSqlDatabase::addDatabase("QSQLITE");
+        // TODO: determine if we need to change name of database 
+        // using this string amounts to hard coding 
+        // a datbase into this class
+    QString connect;
+    this->getUniqueConnectionName(connect);
+    mDatabase = QSqlDatabase::addDatabase("QSQLITE", connect);
     mDatabase.open();
 
     // other
     mTableName = CinDatabase::DefaultTableName; 
-    mArtifactColName = "FILE"; // defined in the Cinema Specification
+}
+
+CinDatabase::~CinDatabase() 
+{
+    // this appears to be a way of removing this connection name from
+    // the Qt infrasctructure. The old mDatabase object holds a 
+    // reference to the connection, so it must be set to a new
+    // database object before the connection is destroyed, or
+    // the removeDatabase call will fail
+    QString connection = mDatabase.connectionName();
+    mDatabase = QSqlDatabase();
+    mDatabase.removeDatabase(connection);
 }
 
 /*! \brief Load Cinema database from disk into this object 
@@ -37,7 +55,7 @@ int CinDatabase::load(const QString &dbPath)
     if (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir())
     {
         result = mReader.load(mDatabase, dbPath, mTableName);
-        setParameterColumnNames();
+        setColumnNames();
     }
 
     return result;
@@ -51,7 +69,7 @@ const QString &CinDatabase::getPath()
 /*! \brief Save a local list of column names from the database 
  *
  */
-void CinDatabase::setParameterColumnNames()
+void CinDatabase::setColumnNames()
 {
     QSqlRecord record = mDatabase.record(getTableName());
 
@@ -60,12 +78,25 @@ void CinDatabase::setParameterColumnNames()
     {
         column = record.field(i).name();
         if (not isArtifactColumn(column) ) {
-            mParameterColumnNames.push_back(column);
+            mParameterColNames.push_back(column);
+        } else {
+            mArtifactColNames.push_back(column);
         }
     }
 }
 
+/*! \brief Determine if a name is an artifact column name
+ *  
+ *  Matched per the specification 
+ */
 bool CinDatabase::isArtifactColumn(const QString &name)
 {
-    return (name == mArtifactColName); 
+    QRegExp rx("^FILE.*");
+
+    return rx.exactMatch(name);
+}
+
+void CinDatabase::getUniqueConnectionName(QString &connect)
+{
+    connect = "connect:" + QString::number(QRandomGenerator::global()->generateDouble());
 }

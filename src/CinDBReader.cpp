@@ -153,7 +153,7 @@ void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& 
 void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vector<CinDBColData> &coldata)
 {
     std::ifstream input(getCSVFile().toStdString().c_str());
-    QSqlQuery query;
+    QSqlQuery query(db);
     QString command;
     QString insert;
 
@@ -162,9 +162,10 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
 
     // create the table from the columns
     constructCommands(CinDBReader::InitTableName, coldata, command, insert);
-    if (query.exec(command) )
+    if (not query.exec(command))
     {
         qDebug() << "CINDBREADER: ERROR EXECUTING query";
+        qDebug() << "             " << command;
     }
 
     // perform value-based insert

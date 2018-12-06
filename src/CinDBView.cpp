@@ -43,18 +43,18 @@ int CinDBView::load(const QString &db)
 
 void CinDBView::updateArtifacts()
 {
-    QString query;
-    getArtifactQueryString(query);
+    QString queryString;
+    getArtifactQueryString(queryString);
 
-    QSqlQuery q;
-    q.prepare(query); 
-    q.exec();
+    QSqlQuery query(mDatabase->getDatabase());
+    query.prepare(queryString); 
+    query.exec();
     // TODO there should only be one; error if this is not the case
     QString artifact;
-    while (q.next())
+    while (query.next())
     {
         // qDebug() << "VIEW: " << q.value(0);
-        artifact = q.value(0).toString();
+        artifact = query.value(0).toString();
     }
 
     QString path;
@@ -122,7 +122,7 @@ void CinDBView::onParameterChanged(const QString &key, float value)
 void CinDBView::reset()
 {
     // flush the database
-    QSqlQuery qry;
+    QSqlQuery query(mDatabase->getDatabase());
     // TODO correct abstraction for knowledge of table names
-    qry.exec("DROP TABLE cinema");
+    query.exec("DROP TABLE cinema");
 }

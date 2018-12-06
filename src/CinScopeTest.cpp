@@ -6,6 +6,7 @@
 #include "CinParameter.h"
 #include "CinDBReader.h"
 #include "CinParameterMap.h"
+#include "CinDatabase.h"
 #include <vector>
 
 class CinScopeTest : public QObject
@@ -22,6 +23,7 @@ private slots:
     void parameter();
     void databaseReader();
     void parameterMap();
+    void cinDatabase();
 };
 
 
@@ -93,12 +95,17 @@ void CinScopeTest::databaseReader()
     QString dbPath = "../unittesting/simple_load.cdb";
     QString table  = "cinema";
     QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
+    QString connection = database.connectionName(); 
     database.open();
 
     int result = reader.load(database, dbPath, table);
     QVERIFY(result == CinDBReader::DatabaseLoaded);
     QVERIFY(reader.hasCSVFile() == true);
     QVERIFY(reader.hasSettingsFile() == true);
+
+    // clean up
+    database = QSqlDatabase();
+    database.removeDatabase(connection);
 }
 
 
@@ -122,19 +129,20 @@ void CinScopeTest::parameterMap()
     QVERIFY(map.getInput("theta", thetaString));
     QVERIFY(thetaString == "zheta");
     QVERIFY(not map.getInput("fail", failString));
-
-    // now test it with a database 
-    CinDBReader reader;
-    QString dbPath = "../unittesting/test_parameter_mapping.cdb";
-    QString table  = "cinema";
-    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
-    database.open();
-
-    int result = reader.load(database, dbPath, table);
-    QVERIFY(result == CinDBReader::DatabaseLoaded);
-    QVERIFY(reader.hasCSVFile() == true);
-    QVERIFY(reader.hasSettingsFile() == true);
 }
+
+void CinScopeTest::cinDatabase()
+{
+    CinDatabase db;
+    db.load("../unittesting/test_parameter_mapping.cdb");
+    QStringList parameters = {"zhi", "xFlip", "xValue", "xVisible", "zVisible", "zFlip", "yFlip", "zValue", "zheta", "yVisible", "yValue"};
+    QStringList artifacts  = {"FILE", "FILE01", "FILE_foo"};
+
+    QVERIFY(db.getParameterColumnNames() == parameters);
+    QVERIFY(db.getArtifactColumnNames() == artifacts);
+}
+
+
 
 QTEST_MAIN(CinScopeTest)
 
