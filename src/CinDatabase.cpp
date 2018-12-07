@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QSqlDatabase>
 #include <QSqlField>
+#include <QSqlQuery>
 #include <QSqlRecord>
 #include <QRegExp>
 #include <QRandomGenerator>
@@ -50,7 +51,7 @@ CinDatabase::~CinDatabase()
 int CinDatabase::load(const QString &dbPath)
 {
     int result = CinDBReader::DatabaseLoadError; 
-    qDebug() << "CINDATABASE :" << dbPath; 
+    qDebug() << "CINDATABASE LOAD:" << dbPath; 
 
     if (QFileInfo::exists(dbPath) && QFileInfo(dbPath).isDir())
     {
@@ -99,4 +100,13 @@ bool CinDatabase::isArtifactColumn(const QString &name)
 void CinDatabase::getUniqueConnectionName(QString &connect)
 {
     connect = "connect:" + QString::number(QRandomGenerator::global()->generateDouble());
+}
+
+void CinDatabase::reset()
+{
+    QSqlQuery query(mDatabase);
+    query.exec("DROP TABLE " + mTableName);
+
+    mParameterColNames.clear();
+    mArtifactColNames.clear();
 }

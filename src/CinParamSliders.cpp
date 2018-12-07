@@ -23,7 +23,6 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
     {
         mCurDatabase = cdb;
         mParameters  = params;
-        buildSliders();
         QObject::connect(params, SIGNAL(parameterChanged(const QString &, float)), 
                 this, SLOT(onParameterValueChanged(const QString &, float)));
         
@@ -40,6 +39,7 @@ void CinParamSliders::buildSliders()
     CinSlider *slider = NULL;
     QString curColumn;
     const QStringList &cols = mParameters->getParameterNames();
+    qDebug() << "COLS: " << cols;
     float min, max;
     for (int i=0;i<cols.count();i++)
     {
@@ -63,16 +63,8 @@ void CinParamSliders::buildSliders()
     }
 }
 
-void CinParamSliders::disconnect()
+void CinParamSliders::deleteSliders()
 {
-    qDebug() << "MPARAMETERS :" << mParameters;
-    // disconnect
-    QObject::disconnect(mParameters, SIGNAL(parameterChanged(const QString &, float)), 
-            this, SLOT(onParameterValueChanged(const QString &, float)));
-
-    mCurDatabase = NULL;
-    mParameters  = NULL;
-    // Remove all the rows. This deletes the children of the rows as well
     int count = mSliderLayout->rowCount();
     for (int i=(count-1);i>=0;i--)
     {

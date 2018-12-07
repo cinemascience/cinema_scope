@@ -25,13 +25,11 @@ void CinDBView::setDatabase(CinDatabase *db)
     }
 }
 
-int CinDBView::load(const QString &db)
+int CinDBView::initializeAttributes()
 {
     int result = CinCore::ERROR; 
 
     if (mDatabase != NULL) {
-        result = mDatabase->load(db);
-            // TODO check result of loading database
         mParams.init(*mDatabase);
         mArtifacts.init(*mDatabase);
 
@@ -122,10 +120,7 @@ void CinDBView::onParameterChanged(const QString &key, float value)
 
 void CinDBView::reset()
 {
-    // flush the database
-    QSqlQuery query(mDatabase->getDatabase());
-    // TODO correct abstraction for knowledge of table names
-    query.exec("DROP TABLE cinema");
+    mDatabase->reset();
 }
 
 // TODO parameterSet and ArtifactSet should have the same base class

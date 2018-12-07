@@ -19,6 +19,7 @@ class CinDatabase
         ~CinDatabase();
 
         int                   load(const QString &dbPath);
+        void                  reset();
         inline const QString &getTableName() {return mTableName;}
 
         const QString        &getPath();

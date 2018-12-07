@@ -59,18 +59,21 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     // build the DB and all its object
     mDBV = CinDBFactory::BuildDBView();
 
-    // create the basic components
+    // create the UI components
     QWidget     *mainWidget       = new QWidget(parent);
     QVBoxLayout *mainWidgetLayout = new QVBoxLayout;
     mSplitter  = new QSplitter(Qt::Horizontal, mainWidget);
     mSliders   = new CinParamSliders();
     mImageView = new CinImageView(mSplitter);
+    mImageView->setParameters(mDBV->getParameters());
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
     mainWidgetLayout->addWidget(mSplitter);
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
 
     // set up initial state
     setCentralWidget(mainWidget);
@@ -86,6 +89,11 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mSplitter->addWidget(mImageView);
     mSplitter->addWidget(mSliders);
     mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
+
+    // connect slots
+    QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
+                     mImageView, SLOT(onLoadImage(const QString &, const QString &)));
+
 }
 
 void CinScopeWindow::loadCinemaDatabase(const QString &database)
@@ -95,7 +103,8 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
 
     // determine if there are phi, theta and FILE parameters, or map them
     mDBV->reset();
-    mDBV->load(database);
+    mDBV->getDatabase()->load(database);
+    mDBV->initializeAttributes();
 
     bool pBool = mDBV->parameterExists("phi");
     bool tBool = mDBV->parameterExists("theta");
@@ -113,11 +122,8 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     flushUI();
 
     //
-    mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
-    QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
-                     mImageView, SLOT(onLoadImage(const QString &, const QString &)));
-    mImageView->setParameters( mDBV->getParameters());
-    mImageView->setScene(mScene);
+    mSliders->buildSliders();
+    // mImageView->setParameters(mDBV->getParameters());
     mDBV->updateArtifacts();
 }
 
@@ -165,5 +171,5 @@ void CinScopeWindow::onAbout()
 
 void CinScopeWindow::flushUI()
 {
-    mSliders->disconnect();
+    mSliders->deleteSliders();
 }

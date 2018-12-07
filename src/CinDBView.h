@@ -29,7 +29,7 @@ class CinDBView : public QObject
 
         void setDatabase(CinDatabase *db);
         void setArtifact(const QString &artifact) {mArtifact = artifact;}
-        int load(const QString &db);
+        int  initializeAttributes();
         void updateArtifacts();
         void reset();
         bool parameterExists(const QString &parameter);

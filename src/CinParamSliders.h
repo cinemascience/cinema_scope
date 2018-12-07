@@ -24,10 +24,10 @@ class CinParamSliders : public QWidget
 public:
     CinParamSliders();
     void connect(CinDatabase *cdb, CinParamSet *params);
-    void disconnect();
+    void deleteSliders();
+    void buildSliders();
 
 private:
-    void     buildSliders();
     void     popSliderToValidValue(CinSlider *slider);
     QSlider *getSliderAt(int i);
     QLabel  *getLabelAt(int i);

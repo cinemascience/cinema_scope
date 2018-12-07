@@ -92,10 +92,13 @@ void CinParameter::recordValue(float value)
 
 void CinParameter::sortValues()
 {
-    std::sort(mValues.begin(), mValues.end());
-    // make sure min and max are still correct
-    setMin(mValues.front());
-    setMax(mValues.back());
+    if (mValues.size() != 0) 
+    {
+        std::sort(mValues.begin(), mValues.end());
+        // make sure min and max are still correct
+        setMin(mValues.front());
+        setMax(mValues.back());
+    }
 }
 
 void CinParameter::print()

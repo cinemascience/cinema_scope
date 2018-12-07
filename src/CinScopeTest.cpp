@@ -1,6 +1,7 @@
 #include <QtTest>
 #include <QCoreApplication>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 // add necessary includes here
 #include "CinParameter.h"
@@ -137,22 +138,50 @@ void CinScopeTest::parameterMap()
 void CinScopeTest::cinDatabase()
 {
     CinDatabase db;
-    db.load("../unittesting/test_parameter_mapping.cdb");
-    QStringList parameters = {"zhi", "xFlip", "xValue", "xVisible", "zVisible", "zFlip", "yFlip", "zValue", "zheta", "yVisible", "yValue"};
-    QStringList artifacts  = {"FILE", "FILE01", "FILE_foo"};
 
-    QVERIFY(db.getParameterColumnNames() == parameters);
-    QVERIFY(db.getArtifactColumnNames() == artifacts);
+    db.load("../unittesting/simple_load.cdb");
+    QStringList parameters01 = {"phi", "theta", "xValue", "yValue", "zValue"};
+    QStringList artifacts01  = {"FILE"};
+
+    QVERIFY(db.getParameterColumnNames() == parameters01);
+    QVERIFY(db.getArtifactColumnNames() == artifacts01);
+
+    db.reset();
+    db.load("../unittesting/test_parameter_mapping.cdb");
+    QStringList parameters02 = {"zhi", "xFlip", "xValue", "xVisible", "zVisible", "zFlip", "yFlip", "zValue", "zheta", "yVisible", "yValue"};
+    QStringList artifacts02  = {"FILE", "FILE01", "FILE_foo"};
+
+    QVERIFY(db.getParameterColumnNames() == parameters02);
+    QVERIFY(db.getArtifactColumnNames() == artifacts02);
 }
 
 void CinScopeTest::cinDBView()
 {
-    CinDBView *view = CinDBFactory::BuildDBView();
-    view->load("../unittesting/simple_load.cdb");
+    CinDBView view;
+    CinDatabase db;
 
-    QVERIFY(view->parameterExists("phi"));
-    QVERIFY(view->parameterExists("theta"));
-    QVERIFY(view->artifactExists("FILE"));
+    db.load("../unittesting/simple_load.cdb");
+        // TODO decide if views should have pointers or references
+    view.setDatabase(&db);
+    view.initializeAttributes();
+
+    // check the contents of the database
+    QVERIFY(view.parameterExists("phi"));
+    QVERIFY(view.parameterExists("theta"));
+    QVERIFY(view.artifactExists("FILE"));
+
+    db.reset();
+    db.load("../unittesting/test_parameter_mapping.cdb");
+    view.initializeAttributes();
+
+    // check the contents of the database
+    QVERIFY(view.parameterExists("zhi"));
+    QVERIFY(view.parameterExists("zheta"));
+    QVERIFY(view.artifactExists("FILE"));
+    QVERIFY(view.artifactExists("FILE01"));
+        // it should no longer include these values
+    QVERIFY(not view.parameterExists("phi"));
+    QVERIFY(not view.parameterExists("theta"));
 }
 
 
