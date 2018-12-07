@@ -100,8 +100,6 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     bool pBool = mDBV->parameterExists("phi");
     bool tBool = mDBV->parameterExists("theta");
     bool fBool = mDBV->artifactExists("FILE");
-    qDebug() << "BOOL CHECK:" << pBool << tBool << fBool;
-    // if (mDBV->parameterExists("phi") && mDBV->parameterExists("theta") && mDBV->artifactExists("FILE"))
     if (pBool && tBool && fBool)
     {
         // we are fine 
@@ -167,4 +165,5 @@ void CinScopeWindow::onAbout()
 
 void CinScopeWindow::flushUI()
 {
+    mSliders->disconnect();
 }

@@ -63,11 +63,17 @@ void CinParamSliders::buildSliders()
     }
 }
 
-void CinParamSliders::reset()
+void CinParamSliders::disconnect()
 {
+    qDebug() << "MPARAMETERS :" << mParameters;
+    // disconnect
+    QObject::disconnect(mParameters, SIGNAL(parameterChanged(const QString &, float)), 
+            this, SLOT(onParameterValueChanged(const QString &, float)));
+
+    mCurDatabase = NULL;
+    mParameters  = NULL;
     // Remove all the rows. This deletes the children of the rows as well
     int count = mSliderLayout->rowCount();
-    // qDebug() << "SLIDER COUNT: " << count;
     for (int i=(count-1);i>=0;i--)
     {
         mSliderLayout->removeRow(i);
