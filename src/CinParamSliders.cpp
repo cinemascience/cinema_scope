@@ -39,7 +39,6 @@ void CinParamSliders::buildSliders()
     CinSlider *slider = NULL;
     QString curColumn;
     const QStringList &cols = mParameters->getParameterNames();
-    qDebug() << "COLS: " << cols;
     float min, max;
     for (int i=0;i<cols.count();i++)
     {
