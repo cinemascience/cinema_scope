@@ -95,7 +95,10 @@ void CinParamSet::print()
 
 void CinParamSet::init(CinDatabase &db)
 {
-    // TODO: clear everything out first
+    // clear everything out first
+    this->clear();
+
+    // now load up the new stuff
     QString curColumn;
     QSqlQuery query(db.getDatabase());
     const QStringList &cols = db.getParameterColumnNames();
@@ -174,4 +177,10 @@ bool CinParamSet::valueExists(const QString &key, float value)
     {
         return false;
     }
+}
+
+void CinParamSet::clear()
+{
+    mParameters.clear();
+    mParamNames.clear();
 }

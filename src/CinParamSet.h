@@ -24,6 +24,7 @@ class CinParamSet : public QObject
         // add/remove
         bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
         // bool remove(const QString &name);
+        void clear();
 
         // parameter value query API
         bool getNextValue(const QString &key, float value, float &next);
