@@ -35,9 +35,18 @@ const QString &CinArtifactSet::get(const QString &key)
 
 void CinArtifactSet::init(CinDatabase &db)
 {
+    // first clear everything
+    this->clear();
+
+    // not load new data
     const QStringList &cols = db.getArtifactColumnNames();
     for (int i=0;i<cols.count();i++)
     {
         set(cols.at(i), "InitialValue"); 
     }
+}
+
+void CinArtifactSet::clear()
+{
+    mArtifacts.clear();
 }

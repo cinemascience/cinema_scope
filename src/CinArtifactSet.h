@@ -27,6 +27,7 @@ class CinArtifactSet
 
         void set(const QString &key, const QString &value); 
         const QString &get(const QString &key);
+        void clear();
 
         void init(CinDatabase &db);
 
