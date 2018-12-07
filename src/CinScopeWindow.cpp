@@ -170,7 +170,7 @@ void CinScopeWindow::onQuit()
 void CinScopeWindow::onAbout()
 {
     QMessageBox::about(this, tr("CinemaScope"),
-                       tr("This is the about message"));
+                       tr("Cinema Scope v0.1"));
 }
 
 void CinScopeWindow::flushUI()
