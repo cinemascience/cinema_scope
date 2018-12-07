@@ -216,3 +216,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     mLastYloc = p.ry();
 }
 
+void CinImageView::clear()
+{
+    scene()->clear();
+}

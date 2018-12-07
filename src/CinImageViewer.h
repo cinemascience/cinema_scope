@@ -47,6 +47,7 @@ public:
     void setVerticalParameter(const QString &v)   {mCurVerParam = v;}
 
     bool loadImage(const QString &path);
+    void clear();
 
 
 public slots:

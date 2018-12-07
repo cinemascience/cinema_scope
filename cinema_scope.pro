@@ -52,7 +52,6 @@ SOURCES += \
         src/CinImageViewer.cpp \
         src/CinArtifactSet.cpp \
         src/CinDBView.cpp \
-        src/CinDBFactory.cpp \
         src/CinCore.cpp \
         src/CinSlider.cpp \
         src/CinParameterMap.cpp
@@ -67,7 +66,6 @@ HEADERS += \
         src/CinImageViewer.h \
         src/CinArtifactSet.h \
         src/CinDBView.h \
-        src/CinDBFactory.h \
         src/CinCore.h \
         src/CinSlider.h \
         src/CinParameterMap.h

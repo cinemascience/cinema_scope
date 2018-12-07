@@ -17,7 +17,6 @@
 #include "CinParameter.h"
 #include "CinParamSet.h"
 #include "CinImageViewer.h"
-#include "CinDBFactory.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -57,7 +56,9 @@ CinScopeWindow::CinScopeWindow(QWidget *parent) : QMainWindow(parent)
 void CinScopeWindow::buildApplication(QWidget *parent)
 {
     // build the DB and all its object
-    mDBV = CinDBFactory::BuildDBView();
+    mDBV = new CinDBView();
+    CinDatabase *db = new CinDatabase();
+    mDBV->setDatabase(db);
 
     // create the UI components
     QWidget     *mainWidget       = new QWidget(parent);
@@ -100,6 +101,9 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
 {
     // remember this DB
     mCurDatabase = database;
+
+    // clear the view
+    mImageView->clear();
 
     // determine if there are phi, theta and FILE parameters, or map them
     mDBV->reset();

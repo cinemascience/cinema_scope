@@ -9,7 +9,6 @@
 #include "CinParameterMap.h"
 #include "CinDatabase.h"
 #include "CinDBView.h"
-#include "CinDBFactory.h"
 #include <vector>
 
 class CinScopeTest : public QObject
