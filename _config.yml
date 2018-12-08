@@ -1,14 +1,9 @@
-# Name of your blog (this will show up at the top of your page and in the RSS feed)
-name: Sample Jekyll Blog
-
-# Short description (goes below the title; it will also be used in the RSS feed)
-description: This is a sample Jekyll Blog.
-
-# Your name, as you want it to appear underneath each post and in the footer
-author: Your Name
+name: CinemaScope project site 
+description: A site for management of the CinemaScope project 
+author: David H. Rogers 
 
 # Your email if you want it to be linked on the contact page
-author_email: you@example.com
+author_email: dhr@lanl.gov
 
 # The directory for category index pages. Change it to something else if
 # for example you want links like /categories/category1 instead of /category1
@@ -22,12 +17,9 @@ baseurl:
 
 # The URL of your actual domain. This will be used to make absolute links in the RSS feed.
 url: http://yourdomain.com/
-
+ 
 #### Under the Hood Stuff #####
 
-# Use rdiscount as the markdown engine because it generates html5 compliant code for stuff like footnotes
-# If you use maroku (default engine) some of your generated pages may not validate or lint as html5
-# If you don't have it install it via gem install rdiscount
 markdown: rdiscount
 
 # Makes pretty (descriptive) permalinks. See Jekyll docs for alternatives.
