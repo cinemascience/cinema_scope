@@ -2,7 +2,9 @@
 
 ### Installers
 
-* [Mac](./installers/CinemaScopeInstaller.dmg)
+Preliminary test for installers
+
+* [Mac](./installers/CinemaScopeInstaller001.dmg)
 
 ### Test data sets
 
