@@ -9,3 +9,5 @@
 ### Test data sets
 
 * [Cylinder](data/test_cylinder.cdb.zip)
+
+[Other](test/index.html)
