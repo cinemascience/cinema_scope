@@ -120,6 +120,7 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     } else {
         // remap the variables
         qDebug() << "DATABASE REMAP needed";
+        QMessageBox::about(this, tr("CinemaScope"), tr("Cinema Scope v0.1"));
     }
 
     // clean up all UI components

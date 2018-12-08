@@ -11,6 +11,7 @@
 #include "CinDBView.h"
 #include <vector>
 
+//! CinemaScope Unit Testing Class
 class CinScopeTest : public QObject
 {
     Q_OBJECT
