@@ -1,4 +1,4 @@
-### Cinema Testing Site
+# Cinema Testing Site
 
 ## CinemaScope Documentation
 
