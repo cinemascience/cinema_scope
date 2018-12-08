@@ -1,7 +1,7 @@
 name: CinemaScope project site 
 description: A site for management of the CinemaScope project 
 author: David H. Rogers 
-theme: slate
+theme: jekyll-theme-slate 
 
 # Your email if you want it to be linked on the contact page
 author_email: dhr@lanl.gov
