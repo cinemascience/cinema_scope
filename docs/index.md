@@ -1,10 +1,10 @@
-## Cinema
+## Cinema Testing
 
 ### Installers
 
-Preliminary test for installers
+**Test 001** 
 
-* [Mac](./installers/CinemaScopeInstaller001.dmg)
+* [Mac OSX 10.13.x](./installers/CinemaScopeInstaller001.dmg)
 
 ### Test data sets
 
