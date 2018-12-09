@@ -147,9 +147,9 @@ void CinScopeTest::cinDatabase()
     QVERIFY(db.getArtifactColumnNames() == artifacts01);
 
     db.reset();
-    db.load("../unittesting/test_parameter_mapping.cdb");
-    QStringList parameters02 = {"zhi", "xFlip", "xValue", "xVisible", "zVisible", "zFlip", "yFlip", "zValue", "zheta", "yVisible", "yValue"};
-    QStringList artifacts02  = {"FILE", "FILE01", "FILE_foo"};
+    db.load("../unittesting/test_parameter.cdb");
+    QStringList parameters02 = {"zhi", "zheta"};
+    QStringList artifacts02  = {"FILE", "FILE_cylinder"};
 
     QVERIFY(db.getParameterColumnNames() == parameters02);
     QVERIFY(db.getArtifactColumnNames() == artifacts02);
@@ -171,14 +171,14 @@ void CinScopeTest::cinDBView()
     QVERIFY(view.artifactExists("FILE"));
 
     db.reset();
-    db.load("../unittesting/test_parameter_mapping.cdb");
+    db.load("../unittesting/test_parameter.cdb");
     view.initializeAttributes();
 
     // check the contents of the database
     QVERIFY(view.parameterExists("zhi"));
     QVERIFY(view.parameterExists("zheta"));
     QVERIFY(view.artifactExists("FILE"));
-    QVERIFY(view.artifactExists("FILE01"));
+    QVERIFY(view.artifactExists("FILE_cylinder"));
         // it should no longer include these values
     QVERIFY(not view.parameterExists("phi"));
     QVERIFY(not view.parameterExists("theta"));
