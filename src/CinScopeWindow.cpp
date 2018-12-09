@@ -121,6 +121,7 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     } else {
         CinParameterMapDialog map(this);
         map.connect(mDBV, mImageView);
+        map.setWindowTitle("Map Parameters Dialog");
         map.exec();
     }
 

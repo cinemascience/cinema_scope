@@ -2,8 +2,10 @@
 #include "CinDBView.h"
 #include "CinImageView.h"
 #include <QDialogButtonBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <QComboBox>
 #include <QDebug>
 
@@ -26,7 +28,11 @@ void CinParameterMapDialog::connect(CinDBView *view, CinImageView *imageView)
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(onAccept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(onReject()));
 
+    QLabel *message = new QLabel("CinemaScope hasn't found parameters<br> it expected to automatically control the following events. <br><br>Select the parameters you'd like to use instead.");
+    QGridLayout *grid   = new QGridLayout();
     QFormLayout *layout = new QFormLayout();
+    grid->addWidget(message);
+    grid->addLayout(layout, 1, 0);
 
     mVert = new QComboBox();
     mHor  = new QComboBox();
@@ -56,7 +62,8 @@ void CinParameterMapDialog::connect(CinDBView *view, CinImageView *imageView)
 
     layout->addRow("", buttonBox);
 
-    this->setLayout(layout);
+    this->setLayout(grid);
+    this->resize(400, 200);
 }
 
 void CinParameterMapDialog::onAccept()
