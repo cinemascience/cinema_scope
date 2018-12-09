@@ -1,0 +1,10 @@
+#!/opt/local/bin/python2.7
+
+with open("data.csv") as f:
+    lines = f.read().splitlines();
+
+    for l in lines:
+        split = l.split(",")
+        print(l + "," + "cylinder/" + split[0] + "/" + split[1] + ".png")
+
+
