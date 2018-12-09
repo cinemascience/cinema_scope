@@ -16,7 +16,8 @@
 #include "CinDatabase.h"
 #include "CinParameter.h"
 #include "CinParamSet.h"
-#include "CinImageViewer.h"
+#include "CinImageView.h"
+#include "CinParameterMapDialog.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -118,9 +119,9 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
         // we are fine 
         qDebug() << "DATABASE PASSES";
     } else {
-        // remap the variables
-        qDebug() << "DATABASE REMAP needed";
-        QMessageBox::about(this, tr("CinemaScope"), tr("Cinema Scope v0.1"));
+        CinParameterMapDialog map(this);
+        map.connect(mDBV, mImageView);
+        map.exec();
     }
 
     // clean up all UI components

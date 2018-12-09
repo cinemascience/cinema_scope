@@ -27,7 +27,7 @@
 #include "CinDatabase.h"
 #include "CinParameter.h"
 #include "CinParamSet.h"
-#include "CinImageViewer.h"
+#include "CinImageView.h"
 #include "CinDBView.h"
 
 #include <iostream>
@@ -36,6 +36,7 @@
 
 using namespace std;
 
+//! QMainWindow-derived class for this application
 class CinScopeWindow : public QMainWindow
 {
     Q_OBJECT

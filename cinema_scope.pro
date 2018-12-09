@@ -49,12 +49,13 @@ SOURCES += \
         src/CinParameter.cpp \
         src/CinParamSet.cpp \
         src/CinDatabase.cpp \
-        src/CinImageViewer.cpp \
+        src/CinImageView.cpp \
         src/CinArtifactSet.cpp \
         src/CinDBView.cpp \
         src/CinCore.cpp \
         src/CinSlider.cpp \
-        src/CinParameterMap.cpp
+        src/CinParameterMap.cpp \
+        src/CinParameterMapDialog.cpp
 
 HEADERS += \
         src/CinScopeWindow.h \
@@ -63,10 +64,11 @@ HEADERS += \
         src/CinParameter.h \
         src/CinParamSet.h \
         src/CinDatabase.h \
-        src/CinImageViewer.h \
+        src/CinImageView.h \
         src/CinArtifactSet.h \
         src/CinDBView.h \
         src/CinCore.h \
         src/CinSlider.h \
-        src/CinParameterMap.h
+        src/CinParameterMap.h \
+        src/CinParameterMapDialog.h
 

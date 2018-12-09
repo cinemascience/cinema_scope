@@ -1,4 +1,4 @@
-#include "CinImageViewer.h"
+#include "CinImageView.h"
 
 using namespace std;
 
