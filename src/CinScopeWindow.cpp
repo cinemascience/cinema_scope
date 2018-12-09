@@ -132,6 +132,9 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     mSliders->buildSliders();
     // mImageView->setParameters(mDBV->getParameters());
     mDBV->updateArtifacts();
+
+    // manage state
+    mParameterAction->setEnabled(true);
 }
 
 
@@ -148,6 +151,11 @@ void CinScopeWindow::createActions()
     mQuitAction = fileMenu->addAction(tr("E&xit"), this, &CinScopeWindow::onQuit);
     mQuitAction->setShortcut(tr("Ctrl+Q"));
     mQuitAction->setStatusTip(tr("Quit application"));
+
+    QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
+    mParameterAction = editMenu->addAction(tr("Edit &Parameters ..."), this, &CinScopeWindow::onParameters);
+    mParameterAction->setShortcut(tr("Ctrl+E"));
+    mParameterAction->setEnabled(false);
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(tr("&About"), this, &CinScopeWindow::onAbout);
@@ -173,10 +181,21 @@ void CinScopeWindow::onQuit()
 void CinScopeWindow::onAbout()
 {
     QMessageBox::about(this, tr("CinemaScope"),
-                       tr("Cinema Scope v0.1"));
+                       tr("Cinema Scope v0.1<br><br>Los Alamos National Laboratory<br>Copyright 2018"));
+}
+
+void CinScopeWindow::onParameters()
+{
+    CinParameterMapDialog map(this);
+    map.connect(mDBV, mImageView);
+    map.setWindowTitle("Map Parameters Dialog");
+    map.exec();
+
+    mDBV->updateArtifacts();
 }
 
 void CinScopeWindow::flushUI()
 {
     mSliders->deleteSliders();
 }
+

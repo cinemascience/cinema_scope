@@ -56,6 +56,7 @@ private:
     QAction  *mOpenAction=NULL;
     QAction  *mQuitAction=NULL;
     QAction  *mAboutAction=NULL;
+    QAction  *mParameterAction=NULL;
 
     QString          mCurDatabase;
     CinDBView       *mDBV=NULL;
@@ -74,6 +75,7 @@ private slots:
     void onOpenFile();
     void onQuit();
     void onAbout();
+    void onParameters();
 };
 
 #endif // MAINWINDOW_H
