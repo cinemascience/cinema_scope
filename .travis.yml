@@ -76,7 +76,7 @@ install:
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake cinema_scope.pro && make; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" == "xcode10" ]]; then qmake -spec macx-xcode cinema_scope.pro && xcodebuild -project CinemaScope.xcodeproj -target CinemaScope; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" == "xcode10" ]]; then qmake -spec macx-xcode cinema_scope.pro && xcodebuild -project cinema_scope.xcodeproj; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" != "xcode10" ]]; then qmake cinema_scope.pro && make; fi
 
 # OPTIONAL - Cleaning up the cache
