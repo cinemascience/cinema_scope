@@ -176,7 +176,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     else if(fabs(p.ry() - mCurrentYloc) > mSlidePixelVer && fabs(p.rx() - mCurrentXloc) < mSlidePixelVer)
     {
         // only the vertical parameter
-        if((p.ry() - mCurrentYloc) < 0 && mLastYloc > p.ry()) //slide up
+        if((p.ry() - mCurrentYloc) > 0 && mLastYloc < p.ry()) //slide up
         {
             float next;
             bool nbool = mParamSet->getNextValue( mCurVerParam, mCurrentVer, next );
@@ -194,7 +194,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
             mParamSet->changeParameter(mCurVerParam, next);
         }
 
-        else if((p.ry() - mCurrentYloc) > 0 && mLastYloc < p.ry()) //slide down
+        else if((p.ry() - mCurrentYloc) < 0 && mLastYloc > p.ry()) //slide down
         {
             float prev;
             bool nbool = mParamSet->getPrevValue( mCurVerParam, mCurrentVer, prev );
