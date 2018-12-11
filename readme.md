@@ -4,7 +4,7 @@
 Note that Cinema:Scope is in pre-release development. Code should be considered
 for experimental use only.
 
-<img src="doc/img/cinema_scope.png" width="350">
+<img src="docs/img/cinema_scope.png" width="350">
 
 This is a basic Cinema database viewer for image-based databases. It is
 a cross-platform Qt application, requiring the use of `qmake` to build it.
