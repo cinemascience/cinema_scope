@@ -9,6 +9,7 @@ var searchData=
   ['cinimageview',['CinImageView',['../class_cin_image_view.html',1,'']]],
   ['cinparameter',['CinParameter',['../class_cin_parameter.html',1,'']]],
   ['cinparametermap',['CinParameterMap',['../class_cin_parameter_map.html',1,'']]],
+  ['cinparametermapdialog',['CinParameterMapDialog',['../class_cin_parameter_map_dialog.html',1,'']]],
   ['cinparamset',['CinParamSet',['../class_cin_param_set.html',1,'']]],
   ['cinparamsliders',['CinParamSliders',['../class_cin_param_sliders.html',1,'']]],
   ['cinscopetest',['CinScopeTest',['../class_cin_scope_test.html',1,'']]],
