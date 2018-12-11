@@ -6,7 +6,7 @@
 
 ## Installers
 
-* [Mac 10.13.x](installers/CinemaScopeInstaller001.dmg)
+* [Mac 10.13.x](installers/001/CinemaScopeInstaller001.dmg)
 
 ## Data
 
