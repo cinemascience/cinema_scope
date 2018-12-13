@@ -8,5 +8,5 @@ CinSlider::CinSlider()
 void CinSlider::setKey(QString &key)
 {
     mKey = key;
-    qDebug() << "KEY: " << key;
+    // qDebug() << "KEY: " << key;
 }
