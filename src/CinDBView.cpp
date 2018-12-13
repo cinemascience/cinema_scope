@@ -46,13 +46,11 @@ void CinDBView::updateArtifacts()
     getArtifactQueryString(queryString);
 
     QSqlQuery query(mDatabase->getDatabase());
-    query.prepare(queryString); 
-    query.exec();
+    query.exec(queryString);
     // TODO there should only be one; error if this is not the case
     QString artifact;
     while (query.next())
     {
-        // qDebug() << "VIEW: " << q.value(0);
         artifact = query.value(0).toString();
     }
 
@@ -93,7 +91,7 @@ bool CinDBView::getFullPathToArtifact(const QString &artifact, QString &fullpath
 
 void CinDBView::getArtifactQueryString(QString &query)
 {
-    query = QString("SELECT %1 FROM %2 WHERE ").arg(mArtifact, mDatabase->getTableName());
+    query = QString("SELECT [%1] FROM %2 WHERE [").arg(mArtifact, mDatabase->getTableName());
 
     QMap<QString, CinParameter>::const_iterator i = mParams.getParameters().constBegin();
     bool first = true;
@@ -101,11 +99,11 @@ void CinDBView::getArtifactQueryString(QString &query)
     {
         if (not first)
         {
-            query += " AND ";
+            query += " AND [";
         } else {
             first = false;
         }
-        query += QString("%1=%2").arg(i.key(), QString::number(i.value().getValue()));
+        query += QString("%1]=%2").arg(i.key(), QString::number(i.value().getValue()));
         ++i;
     }
 

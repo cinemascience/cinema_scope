@@ -2,6 +2,8 @@
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlField>
 
 // add necessary includes here
 #include "CinParameter.h"
@@ -28,6 +30,7 @@ private slots:
     void parameterMap();
     void cinDatabase();
     void cinDBView();
+    void rawDatabase();
 };
 
 
@@ -151,8 +154,35 @@ void CinScopeTest::cinDatabase()
     QStringList parameters02 = {"zhi", "zheta"};
     QStringList artifacts02  = {"FILE", "FILE_cylinder"};
 
+    QSqlQuery query(db.getDatabase());
     QVERIFY(db.getParameterColumnNames() == parameters02);
     QVERIFY(db.getArtifactColumnNames() == artifacts02);
+
+    // does this work for a database with a spaces in column names? 
+    db.reset();
+    db.load("../unittesting/test_spacename.cdb");
+    QStringList parameters03 = {"phi", "t heta"};
+    QStringList artifacts03  = {"FILE"};
+    
+/*
+    qDebug() << "THIRD : " << db.getParameterColumnNames();
+    QSqlRecord record = db.getDatabase().record(db.getTableName());
+    for (int i=0;i<record.count();i++) 
+    {
+        qDebug() << "NAME: " << record.field(i).name();
+    }
+
+    query.exec("SELECT [t heta] FROM " + db.getTableName());
+    qDebug() << "BEFORE TABLENAME: " << db.getTableName();
+    while (query.next())
+    {
+        qDebug() << "VALUE: " << query.value(0).toFloat();
+    }
+    qDebug() << "AFTER  TABLENAME: " << db.getTableName();
+*/
+
+    QVERIFY(db.getParameterColumnNames() == parameters03);
+    QVERIFY(db.getArtifactColumnNames() == artifacts03);
 }
 
 void CinScopeTest::cinDBView()
@@ -182,6 +212,45 @@ void CinScopeTest::cinDBView()
         // it should no longer include these values
     QVERIFY(not view.parameterExists("phi"));
     QVERIFY(not view.parameterExists("theta"));
+}
+
+//
+// example to test how database works with column names that have spaces
+//
+void CinScopeTest::rawDatabase()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "newconnect");
+    db.open();
+
+    QSqlQuery query(db);
+    query.exec("CREATE TABLE init_table ([xValue] float, [y Value] float, [z  Value] float)");
+    query.exec("INSERT INTO init_table ([z  Value], [y Value], [xValue]) VALUES (3.1, 2.1, 1.1)");
+    query.exec("INSERT INTO init_table VALUES (1.2, 2.2, 3.2)");
+    query.exec("INSERT INTO init_table VALUES (1.3, 2.3, 3.3)");
+
+    query.exec("SELECT DISTINCT [xValue] FROM init_table");
+    while (query.next())
+    {
+        qDebug() << "X VALUE: " << query.value(0).toFloat();
+    }
+
+    query.exec("SELECT DISTINCT [y Value] FROM init_table");
+    while (query.next())
+    {
+        qDebug() << "Y VALUE: " << query.value(0).toFloat();
+    }
+
+    query.exec("SELECT DISTINCT [z  Value] FROM init_table");
+    while (query.next())
+    {
+        qDebug() << "Z VALUE: " << query.value(0).toFloat();
+    }
+
+    query.exec("SELECT [z  Value] FROM init_table WHERE [xValue]=1.1");
+    while (query.next())
+    {
+        qDebug() << "Z VALUE: " << query.value(0).toFloat();
+    }
 }
 
 

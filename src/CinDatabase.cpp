@@ -78,6 +78,7 @@ void CinDatabase::setColumnNames()
     for (int i=0;i<record.count();i++)
     {
         column = record.field(i).name();
+        // qDebug() << "COLUMN: " << column;
         if (not isArtifactColumn(column) ) {
             mParameterColNames.push_back(column);
         } else {

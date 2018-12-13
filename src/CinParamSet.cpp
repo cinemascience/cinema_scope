@@ -105,7 +105,7 @@ void CinParamSet::init(CinDatabase &db)
     for (int i=0;i<cols.count();i++)
     {
         // get the min and max values
-        query.exec("SELECT MIN(" + cols.at(i) + ") , MAX(" + cols.at(i) + ") FROM " + db.getTableName());
+        query.exec("SELECT MIN([" + cols.at(i) + "]) , MAX([" + cols.at(i) + "]) FROM " + db.getTableName());
         query.first();
 
         // add the parameter 
@@ -114,7 +114,7 @@ void CinParamSet::init(CinDatabase &db)
         add(cols.at(i), CinParameter::FLOAT, min, max, min); 
 
         // gather all the values
-        query.exec("SELECT DISTINCT " + cols.at(i) + " FROM " + db.getTableName() + " ORDER BY " + cols.at(i) ); 
+        query.exec("SELECT DISTINCT [" + cols.at(i) + "] FROM " + db.getTableName() + " ORDER BY [" + cols.at(i) + "]"); 
         // TODO make this a reference, instead of a pointer
         CinParameter *param = getParameter(cols.at(i));
         if (param)

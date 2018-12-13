@@ -161,7 +161,7 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
     readSettings();
 
     // create the table from the columns
-    constructCommands(CinDBReader::InitTableName, coldata, command, insert);
+    constructCommands(CinDBReader::InitTableName, coldata, command);
     if (not query.exec(command))
     {
         qDebug() << "CINDBREADER: ERROR EXECUTING query";
@@ -179,38 +179,42 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
         QString trimmer;
         while (input.getline(str, 10000))
         {
-            // start the insert command 
-            query.prepare(insert);
-
             // get values for the current line, then iterate over them
             split(str, ',', colvals);
             // iterate over the column names as well
-            QString bindName;
             std::vector<CinDBColData>::iterator curColData = coldata.begin();
+            bool first = true;
+            insert = "INSERT INTO " + CinDBReader::InitTableName + " VALUES (";
             for (std::vector<std::string>::iterator cur = colvals.begin(); 
                  cur != colvals.end(); ++cur)
             {
-                bindName = QString(":%1").arg(curColData->name.c_str());
                 // bind the value according to type 
-                if (curColData->type == CinDBColData::STRING) {
-                    trimmer = cur->c_str();
-                    trimmer = trimmer.trimmed();
-                    query.bindValue( bindName, trimmer ); 
-                } else if (curColData->type == CinDBColData::INT) {
-                    query.bindValue( bindName, std::stoi(*cur) );
+                if (not first) 
+                {
+                    insert += ", ";
                 } else {
-                    // it's a float
-                    query.bindValue( bindName, std::stof(*cur) );
+                    first = false;
                 }
+                trimmer = cur->c_str();
+                trimmer = trimmer.trimmed();
+                insert += "'" + trimmer + "'";
 
                 // increment iterator 
                 curColData++;
             }
+            insert += ")";
+
             // execute
-            query.exec();
+            if (query.exec(insert))
+            {
+                // qDebug() << "INSERT    SUCCESS";
+            } else {
+                // qDebug() << "INSERT NO SUCCESS";
+            }
 
             // clean up
             colvals.clear();
+            insert = "";
         }
     }
 
@@ -225,40 +229,26 @@ void  CinDBReader::loadDB(QSqlDatabase &db, const QString &tableName, std::vecto
     }
 }
 
-void CinDBReader::constructCommands(const QString &tableName, std::vector<CinDBColData> &coldata, QString &create, QString &insert)
+void CinDBReader::constructCommands(const QString &tableName, std::vector<CinDBColData> &coldata, QString &create)
 {
     bool first = true;
     QString names[] = {"UNDEFINED", "varchar(100)", "float", "int"};
-    QString values;
 
     create = QString("CREATE TABLE %1 (").arg(tableName);
-    insert = QString("INSERT INTO %1 (").arg(tableName);
-    values = " values(";
 
     for (std::vector<CinDBColData>::iterator curColData = coldata.begin();
          curColData != coldata.end(); ++curColData)
     {
         if (!first) {
             create += ", ";
-            insert += ", ";
-            values += ", ";
         } else {
             first = false;
         }
 
-        create += QString("%1 %2").arg(curColData->name.c_str(), names[curColData->type]);
-
-        insert += curColData->name.c_str();
-        values += QString(":%1").arg(curColData->name.c_str());
+        create += QString("[%1] %2").arg(curColData->name.c_str(), names[curColData->type]);
 
     }
     create += ")";
-    insert += ")";
-    values += ")";
-    insert += values;
-
-    // qDebug() << "CREATE: " << create;
-    // qDebug() << "INSERT: " << insert;
 }
 
 void CinDBReader::constructNewTableCommand(QString &newTableCommand, const QString &initTable, const QString &finalTable)
@@ -278,12 +268,11 @@ void CinDBReader::constructNewTableCommand(QString &newTableCommand, const QStri
                 first = false;
             }
 
-            newTableCommand += cur->toStdString().c_str();
+            newTableCommand += QString("[%1]").arg(cur->toStdString().c_str());
         }
     }
 
     newTableCommand += QString(" FROM %1").arg(initTable);
-
     // qDebug() << "NEW: " << newTableCommand;
 }
 
@@ -311,5 +300,3 @@ void CinDBReader::readSettings()
         // qDebug() << mColOrder;
     }
 }
-
-
