@@ -229,27 +229,36 @@ void CinScopeTest::rawDatabase()
     query.exec("INSERT INTO init_table VALUES (1.3, 2.3, 3.3)");
 
     query.exec("SELECT DISTINCT [xValue] FROM init_table");
+    int i=0;
+    QStringList x = {"1.1", "1.2", "1.3"};
     while (query.next())
     {
-        qDebug() << "X VALUE: " << query.value(0).toFloat();
+        QVERIFY(query.value(0) == x.at(i));
+        i++;
     }
 
     query.exec("SELECT DISTINCT [y Value] FROM init_table");
+    QStringList y = {"2.1", "2.2", "2.3"};
+    i = 0;
     while (query.next())
     {
-        qDebug() << "Y VALUE: " << query.value(0).toFloat();
+        QVERIFY(query.value(0) == y.at(i));
+        i++;
     }
 
     query.exec("SELECT DISTINCT [z  Value] FROM init_table");
+    QStringList z = {"3.1", "3.2", "3.3"};
+    i = 0;
     while (query.next())
     {
-        qDebug() << "Z VALUE: " << query.value(0).toFloat();
+        QVERIFY(query.value(0) == z.at(i));
+        i++;
     }
 
     query.exec("SELECT [z  Value] FROM init_table WHERE [xValue]=1.1");
     while (query.next())
     {
-        qDebug() << "Z VALUE: " << query.value(0).toFloat();
+        QVERIFY(query.value(0) == z.at(0));
     }
 }
 
