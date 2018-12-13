@@ -16,7 +16,7 @@ class CinSlider : public QSlider
         // constructor
         CinSlider();
 
-        void setKey(QString &key) {mKey = key;}
+        void setKey(QString &key);
         const QString &getKey() {return mKey;}
 
     private:
