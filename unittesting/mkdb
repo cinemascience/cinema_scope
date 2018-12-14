@@ -5,7 +5,7 @@ import itertools
 import os
 
 database = "test.cdb"
-font = ImageFont.truetype("Helvetica.ttc", 40)
+font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 40)
 os.mkdir(database)
 os.chdir(database)
 
