@@ -113,6 +113,8 @@ void CinParamSliders::popSliderToValidValue(CinSlider *slider)
     QString name = slider->getKey();
     bool bNext = mParameters->getNextValue(name, curVal, nextVal);
     bool bPrev = mParameters->getPrevValue(name, curVal, prevVal);
+    
+    // qDebug() << "SLIDER: " << name << ", " << curVal;
 
     if (not mParameters->valueExists(name, curVal))
     {
@@ -137,6 +139,9 @@ void CinParamSliders::popSliderToValidValue(CinSlider *slider)
             // what?
         */
         }
+    } else {
+        // slider->setValue(curVal);
+        mParameters->changeParameter(name, curVal);
     }
 }
 

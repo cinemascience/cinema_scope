@@ -1,4 +1,4 @@
-#! /Users/dhr/anaconda/envs/py36/bin/python
+#!/usr/bin/env python
 
 from PIL import Image, ImageDraw, ImageFont
 import itertools
@@ -11,19 +11,23 @@ os.chdir(database)
 
 # a = [[10,11,12,13],[20,21,22,23],[30,31,32,33],[40,41,42,43]]
 # names = "one,two,three,four,FILE"
-a = [[10,11,12,13],[20,21,22,23]]
-names = "phi,theta,FILE"
-allLists = list(itertools.product(*a))
+parameters = [[10,11,12,13],[20,21,22,23]]
+names      = "phi,theta,FILE"
+allParams  = list(itertools.product(*parameters))
 
 os.mkdir("image")
 with open("data.csv", "w") as csvfile:
     csvfile.write(names + "\n")
     row = ""
-    for l in allLists:
+
+    # do this for all sets of parameters
+    for pSet in allParams:
         curdir = "image"
         row = ""
         notfirst = 0
-        for d in l:
+
+        # each parameter becomes a directory
+        for d in pSet:
             if (notfirst):
                 row += ","
             else:
@@ -33,6 +37,7 @@ with open("data.csv", "w") as csvfile:
             if not os.path.exists(curdir):
                 os.mkdir(curdir)
 
+        # now create an image file for that directory
         imgfile = os.path.join(curdir, "image.png")
         csvfile.write(row + "," + imgfile + "\n")
         img = Image.new('RGB', (800,400), (0,0,0))
