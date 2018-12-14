@@ -32,7 +32,7 @@ CinemaScope test plan for CDBs with phi/theta/time
 
 ## Unit Testing
 
-### Test Open/Load with simple_load.cdb database
+### Test Open/Load with **simple_load.cdb** database
 
 - Edit **settings.ini** to point to the unittesting/ directory:
 
@@ -89,3 +89,15 @@ CinemaScope test plan for CDBs with phi/theta/time
 - Click on Edit -> Edit Parameters ... (or &#x2318;E ) and again choose to map **Mouse Vertical** to **zheta**, **Mouse Horizontal** to **zhi**.  Choose **FILE_cylinder** for **Artifact**.  This should bring up the cylinder images.  Again verify that dragging the mouse vertically moves the zheta slider and that dragging the mouse horizontally moves the phi slider.  
 
 ![cs_MapParametersFILE.png](img/cs_MapParametersFILE.png)
+
+### Validate a Spec D database with a space in a name
+
+- Open  **test_spacename.cdb** in **unittesting** directory.  The Map Parameters Dialog box should appear:
+
+![cs_SpaceInName.png](img/cs_SpaceInName.png)
+
+- Map "t heta" to the Mouse Vertical, click OK and the slider should accept the space in the name:
+
+![cs_SliderSpaceInName.png](img/cs_SliderSpaceInName.png)
+
+- Verify that both the sliders and the mouse movements correctly control the image view.  
