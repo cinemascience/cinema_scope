@@ -128,16 +128,6 @@ void CinParamSliders::popSliderToValidValue(CinSlider *slider)
                 slider->setValue(prevVal);
                 mParameters->changeParameter(name, prevVal);
             }
-        /*
-        } else if (bNext) {
-            slider->setValue(nextVal);
-            mParameters->changeParameter(name, nextVal);
-        } else if (bPrev) {
-            slider->setValue(prevVal);
-            mParameters->changeParameter(name, prevVal);
-        } else {
-            // what?
-        */
         }
     } else {
         // slider->setValue(curVal);
