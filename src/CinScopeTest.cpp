@@ -163,7 +163,8 @@ void CinScopeTest::cinDatabase()
     db.load("../unittesting/test_spacename.cdb");
     QStringList parameters03 = {"phi", "t heta"};
     QStringList artifacts03  = {"FILE"};
-    
+    QVERIFY(db.getParameterColumnNames() == parameters03);
+    QVERIFY(db.getArtifactColumnNames() == artifacts03);
 /*
     qDebug() << "THIRD : " << db.getParameterColumnNames();
     QSqlRecord record = db.getDatabase().record(db.getTableName());
@@ -181,8 +182,12 @@ void CinScopeTest::cinDatabase()
     qDebug() << "AFTER  TABLENAME: " << db.getTableName();
 */
 
-    QVERIFY(db.getParameterColumnNames() == parameters03);
-    QVERIFY(db.getArtifactColumnNames() == artifacts03);
+    db.reset();
+    db.load("../unittesting/test_string.cdb");
+    QStringList parameters04 = {"phi", "theta", "name"};
+    QStringList artifacts04  = {"FILE"};
+    QVERIFY(db.getParameterColumnNames() == parameters04);
+    QVERIFY(db.getArtifactColumnNames() == artifacts04);
 }
 
 void CinScopeTest::cinDBView()
@@ -223,10 +228,10 @@ void CinScopeTest::rawDatabase()
     db.open();
 
     QSqlQuery query(db);
-    query.exec("CREATE TABLE init_table ([xValue] float, [y Value] float, [z  Value] float)");
-    query.exec("INSERT INTO init_table ([z  Value], [y Value], [xValue]) VALUES (3.1, 2.1, 1.1)");
-    query.exec("INSERT INTO init_table VALUES (1.2, 2.2, 3.2)");
-    query.exec("INSERT INTO init_table VALUES (1.3, 2.3, 3.3)");
+    query.exec("CREATE TABLE init_table ([xValue] float, [y Value] float, [z  Value] float, [name] varchar[255])");
+    query.exec("INSERT INTO init_table ([z  Value], [y Value], [xValue], [name]) VALUES (3.1, 2.1, 1.1, 'one')");
+    query.exec("INSERT INTO init_table VALUES (1.2, 2.2, 3.2, 'two')");
+    query.exec("INSERT INTO init_table VALUES (1.3, 2.3, 3.3, 'three')");
 
     query.exec("SELECT DISTINCT [xValue] FROM init_table");
     int i=0;
@@ -259,6 +264,15 @@ void CinScopeTest::rawDatabase()
     while (query.next())
     {
         QVERIFY(query.value(0) == z.at(0));
+    }
+
+    query.exec("SELECT DISTINCT [name] FROM init_table");
+    QStringList n = {"one", "two", "three"};
+    i = 0;
+    while (query.next())
+    {
+        QVERIFY(query.value(0) == n.at(i));
+        i++;
     }
 }
 
