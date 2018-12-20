@@ -42,6 +42,11 @@ class CinParameter
         void  recordValue(float value);
         bool  valueExists(float value);
 
+        int   getNumValues();
+        // TODO check i for validity
+        float valueAt(int i) { return mValues[i]; }
+        bool valueAsString(QString &value, int i);
+
         void  print();
         void  sortValues();
 

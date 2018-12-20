@@ -7,6 +7,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+// forward declaration
+class CinParameter;
+
 //! A slider that knows the name of its parameter 
 /*!
  *
@@ -16,22 +19,26 @@ class CinCompoundSlider : public QWidget
     Q_OBJECT
 
     public:
-        // constructor
         CinCompoundSlider(QWidget *parent);
 
-        void setKey(QString &key);
-        const QString &getKey() {return mKey;}
+        bool setParameter(CinParameter *p);
+
+    signals:
+        void valueChanged(const QString &key, const QString& value);
 
     public slots:
-        void onValueChanged(int value);
+        void onSliderValueChanged(int value);
+        void onParameterValueChanged(float value, int valueID);
 
     private:
-        void getValue(QString &value, int id);
+        bool getValue(QString &value, int id);
 
-        QString     mKey;
         QHBoxLayout mLayout;
+
+        QLabel      mLabel;
         QSlider     mSlider;
         QLabel      mValue;
+        CinParameter *mParameter=NULL;
 };
 
 #endif // CINCOMPOUNDSLIDER_H

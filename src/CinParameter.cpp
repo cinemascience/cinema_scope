@@ -111,3 +111,22 @@ bool CinParameter::valueExists(float value)
 {
     return (std::find(mValues.begin(), mValues.end(), value) != mValues.end());
 }
+
+
+int  CinParameter::getNumValues() 
+{ 
+    return mValues.size();
+}
+
+bool CinParameter::valueAsString(QString &value, int id)
+{
+    bool result = false;
+
+    if ((id >= 0) && (id < mValues.size())) 
+    {
+        value = QString::number(valueAt(id));
+        result = true;
+    }
+
+    return result;
+}
