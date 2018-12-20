@@ -54,7 +54,8 @@ SOURCES += \
         src/CinCore.cpp \
         src/CinSlider.cpp \
         src/CinParameterMap.cpp \
-        src/CinParameterMapDialog.cpp
+        src/CinParameterMapDialog.cpp \
+        src/CinCompoundSlider.cpp
 
 HEADERS += \
         src/CinScopeWindow.h \
@@ -69,5 +70,6 @@ HEADERS += \
         src/CinCore.h \
         src/CinSlider.h \
         src/CinParameterMap.h \
-        src/CinParameterMapDialog.h
+        src/CinParameterMapDialog.h \
+        src/CinCompoundSlider.h
 
