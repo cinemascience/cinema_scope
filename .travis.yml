@@ -68,7 +68,6 @@ before_install:
 # non-zero exit status: build status returns failed and exits immediately
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows"]]; then choco install qtcreator; fi
 
 # OPTIONAL - After dependencies but before the build step
 # non-zero exit status: build status returns failed and exits immediately
