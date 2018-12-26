@@ -61,12 +61,12 @@ matrix:
 # Stuff to do before installing the dependencies          
 # non-zero exit status: build status returns failed and exits immediately
 before_install:
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt511/bin/qt511-env.sh; fi
+ - $TRAVIS_BUILD_DIR/travis/travis_before_install.sh
 
 # Install dependencies here      
 # non-zero exit status: build status returns failed and exits immediately
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5; fi
+  - $TRAVIS_BUILD_DIR/travis/travis_install.sh
 
 # OPTIONAL - After dependencies but before the build step
 # non-zero exit status: build status returns failed and exits immediately
@@ -75,9 +75,7 @@ install:
 # The build step
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake cinema_scope.pro && make; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" == "xcode10" ]]; then qmake -spec macx-xcode cinema_scope.pro && xcodebuild -project cinema_scope.xcodeproj; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" != "xcode10" ]]; then qmake cinema_scope.pro && make; fi
+  - $TRAVIS_BUILD_DIR/travis/travis_script.sh
 
 # OPTIONAL - Cleaning up the cache
 #before_cache:
