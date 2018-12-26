@@ -54,6 +54,7 @@ matrix:
       env:
         - PATH="${PATH}:/usr/local/opt/qt/bin"
         - osx_image="xcode10"
+    - os: windows
 
 # OPTIONAL - which components to cache 
 #cache components:
@@ -67,6 +68,7 @@ before_install:
 # non-zero exit status: build status returns failed and exits immediately
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows"]]; then choco install qtcreator; fi
 
 # OPTIONAL - After dependencies but before the build step
 # non-zero exit status: build status returns failed and exits immediately
@@ -78,6 +80,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake cinema_scope.pro && make; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" == "xcode10" ]]; then qmake -spec macx-xcode cinema_scope.pro && xcodebuild -project cinema_scope.xcodeproj; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" && "$osx_image" != "xcode10" ]]; then qmake cinema_scope.pro && make; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then qmake cinema_scope.pro && make; fi
 
 # OPTIONAL - Cleaning up the cache
 #before_cache:
