@@ -16,6 +16,6 @@ case $TRAVIS_OS_NAME in
         ;;
     windows)
         qmake cinema_scope.pro
-        make
+        mingw32-make
         ;;
 esac
