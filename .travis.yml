@@ -54,7 +54,7 @@ matrix:
       env:
         - PATH="${PATH}:/usr/local/opt/qt/bin"
         - osx_image="xcode10"
-    -os: windows
+    - os: windows
 
 # OPTIONAL - which components to cache 
 #cache components:
