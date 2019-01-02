@@ -14,6 +14,7 @@ case $TRAVIS_OS_NAME in
         # Add Mingw and qt to path
         export MWDIR="/c/Users/travis/Qt/Tools/mingw730_64"
         export QTDIR="/c/Users/travis/Qt/5.12.0/mingw73_64"
-        export PATH="$MWDIR/bin:$QTDIR/bin:$PATH"
+        export QTIFW="/c/Users/travis/Qt/Tools/QtInstallerFramework/3.0"
+        export PATH="$MWDIR/bin:$QTDIR/bin:$QTIFW/bin:$PATH"
         ;;
 esac

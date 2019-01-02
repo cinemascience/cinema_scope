@@ -34,6 +34,7 @@ Controller.prototype.ComponentSelectionPageCallback = function(){
     widget.deselectAll();
     widget.selectComponent("qt.qt5.5120.win64_mingw73");
     widget.selectComponent("qt.tools.win64_mingw730");
+    widget.selectComponent("qt.tools.ifw.30")
     gui.clickButton(buttons.NextButton);
 }
 
