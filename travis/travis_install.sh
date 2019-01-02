@@ -6,7 +6,7 @@ case $TRAVIS_OS_NAME in
         # (Thanks https://github.com/sgsaenger/vipster for example!)
         travis_wait wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run -q -O qt_installer.run
         chmod +x qt_installer.run
-        travis_wait ./qt_installer.run --script $TRAVIS_BUILD_DIR/travis/navigate_qt_installer_linux.qs
+        travis_wait ./qt_installer.run --silent --script $TRAVIS_BUILD_DIR/travis/navigate_qt_installer_linux.qs
         # Add installer framework to path
         export PATH="$HOME/Qt/Tools/QtInstallerFramework/3.0/bin:$PATH"
         ;;
