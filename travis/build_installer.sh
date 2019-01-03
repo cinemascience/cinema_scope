@@ -3,7 +3,7 @@ set -e
 
 case $TRAVIS_OS_NAME in
     linux)
-        cp -rf $TRAVIS_BUILD_DIR/build/release/cinema_scope $TRAVIS_BUILD_DIR/installer/packges/data
+        cp -rf $TRAVIS_BUILD_DIR/build/release/cinema_scope $TRAVIS_BUILD_DIR/installer/packages/data
         binarycreator -c $TRAVIS_BUILD_DIR/installer/config/config.xml -p $TRAVIS_BUILD_DIR/installer/packages cinema_scope_installer
         ;;
     osx)
