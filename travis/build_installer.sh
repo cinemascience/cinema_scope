@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-set -x
 
 case $TRAVIS_OS_NAME in
     linux)
