@@ -1,6 +1,10 @@
 /**
-* This script navigates through the qt installer, selecting the correct
+* This script navigates through the qt installer for Linux, selecting the correct
 * tools to download and install.
+*
+* The only difference between this script and the windows one is that this one
+* only downloads the installer framework, because we can get the rest of qt
+* through apt
 *
 * Thanks to https://github.com/sgsaenger/vipster for the example!
 **/
@@ -32,8 +36,6 @@ Controller.prototype.TargetDirectoryPageCallback = function(){
 Controller.prototype.ComponentSelectionPageCallback = function(){
     var widget = gui.currentPageWidget();
     widget.deselectAll();
-    widget.selectComponent("qt.qt5.5120.win64_mingw73");
-    widget.selectComponent("qt.tools.win64_mingw730");
     widget.selectComponent("qt.tools.ifw.30")
     gui.clickButton(buttons.NextButton);
 }
