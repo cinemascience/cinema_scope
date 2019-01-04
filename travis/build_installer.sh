@@ -24,7 +24,6 @@ case $TRAVIS_OS_NAME in
             exit 1
         fi
         ;;
-        ;;
     windows)
         cp -rf build/release/cinema_scope.exe installer/packages/data
         binarycreator -c installer/config/config.xml -p installer/packages cinema_scope_installer.exe
