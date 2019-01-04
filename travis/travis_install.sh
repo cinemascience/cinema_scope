@@ -7,12 +7,18 @@ case $TRAVIS_OS_NAME in
         # (Thanks https://github.com/sgsaenger/vipster for example!)
         travis_wait wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run -q -O qt_installer.run
         chmod +x qt_installer.run
-        travis_wait ./qt_installer.run -platform minimal --script $TRAVIS_BUILD_DIR/travis/navigate_qt_installer_linux.qs
+        travis_wait ./qt_installer.run -platform minimal --script $TRAVIS_BUILD_DIR/travis/navigate_qt_installer_unix.qs
         # Add installer framework to path
-        export PATH="$HOME/Qt/Tools/QtInstallerFramework/3.0/bin:$PATH"
+        ls $HOME/Qt
+        export PATH="$HOME/Qt/QtIFW-3.0/bin:$PATH"
         ;;
     osx)
         brew install qt5
+        travis_wait wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run -q -O qt_installer.run
+        chmod +x qt_installer.run
+        travis_wait ./qt_installer.run -platform minimal --script $TRAVIS_BUILD_DIR/travis/navigate_qt_installer_unix.qs
+        # Add installer framework to path
+        export PATH="$HOME/Qt/Tools/QtInstallerFramework/3.0/bin:$PATH"
         ;;
     windows)
         # Download and run qt installer

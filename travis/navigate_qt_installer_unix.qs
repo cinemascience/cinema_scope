@@ -1,10 +1,10 @@
 /**
-* This script navigates through the qt installer for Linux, selecting the correct
+* This script navigates through the qt installer for Linux and Mac, selecting the correct
 * tools to download and install.
 *
 * The only difference between this script and the windows one is that this one
 * only downloads the installer framework, because we can get the rest of qt
-* through apt
+* through apt/brew
 *
 * Thanks to https://github.com/sgsaenger/vipster for the example!
 **/
