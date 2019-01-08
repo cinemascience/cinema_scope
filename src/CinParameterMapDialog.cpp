@@ -42,6 +42,9 @@ void CinParameterMapDialog::connect(CinDBView *view, CinImageView *imageView)
         mVert->addItem(p.at(i));
         mHor->addItem(p.at(i));
     }
+    mHor->setCurrentText(mImageView->getHorizontalParameter());
+    mVert->setCurrentText(mImageView->getVerticalParameter());
+
     const QStringList &a = mView->getDatabase()->getArtifactColumnNames();
     if (a.count() == 0)
     {
@@ -55,6 +58,7 @@ void CinParameterMapDialog::connect(CinDBView *view, CinImageView *imageView)
             mArtifact->addItem(a.at(i));
         }
     }
+    mArtifact->setCurrentText(mView->getArtifact());
 
     layout->addRow("Mouse Vertical", mVert);
     layout->addRow("Mouse Horizontal", mHor);
