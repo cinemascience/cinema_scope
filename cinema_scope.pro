@@ -11,15 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
 
-CONFIG += debug
-CONFIG += release
+CONFIG += debug_and_release
+
+# TARGET = CinemaScope
 
 # debug/release
-CONFIG(debug, debug|release) {
-    DESTDIR = build/debug
-}
 CONFIG(release, debug|release) {
     DESTDIR = build/release
+} else {
+    DESTDIR = build/debug
 }
 OBJECTS_DIR = $$DESTDIR/.obj
 MOC_DIR = $$DESTDIR/.moc

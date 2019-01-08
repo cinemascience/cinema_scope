@@ -4,7 +4,9 @@ QTLOC="/Users/dhr/Qt"
 QTBIN="$QTLOC/QtIFW-3.0.6/bin"
 BINARYCREATOR="$QTBIN/binarycreator"
 DEPLOY="$QTLOC/5.12.0/clang_64/bin/macdeployqt"
-APP="CinemaScope.app"
+BASENAME="cinema_scope"
+APP="$BASENAME.app"
+DMG="$BASENAME.dmg"
 
 echo "Cleaning packages/cinemascope/data ..."
 rm -rf packages/cinemascope/data/$APP
@@ -16,7 +18,7 @@ echo "Running mac delpoyment ..."
 $DEPLOY packages/cinemascope/data/$APP
 
 echo "Creating installer ..."
-$BINARYCREATOR -t $QTBIN/installerbase -c config/config.xml -p packages CinemaScope.dmg
+$BINARYCREATOR -t $QTBIN/installerbase -c config/config.xml -p packages $DMG 
 
 echo "Cleaning packages/cinemascope/data ..."
 rm -rf packages/cinemascope/data/$APP
