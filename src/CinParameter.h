@@ -42,7 +42,7 @@ class CinParameter : public QObject
         void  setMin(float min)                {mMin   = min;}
         void  setMax(float max)                {mMax   = max;}
         void  setValue(float value)            {mValue = value;}
-        void  setToValueAt(int id);
+        bool  setToValueAt(int id);
         void  recordValue(float value);
         bool  valueExists(float value);
 

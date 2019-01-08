@@ -131,7 +131,7 @@ bool CinParameter::valueAsString(QString &value, int id)
     return result;
 }
 
-void CinParameter::setToValueAt(int valueID)
+bool CinParameter::setToValueAt(int valueID)
 {
     bool result = false;
 
