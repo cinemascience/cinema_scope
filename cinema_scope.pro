@@ -52,7 +52,6 @@ SOURCES += \
         src/CinArtifactSet.cpp \
         src/CinDBView.cpp \
         src/CinCore.cpp \
-        src/CinSlider.cpp \
         src/CinParameterMap.cpp \
         src/CinParameterMapDialog.cpp \
         src/CinCompoundSlider.cpp
@@ -68,7 +67,6 @@ HEADERS += \
         src/CinArtifactSet.h \
         src/CinDBView.h \
         src/CinCore.h \
-        src/CinSlider.h \
         src/CinParameterMap.h \
         src/CinParameterMapDialog.h \
         src/CinCompoundSlider.h

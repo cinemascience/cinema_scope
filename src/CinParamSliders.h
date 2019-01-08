@@ -8,7 +8,6 @@
 #include <QLabel>
 #include "CinDatabase.h"
 #include "CinParamSet.h"
-#include "CinSlider.h"
 
 /*! \brief Manages a set of parameter sliders for a Cinema Database
  *

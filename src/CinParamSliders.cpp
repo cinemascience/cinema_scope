@@ -1,5 +1,4 @@
 #include "CinParamSliders.h"
-#include "CinSlider.h"
 #include "CinCompoundSlider.h"
 #include "CinParameter.h"
 #include <QDebug>
