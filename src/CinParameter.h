@@ -1,6 +1,7 @@
 #ifndef CINPARAMETER_H
 #define CINPARAMETER_H
 
+#include <QObject>
 #include <QString>
 #include <vector>
 
@@ -10,8 +11,10 @@
  *  This class manages communication about these parameters as they
  *  change in a Qt application.
 */
-class CinParameter
+class CinParameter : public QObject
 {
+    Q_OBJECT 
+
     public:
         enum Type{UNDEFINED=0, STRING, FLOAT, INT, NUMTYPES};
         static const char *TypeNames[NUMTYPES];
@@ -39,6 +42,7 @@ class CinParameter
         void  setMin(float min)                {mMin   = min;}
         void  setMax(float max)                {mMax   = max;}
         void  setValue(float value)            {mValue = value;}
+        void  setToValueAt(int id);
         void  recordValue(float value);
         bool  valueExists(float value);
 
@@ -49,6 +53,10 @@ class CinParameter
 
         void  print();
         void  sortValues();
+
+    signals:
+        void valueChanged(float value, int valueID);
+        void valueChanged(const QString &name, float value);
 
     private:
         // member variables

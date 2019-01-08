@@ -128,9 +128,8 @@ void CinScopeWindow::loadCinemaDatabase(const QString &database)
     // clean up all UI components
     flushUI();
 
-    //
+    // build new UI
     mSliders->buildSliders();
-    // mImageView->setParameters(mDBV->getParameters());
     mDBV->updateArtifacts();
 
     // manage state

@@ -2,7 +2,7 @@
 #define CINDBSLIDERS_H
 
 #include <QWidget>
-#include <QFormLayout>
+#include <QVBoxLayout>
 #include <QSqlDatabase>
 #include <QSlider>
 #include <QLabel>
@@ -28,18 +28,11 @@ public:
     void buildSliders();
 
 private:
-    void     popSliderToValidValue(CinSlider *slider);
-    QSlider *getSliderAt(int i);
-    QLabel  *getLabelAt(int i);
-
-    QFormLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
+    QVBoxLayout *mSliderLayout=NULL; /*!< The layout object for the sliders */
     CinDatabase *mCurDatabase=NULL;  /*!< Common database object */ 
     CinParamSet *mParameters=NULL;
     
 private slots:
-    void onSliderValueChanged(int value);
     void onParameterValueChanged(const QString &name, float value);
 };
-
-
 #endif // CINDBSLIDERS_H

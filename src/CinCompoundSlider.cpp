@@ -2,6 +2,12 @@
 #include "CinParameter.h"
 #include <QDebug>
 
+CinCompoundSlider::~CinCompoundSlider()
+{
+    // everything else should be deleted automatically
+    mParameter = NULL;
+}
+
 CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
 {
     mLabel.setText("unset");
@@ -36,7 +42,7 @@ void CinCompoundSlider::onSliderValueChanged(int value)
     if (getValue(stringValue, value))
     {
         mValue.setText(stringValue);
-        mParameter->setValue(mParameter->valueAt(value));
+        mParameter->setToValueAt(value);
 
         emit valueChanged(mParameter->getName(), stringValue);
     }
@@ -60,7 +66,13 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
         int numValues = mParameter->getNumValues();
         mSlider.setMinimum(0);
         mSlider.setMaximum(numValues-1);
-        mSlider.setValue(mParameter->valueAt(0));
+        mSlider.setValue(0);
+
+        QString stringValue;
+        getValue(stringValue, 0);
+        mValue.setText(stringValue);
+
+        QObject::connect(mParameter, SIGNAL(valueChanged(float, int)), this, SLOT(onParameterValueChanged(float, int)));
 
         result = true;
     } else {
@@ -72,4 +84,7 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
 
 void CinCompoundSlider::onParameterValueChanged(float value, int valueID)
 {
+    mSlider.setValue(valueID);
+    mValue.setText(QString::number(value));
+    // qDebug() << "CINCOMPOUNDSLIDER onParameterValueChanged";
 }

@@ -130,3 +130,18 @@ bool CinParameter::valueAsString(QString &value, int id)
 
     return result;
 }
+
+void CinParameter::setToValueAt(int valueID)
+{
+    bool result = false;
+
+    if ((valueID >= 0) && (valueID < mValues.size()))
+    {
+        setValue(valueAt(valueID));
+
+        emit valueChanged(getValue(), valueID);
+        emit valueChanged(getName(), getValue()); 
+    }        
+
+    return result;
+}
