@@ -13,7 +13,7 @@ CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
     mLabel.setText("unset");
     // mLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     mLabel.setFixedSize(50, 20);
-    mLabel.setAlignment(Qt::AlignRight);
+    mLabel.setAlignment(Qt::AlignLeft);
 
     mValue.setText("unset");
     mValue.setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -30,6 +30,8 @@ CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
     mLayout.addWidget(&mLabel);
     mLayout.addWidget(&mSlider);
     mLayout.addWidget(&mValue);
+    mLayout.setContentsMargins(0,0,0,0);
+
     this->setLayout(&mLayout);
 
     QObject::connect(&mSlider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));

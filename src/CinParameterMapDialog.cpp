@@ -10,6 +10,7 @@
 #include <QDebug>
 
 CinParameterMapDialog::CinParameterMapDialog(QWidget *parent)
+: QDialog(parent)
 {
 }
 

@@ -135,13 +135,20 @@ bool CinParameter::setToValueAt(int valueID)
 {
     bool result = false;
 
-    if ((valueID >= 0) && (valueID < mValues.size()))
+    if (valueID >= 0) 
     {
-        setValue(valueAt(valueID));
+        if (static_cast<unsigned int>(valueID) < mValues.size())
+        {
+            setValue(valueAt(valueID));
 
-        emit valueChanged(getValue(), valueID);
-        emit valueChanged(getName(), getValue()); 
-    }        
+            emit valueChanged(getValue(), valueID);
+            emit valueChanged(getName(), getValue()); 
+
+            result = true;
+        }        
+    } else {
+        // TODO report error
+    }
 
     return result;
 }
