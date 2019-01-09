@@ -18,6 +18,7 @@ class CinParameter : public QObject
     public:
         enum Type{UNDEFINED=0, STRING, FLOAT, INT, NUMTYPES};
         static const char *TypeNames[NUMTYPES];
+        static const float NO_VALUE;
         static const float NO_PREV;
         static const float NO_NEXT;
         static const float NOT_SET;
@@ -48,7 +49,6 @@ class CinParameter : public QObject
 
         int   getNumValues();
         // TODO check i for validity
-        float valueAt(int i) { return mValues[i]; }
         bool valueAsString(QString &value, int i);
 
         void  print();
@@ -59,6 +59,9 @@ class CinParameter : public QObject
         void valueChanged(const QString &name, float value);
 
     private:
+        bool valueAt(float &value, int valueID);
+        bool isValidID(int valueID);
+
         // member variables
         QString mName;
         CinParameter::Type mType=CinParameter::UNDEFINED;
