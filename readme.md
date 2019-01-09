@@ -9,6 +9,8 @@ for experimental use only.
 This is a basic Cinema database viewer for image-based databases. It is
 a cross-platform Qt application, requiring the use of `qmake` to build it.
 
+Documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
+
 ### Building the application
 
 The application is built on the open source release of Qt, v5.11. To build:
