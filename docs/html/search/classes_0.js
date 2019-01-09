@@ -1,6 +1,7 @@
 var searchData=
 [
   ['cinartifactset',['CinArtifactSet',['../class_cin_artifact_set.html',1,'']]],
+  ['cincompoundslider',['CinCompoundSlider',['../class_cin_compound_slider.html',1,'']]],
   ['cincore',['CinCore',['../class_cin_core.html',1,'']]],
   ['cindatabase',['CinDatabase',['../class_cin_database.html',1,'']]],
   ['cindbcoldata',['CinDBColData',['../class_cin_d_b_col_data.html',1,'']]],
@@ -13,6 +14,5 @@ var searchData=
   ['cinparamset',['CinParamSet',['../class_cin_param_set.html',1,'']]],
   ['cinparamsliders',['CinParamSliders',['../class_cin_param_sliders.html',1,'']]],
   ['cinscopetest',['CinScopeTest',['../class_cin_scope_test.html',1,'']]],
-  ['cinscopewindow',['CinScopeWindow',['../class_cin_scope_window.html',1,'']]],
-  ['cinslider',['CinSlider',['../class_cin_slider.html',1,'']]]
+  ['cinscopewindow',['CinScopeWindow',['../class_cin_scope_window.html',1,'']]]
 ];

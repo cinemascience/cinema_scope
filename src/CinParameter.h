@@ -1,6 +1,7 @@
 #ifndef CINPARAMETER_H
 #define CINPARAMETER_H
 
+#include <QObject>
 #include <QString>
 #include <vector>
 
@@ -10,11 +11,14 @@
  *  This class manages communication about these parameters as they
  *  change in a Qt application.
 */
-class CinParameter
+class CinParameter : public QObject
 {
+    Q_OBJECT 
+
     public:
         enum Type{UNDEFINED=0, STRING, FLOAT, INT, NUMTYPES};
         static const char *TypeNames[NUMTYPES];
+        static const float NO_VALUE;
         static const float NO_PREV;
         static const float NO_NEXT;
         static const float NOT_SET;
@@ -32,31 +36,37 @@ class CinParameter
         CinParameter::Type getType() const {return mType;}
         float getMin() const {return mMin;}
         float getMax() const {return mMax;}
-        float getValue() const {return mValue;}
+        float getValue() const {return mCurValue;}
 
-        void  setName(const QString &name)     {mName  = name;}
-        void  setType(CinParameter::Type type) {mType  = type;}
-        void  setMin(float min)                {mMin   = min;}
-        void  setMax(float max)                {mMax   = max;}
-        void  setValue(float value)            {mValue = value;}
+        void  setName(const QString &name)     {mName = name;}
+        void  setType(CinParameter::Type type) {mType = type;}
+        void  setMin(float min)                {mMin  = min;}
+        void  setMax(float max)                {mMax  = max;}
+        void  setValue(float value)            {mCurValue = value;}
+        bool  setToValueAt(int id);
         void  recordValue(float value);
         bool  valueExists(float value);
 
         int   getNumValues();
-        // TODO check i for validity
-        float valueAt(int i) { return mValues[i]; }
-        bool valueAsString(QString &value, int i);
+        bool  valueAsString(QString &value, int i);
 
         void  print();
         void  sortValues();
 
+    signals:
+        void valueChanged(float value, int valueID);
+        void valueChanged(const QString &name, float value);
+
     private:
+        bool valueAt(float &value, int valueID);
+        bool isValidID(int valueID);
+
         // member variables
         QString mName;
         CinParameter::Type mType=CinParameter::UNDEFINED;
         float   mMin;
         float   mMax;
-        float   mValue;
+        float   mCurValue;
         std::vector<float> mValues;
 };
 

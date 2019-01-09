@@ -20,6 +20,7 @@ class CinCompoundSlider : public QWidget
 
     public:
         CinCompoundSlider(QWidget *parent);
+        ~CinCompoundSlider();
 
         bool setParameter(CinParameter *p);
 

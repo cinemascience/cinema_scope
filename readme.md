@@ -1,27 +1,27 @@
 ## Cinema Scope v0.1 cross-platform application
 [![Build Status](https://travis-ci.org/cinemascience/cinema_scope.svg?branch=master)](https://travis-ci.org/cinemascience/cinema_scope)
 
-Note that Cinema:Scope is in pre-release development. Code should be considered
-for experimental use only.
+<img src="docs/img/cinema_scope.png" width="800" border="1">
 
-<img src="docs/img/cinema_scope.png" width="350">
+This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
 
-This is a basic Cinema database viewer for image-based databases. It is
-a cross-platform Qt application, requiring the use of `qmake` to build it.
+### Documentation 
+
+Doxygen-generated documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
 
 ### Building the application
 
 The application is built on the open source release of Qt, v5.11. To build:
 
 1. Install [qt v5.11](https://www.qt.io/download-qt-installer?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5) 
-2. Run `qmake` on the `cinema_scope.pro` for your specific OS and
+2. Run `qmake` on the `cinema_scope.pro` and (if you're doing development) for `cinema_scope_test.pro` for your specific OS and
 development environment. Examples include:
     - OSX: `qmake cinema_scope.pro`
     - OSX (XCode): `qmake -spec macx-xcode cinema_scope.pro`
     - Linux: `qmake cinema_scope.pro`
 3. You will now have makefiles, etc for your specific platform (assuming the
 appropriate tools are installed). Edit the code and run `make` to create
-executables.
+executables. Build the `cinema_scope_test` project if you want to run unit tests.
 
 ## Settings
 

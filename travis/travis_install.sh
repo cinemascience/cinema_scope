@@ -12,6 +12,7 @@ case $TRAVIS_OS_NAME in
         export PATH="$HOME/Qt/Tools/QtInstallerFramework/3.0/bin:$PATH"
         ;;
     osx)
+        brew update
         brew install qt5
         ;;
     windows)

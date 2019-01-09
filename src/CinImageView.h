@@ -46,6 +46,9 @@ public:
     void setHorizontalParameter(const QString &h) {mCurHorParam = h;}
     void setVerticalParameter(const QString &v)   {mCurVerParam = v;}
 
+    const QString &getHorizontalParameter() {return mCurHorParam;}
+    const QString &getVerticalParameter()   {return mCurVerParam;}
+
     bool loadImage(const QString &path);
     void clear();
 

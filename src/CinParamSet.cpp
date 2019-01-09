@@ -1,6 +1,7 @@
 #include "CinParamSet.h"
 #include "CinParameter.h"
 #include "CinDatabase.h"
+#include <QObject>
 #include <QDebug>
 #include <QMap>
 #include <QString>
@@ -22,8 +23,12 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, f
 
     if (not contains(name)) 
     {
+        CinParameter *param = new CinParameter(name, type, min, max, value);
+
         mParamNames.push_back(name);
-        mParameters.insert(name, CinParameter(name, type, min, max, value));
+        mParameters.insert(name, param); 
+
+        QObject::connect(param, SIGNAL(valueChanged(const QString &, float)), this, SLOT(onParameterValueChanged(const QString &, float)));
         retVal = true;
     }
 
@@ -34,10 +39,10 @@ bool CinParamSet::getValue(const QString &name, float &value)
 {
     bool success = false;
 
-    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
     if (found != mParameters.end())
     {
-        value = found.value().getValue(); 
+        value = found.value()->getValue(); 
         success = true;
     }
 
@@ -48,11 +53,11 @@ bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
 {
     bool success = false;
 
-    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
     if (found != mParameters.end())
     {
-        min = found.value().getMin(); 
-        max = found.value().getMax(); 
+        min = found.value()->getMin(); 
+        max = found.value()->getMax(); 
         success = true;
     }
 
@@ -61,11 +66,11 @@ bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
 
 void CinParamSet::changeParameter(const QString &name, float value)
 {
-    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
     // qDebug() << "CINPARAMSET: " << name;
     if (found != mParameters.end())
     {
-        found.value().setValue(value);
+        found.value()->setValue(value);
         emit parameterChanged(name, value);
         // qDebug() << "CINPARAMSET emit:" << name << value;
     }
@@ -73,21 +78,21 @@ void CinParamSet::changeParameter(const QString &name, float value)
 
 bool CinParamSet::contains(const QString &name)
 {
-    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
 
     return (found != mParameters.end()); 
 }
 
 void CinParamSet::print()
 {
-    QMap<QString, CinParameter>::iterator cur;
+    QMap<QString, CinParameter*>::iterator cur;
     // qDebug() << "CINPARAMSET: (parameters)";
     for (cur = mParameters.begin(); cur != mParameters.end(); ++cur)
     {
-        qDebug() << cur.value().getName();
-        qDebug() << "  " << CinParameter::GetNameForType(cur.value().getType());
-        qDebug() << "  " << cur.value().getValue();
-        qDebug() << "  " << cur.value().getMin() << ", " << cur.value().getMax();
+        qDebug() << cur.value()->getName();
+        qDebug() << "  " << CinParameter::GetNameForType(cur.value()->getType());
+        qDebug() << "  " << cur.value()->getValue();
+        qDebug() << "  " << cur.value()->getMin() << ", " << cur.value()->getMax();
     }
     qDebug() << " ";
 }
@@ -134,10 +139,10 @@ void CinParamSet::init(CinDatabase &db)
 
 CinParameter *CinParamSet::getParameter(const QString &name)
 {
-    QMap<QString, CinParameter>::iterator found = mParameters.find(name);
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
     if (found != mParameters.end())
     {
-        return &(found.value());
+        return found.value();
     }
 
     return NULL;
@@ -184,3 +189,10 @@ void CinParamSet::clear()
     mParameters.clear();
     mParamNames.clear();
 }
+
+void CinParamSet::onParameterValueChanged(const QString &name, float value)
+{
+    // qDebug() << "CINPARAMSET onParameterValueChanged";
+    emit parameterChanged(name, value);
+}
+
