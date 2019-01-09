@@ -3,7 +3,7 @@
 
 Note that Cinema:Scope is in pre-release development. 
 
-<img src="docs/img/cinema_scope.png" width="350">
+<img src="docs/img/cinema_scope.png" width="800">
 
 This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
 
