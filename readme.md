@@ -1,13 +1,11 @@
 ## Cinema Scope v0.1 cross-platform application
 [![Build Status](https://travis-ci.org/cinemascience/cinema_scope.svg?branch=master)](https://travis-ci.org/cinemascience/cinema_scope)
 
-Note that Cinema:Scope is in pre-release development. Code should be considered
-for experimental use only.
+Note that Cinema:Scope is in pre-release development. 
 
 <img src="docs/img/cinema_scope.png" width="350">
 
-This is a basic Cinema database viewer for image-based databases. It is
-a cross-platform Qt application, requiring the use of `qmake` to build it.
+This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
 
 Documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
 
