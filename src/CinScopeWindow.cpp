@@ -23,28 +23,6 @@ CinScopeWindow::~CinScopeWindow()
 {
 }
 
-void CinScopeWindow::mouseReleaseEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::LeftButton)
-    {
-        cout<<"On left mouse release"<<endl;
-    }
-}
-
-void CinScopeWindow::mousePressEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::LeftButton)
-    {
-        cout<<"On left mouse press"<<endl;
-    }
-}
-
-void CinScopeWindow::mouseMoveEvent(QMouseEvent *e)
-{
-    QPoint p = e->pos();
-    cout<<"MAINWINDOW: moving mouse loc: "<< p.rx()<<" "<<p.ry()<<endl;
-}
-
 CinScopeWindow::CinScopeWindow(QWidget *parent) : QMainWindow(parent)
 {
     // settings
