@@ -7,7 +7,7 @@ This is a cross-platform viewer for Cinema databases. The project contains a set
 
 ### Documentation 
 
-Documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
+Doxygen-generated documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
 
 ### Building the application
 
