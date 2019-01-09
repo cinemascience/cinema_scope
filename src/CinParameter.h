@@ -36,20 +36,19 @@ class CinParameter : public QObject
         CinParameter::Type getType() const {return mType;}
         float getMin() const {return mMin;}
         float getMax() const {return mMax;}
-        float getValue() const {return mValue;}
+        float getValue() const {return mCurValue;}
 
-        void  setName(const QString &name)     {mName  = name;}
-        void  setType(CinParameter::Type type) {mType  = type;}
-        void  setMin(float min)                {mMin   = min;}
-        void  setMax(float max)                {mMax   = max;}
-        void  setValue(float value)            {mValue = value;}
+        void  setName(const QString &name)     {mName = name;}
+        void  setType(CinParameter::Type type) {mType = type;}
+        void  setMin(float min)                {mMin  = min;}
+        void  setMax(float max)                {mMax  = max;}
+        void  setValue(float value)            {mCurValue = value;}
         bool  setToValueAt(int id);
         void  recordValue(float value);
         bool  valueExists(float value);
 
         int   getNumValues();
-        // TODO check i for validity
-        bool valueAsString(QString &value, int i);
+        bool  valueAsString(QString &value, int i);
 
         void  print();
         void  sortValues();
@@ -67,7 +66,7 @@ class CinParameter : public QObject
         CinParameter::Type mType=CinParameter::UNDEFINED;
         float   mMin;
         float   mMax;
-        float   mValue;
+        float   mCurValue;
         std::vector<float> mValues;
 };
 

@@ -22,7 +22,7 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type, float m
     mType  = type;
     mMin   = min;
     mMax   = max;
-    mValue = cur;
+    mCurValue = cur;
 }
 
 /*! \brief Returns next biggest value of parameter
