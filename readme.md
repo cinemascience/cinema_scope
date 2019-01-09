@@ -1,9 +1,6 @@
 ## Cinema Scope v0.1 cross-platform application
 [![Build Status](https://travis-ci.org/cinemascience/cinema_scope.svg?branch=master)](https://travis-ci.org/cinemascience/cinema_scope)
 
-Note that Cinema:Scope is in pre-release development. 
-
-
 <img src="docs/img/cinema_scope.png" width="800" border="1">
 
 This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
