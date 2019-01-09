@@ -19,6 +19,7 @@ development environment. Examples include:
     - OSX: `qmake cinema_scope.pro`
     - OSX (XCode): `qmake -spec macx-xcode cinema_scope.pro`
     - Linux: `qmake cinema_scope.pro`
+3. If you are doing development, you should run the unit testing project as well, so run `qmake` on the `cinema_scope_test.pro` file, and compile and run that. This should report passing of all tests. If it doesn't, you can investigate what has broken by looking at the test case code.
 3. You will now have makefiles, etc for your specific platform (assuming the
 appropriate tools are installed). Edit the code and run `make` to create
 executables.
