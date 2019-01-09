@@ -5,6 +5,8 @@
 
 This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
 
+### Documentation 
+
 Documentation for the code is available [here](https://cinemascience.github.io/cinema_scope/html/index.html).
 
 ### Building the application
