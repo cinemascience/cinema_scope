@@ -1,3 +1,4 @@
+target_wrapper.bat
 target_wrapper.sh
 .DS_Store
 .qmake.stash
