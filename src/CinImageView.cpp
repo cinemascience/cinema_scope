@@ -2,7 +2,8 @@
 
 using namespace std;
 
-CinImageView::CinImageView(QWidget *parent) { 
+CinImageView::CinImageView(QWidget *parent) 
+{ 
     // this is the default
     mCurHorParam = "phi";
     mCurVerParam = "theta";
@@ -58,7 +59,7 @@ void CinImageView::onLoadImage(const QString &key, const QString &path)
 }
 
 
-/*! \brief Mouse wheel event. Performs zooming ina and out.
+/*! \brief Mouse wheel event. Performs zooming in and out.
  *
  */
 void CinImageView::wheelEvent(QWheelEvent * event)
