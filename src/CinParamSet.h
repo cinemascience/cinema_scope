@@ -45,17 +45,20 @@ class CinParamSet : public QObject
 
         void print();
 
+    public slots:
+        void onParameterValueChanged(const QString &name, float value);
+
     signals:
         void parameterChanged(const QString &name, float value);
 
     private:
         bool contains(const QString &name);
 
-        QStringList                  mParamNames;
-        QMap<QString, CinParameter>  mParameters;
+        QStringList                   mParamNames;
+        QMap<QString, CinParameter*>  mParameters;
 
     public:
-        QMap<QString, CinParameter> &getParameters() {return mParameters;}
+        QMap<QString, CinParameter*> &getParameters() {return mParameters;}
 
 };
 

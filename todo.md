@@ -1,0 +1,4 @@
+- Soumya
+    - zoom, set_zoom on CinImageView
+    - Cntrl+- and Cntrl++ for zoom in and out
+    - Set zoom menu item

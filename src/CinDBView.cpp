@@ -93,7 +93,7 @@ void CinDBView::getArtifactQueryString(QString &query)
 {
     query = QString("SELECT [%1] FROM %2 WHERE [").arg(mArtifact, mDatabase->getTableName());
 
-    QMap<QString, CinParameter>::const_iterator i = mParams.getParameters().constBegin();
+    QMap<QString, CinParameter*>::const_iterator i = mParams.getParameters().constBegin();
     bool first = true;
     while ( i != mParams.getParameters().constEnd() )
     {
@@ -103,7 +103,7 @@ void CinDBView::getArtifactQueryString(QString &query)
         } else {
             first = false;
         }
-        query += QString("%1]=%2").arg(i.key(), QString::number(i.value().getValue()));
+        query += QString("%1]=%2").arg(i.key(), QString::number(i.value()->getValue()));
         ++i;
     }
 
@@ -119,6 +119,8 @@ void CinDBView::onParameterChanged(const QString &key, float value)
 void CinDBView::reset()
 {
     mDatabase->reset();
+    mParams.clear();
+    mArtifacts.clear();
 }
 
 // TODO parameterSet and ArtifactSet should have the same base class

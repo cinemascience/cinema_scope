@@ -3,9 +3,10 @@
 #include <QDebug>
 
 const char *CinParameter::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
-const float CinParameter::NO_PREV = -0.0001010101;
-const float CinParameter::NO_NEXT = -0.0002020202;
-const float CinParameter::NOT_SET = -0.0003030303;
+const float CinParameter::NO_VALUE = -0.0001010101;
+const float CinParameter::NO_PREV  = -0.0002020202;
+const float CinParameter::NO_NEXT  = -0.0003030303;
+const float CinParameter::NOT_SET  = -0.0004040404;
 
 /*! \brief Convenience function to print names instead of ints
  *
@@ -21,7 +22,7 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type, float m
     mType  = type;
     mMin   = min;
     mMax   = max;
-    mValue = cur;
+    mCurValue = cur;
 }
 
 /*! \brief Returns next biggest value of parameter
@@ -33,36 +34,36 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type, float m
  */
 bool CinParameter::getNextValue(float value, float &next)
 {
-    float retVal = false; 
+    float result = false; 
+    next = CinParameter::NO_NEXT;
 
     std::vector<float>::iterator it = std::upper_bound(mValues.begin(), mValues.end(), value);
 
     if (it != mValues.end()) 
     { 
         next   = *it;
-        retVal = true;
+        result = true;
     }        
 
-    return retVal; 
+    return result; 
 }
 
 bool CinParameter::getPrevValue(float value, float &prev)
 {
-    float retVal = false; 
+    float result = false; 
     prev = CinParameter::NO_PREV;
-
 
     if (value <= mValues.front())
     {
         // it's the greatest value or greater, so
         // there is no prev value
-        retVal = false;
+        result = false;
 
     } else if (value > mValues.back())
     {
         // it's the greatest value or greater
         prev = mValues.back();
-        retVal = true;
+        result = true;
 
     } else {
         std::vector<float>::iterator it = std::lower_bound(mValues.begin(), mValues.end(), value);
@@ -70,13 +71,13 @@ bool CinParameter::getPrevValue(float value, float &prev)
         { 
             --it;
             prev = *it;
-            retVal = true;
+            result = true;
         } else {
             // how do we reach this?
         }
     }
 
-    return retVal; 
+    return result; 
 }
 
 /*! \brief Add unique values to the datastructure
@@ -121,11 +122,53 @@ int  CinParameter::getNumValues()
 bool CinParameter::valueAsString(QString &value, int id)
 {
     bool result = false;
+    float fValue = 0.0;
 
-    if ((id >= 0) && (id < mValues.size())) 
+    result = valueAt(fValue, id);
+    value = "";
+    if (result)
     {
-        value = QString::number(valueAt(id));
-        result = true;
+        value = QString::number(fValue);
+    }
+
+    return result;
+}
+
+bool CinParameter::setToValueAt(int valueID)
+{
+    bool result = false;
+    float fValue;
+
+    result = valueAt(fValue, valueID);
+    if (result)
+    {
+        setValue(fValue);
+
+        emit valueChanged(getValue(), valueID);
+        emit valueChanged(getName(), getValue()); 
+    } else {
+        // TODO report error
+    }
+
+    return result;
+}
+
+bool CinParameter::isValidID(int valueID)
+{
+    return ((valueID >= 0) && (static_cast<unsigned int>(valueID) < mValues.size()));
+}
+
+bool CinParameter::valueAt(float &value, int valueID)
+{
+    bool result = false;
+
+    value = CinParameter::NO_VALUE;
+    result = isValidID(valueID);
+    if (result)
+    {
+        value = mValues.at(valueID);
+    } else {
+        qDebug() << "ERROR: invalid ID passed to CinParameter: " << valueID;
     }
 
     return result;

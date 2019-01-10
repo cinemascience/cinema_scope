@@ -2,12 +2,18 @@
 #include "CinParameter.h"
 #include <QDebug>
 
+CinCompoundSlider::~CinCompoundSlider()
+{
+    // everything else should be deleted automatically
+    mParameter = NULL;
+}
+
 CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
 {
     mLabel.setText("unset");
     // mLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     mLabel.setFixedSize(50, 20);
-    mLabel.setAlignment(Qt::AlignRight);
+    mLabel.setAlignment(Qt::AlignLeft);
 
     mValue.setText("unset");
     mValue.setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -24,6 +30,8 @@ CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
     mLayout.addWidget(&mLabel);
     mLayout.addWidget(&mSlider);
     mLayout.addWidget(&mValue);
+    mLayout.setContentsMargins(0,0,0,0);
+
     this->setLayout(&mLayout);
 
     QObject::connect(&mSlider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
@@ -36,7 +44,7 @@ void CinCompoundSlider::onSliderValueChanged(int value)
     if (getValue(stringValue, value))
     {
         mValue.setText(stringValue);
-        mParameter->setValue(mParameter->valueAt(value));
+        mParameter->setToValueAt(value);
 
         emit valueChanged(mParameter->getName(), stringValue);
     }
@@ -60,7 +68,13 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
         int numValues = mParameter->getNumValues();
         mSlider.setMinimum(0);
         mSlider.setMaximum(numValues-1);
-        mSlider.setValue(mParameter->valueAt(0));
+        mSlider.setValue(0);
+
+        QString stringValue;
+        getValue(stringValue, 0);
+        mValue.setText(stringValue);
+
+        QObject::connect(mParameter, SIGNAL(valueChanged(float, int)), this, SLOT(onParameterValueChanged(float, int)));
 
         result = true;
     } else {
@@ -72,4 +86,7 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
 
 void CinCompoundSlider::onParameterValueChanged(float value, int valueID)
 {
+    mSlider.setValue(valueID);
+    mValue.setText(QString::number(value));
+    // qDebug() << "CINCOMPOUNDSLIDER onParameterValueChanged";
 }
