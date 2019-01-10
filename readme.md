@@ -11,9 +11,9 @@ Doxygen-generated documentation for the code is available [here](https://cinemas
 
 ### Building the application
 
-The application is built on the open source release of Qt, v5.11. To build:
+The application is built on the open source release of Qt, v5.12. To build:
 
-1. Install [qt v5.11](https://www.qt.io/download-qt-installer?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5) 
+1. Install [qt v5.12](https://www.qt.io/download) 
 2. Run `qmake` on the `cinema_scope.pro` and (if you're doing development) for `cinema_scope_test.pro` for your specific OS and
 development environment. Examples include:
     - OSX: `qmake cinema_scope.pro`
