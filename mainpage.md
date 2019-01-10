@@ -16,3 +16,16 @@ CinemaScope is a cross-platform application for viewing Cinema databases. It is 
 - CinParameter, a single parameter
 - CinParamSet, a set of CinParameter objects
 
+### UI Class Structure
+
+- CinCompoundSlider, a multi-widget slider
+- CinImageView, a Cinema image-based view
+- CinParamSliders, a set of sliders for a CinParamSet
+- CinParameterMap, 
+- CinParameterMapDialog
+- CinScopeWindow
+
+### Other Classes
+
+- CinScopeTest, a unit test class, utilizing Qt's testing framework
+
