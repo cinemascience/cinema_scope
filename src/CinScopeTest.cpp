@@ -8,7 +8,6 @@
 // add necessary includes here
 #include "CinParameter.h"
 #include "CinDBReader.h"
-#include "CinParameterMap.h"
 #include "CinDatabase.h"
 #include "CinDBView.h"
 #include <vector>
@@ -27,7 +26,6 @@ private slots:
     void cleanupTestCase();
     void parameter();
     void databaseReader();
-    void parameterMap();
     void cinDatabase();
     void cinDBView();
     void rawDatabase();
@@ -113,29 +111,6 @@ void CinScopeTest::databaseReader()
     // clean up
     database = QSqlDatabase();
     database.removeDatabase(connection);
-}
-
-
-void CinScopeTest::parameterMap()
-{
-    CinParameterMap map;
-    QString phiString, thetaString, failString;
-
-    // check initial
-    QVERIFY(not map.getInput("phi", phiString));
-    QVERIFY(not map.getInput("theta", thetaString));
-    QVERIFY(not map.getInput("fail", failString));
-
-    // insert some data
-    map.map("zhi", "phi");
-    map.map("zheta", "theta");
-
-    // recheck 
-    QVERIFY(map.getInput("phi", phiString));
-    QVERIFY(phiString == "zhi");
-    QVERIFY(map.getInput("theta", thetaString));
-    QVERIFY(thetaString == "zheta");
-    QVERIFY(not map.getInput("fail", failString));
 }
 
 void CinScopeTest::cinDatabase()
