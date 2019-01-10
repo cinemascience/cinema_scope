@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['load',['load',['../class_cin_database.html#a446c83c0548f963e53a4e3853cc0ce10',1,'CinDatabase']]],
-  ['loadimage',['loadImage',['../class_cin_image_view.html#a6823cc96fb95c2638f01729aaa7a4285',1,'CinImageView']]]
+  ['getnamefortype',['GetNameForType',['../class_cin_parameter.html#ab440298399882f5ea33c21ea2db70261',1,'CinParameter']]],
+  ['getnextvalue',['getNextValue',['../class_cin_parameter.html#a80744f864ed0f7be51e74fc5fa7596a9',1,'CinParameter']]]
 ];
