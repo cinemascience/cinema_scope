@@ -10,9 +10,11 @@
 // forward declaration
 class CinParameter;
 
-//! A slider that knows the name of its parameter 
+//! A compound widget slider for a single Cinema parameter 
 /*!
- *
+ *  Multiple sources can control a parameter, so this widget
+ *  has a pointer to its parameter, and uses slots and signals
+ *  to control behavior.
 */
 class CinCompoundSlider : public QWidget
 {
