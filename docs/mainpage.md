@@ -21,7 +21,6 @@ CinemaScope is a cross-platform application for viewing Cinema databases. It is 
 - CinCompoundSlider, a multi-widget slider
 - CinImageView, a Cinema image-based view
 - CinParamSliders, a set of sliders for a CinParamSet
-- CinParameterMap, 
 - CinParameterMapDialog
 - CinScopeWindow
 
