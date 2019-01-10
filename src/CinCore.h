@@ -10,8 +10,8 @@ class CinCore
 {
     public:
         static const int ERROR;
+        static const int NOTFOUND;
         static const QString NOVALUE;
-        static bool RUN_TESTS; 
 };
 
 #endif // CINCORE_H

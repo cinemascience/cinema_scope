@@ -26,8 +26,8 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
     {
         mCurDatabase = cdb;
         mParameters  = params;
-        QObject::connect(params, SIGNAL(parameterChanged(const QString &, float)), 
-                this, SLOT(onParameterValueChanged(const QString &, float)));
+        // QObject::connect(params, SIGNAL(parameterChanged(const QString &, float)), 
+                // this, SLOT(onParameterValueChanged(const QString &, float)));
         
     } else {
         qWarning() << "ERROR: NULL database passed to CinParamSliders";
@@ -64,19 +64,12 @@ void CinParamSliders::deleteSliders()
 
 void CinParamSliders::onParameterValueChanged(const QString &name, float value)
 {
-    /*
-    qDebug() << "CINPARAMSLIDERS: changed" << name << value;
-    int count = mSliderLayout->rowCount();
-    QLabel *label;
-    for (int i=0;i<count;i++)
+    CinParameter *param = mParameters->getParameter(name);
+    if (param)
     {
-        label = getLabelAt(i);
-        if (label->text() == name)
-        {
-            getSliderAt(i)->setValue(value);
-            break;
-        }
+        param->setValue(value);
+    } else {
+        qDebug() << "ERROR: param not found";
     }
-    */
 }
 

@@ -1,4 +1,5 @@
 #include "CinParameter.h"
+#include "CinCore.h"
 #include <QString>
 #include <QDebug>
 
@@ -144,10 +145,26 @@ bool CinParameter::setToValueAt(int valueID)
     {
         setValue(fValue);
 
-        emit valueChanged(getValue(), valueID);
-        emit valueChanged(getName(), getValue()); 
+        // emit valueChanged(getValue(), valueID);
+        // emit valueChanged(getName(), getValue()); 
     } else {
         // TODO report error
+    }
+
+    return result;
+}
+
+// TODO error checking
+bool CinParameter::setValue(float value)
+{
+    bool result = valueExists(value); 
+
+    if (result)
+    {
+        mCurValue = value;
+
+        emit valueChanged(getValue(), getIDForValue(value));
+        emit valueChanged(getName(), getValue()); 
     }
 
     return result;
@@ -172,4 +189,16 @@ bool CinParameter::valueAt(float &value, int valueID)
     }
 
     return result;
+}
+
+int CinParameter::getIDForValue(float value)
+{
+    std::vector<float>::iterator it = std::find(mValues.begin(), mValues.end(), value);
+    if (it != mValues.end())
+    {
+        return std::distance(mValues.begin() , it);
+    } else {
+        qDebug() << "ERROR value not found";
+        return CinCore::NOTFOUND; 
+    } 
 }

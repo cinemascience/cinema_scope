@@ -42,7 +42,7 @@ class CinParameter : public QObject
         void  setType(CinParameter::Type type) {mType = type;}
         void  setMin(float min)                {mMin  = min;}
         void  setMax(float max)                {mMax  = max;}
-        void  setValue(float value)            {mCurValue = value;}
+        bool  setValue(float value);
         bool  setToValueAt(int id);
         void  recordValue(float value);
         bool  valueExists(float value);
@@ -60,6 +60,7 @@ class CinParameter : public QObject
     private:
         bool valueAt(float &value, int valueID);
         bool isValidID(int valueID);
+        int  getIDForValue(float value);
 
         // member variables
         QString mName;
