@@ -12,8 +12,8 @@ CinDBView::CinDBView()
 {
     mArtifact = "FILE";
     
-    QObject::connect(&mParams, SIGNAL(parameterChanged(const QString &, float)), 
-                     this,    SLOT(onParameterChanged(const QString &, float)));
+    QObject::connect(&mParams, SIGNAL(parameterChanged()), 
+                     this, SLOT(onParameterChanged()));
 }
 
 void CinDBView::setDatabase(CinDatabase *db)
@@ -110,7 +110,7 @@ void CinDBView::getArtifactQueryString(QString &query)
     // qDebug() << "CINDBVIEW: " << query;
 }
 
-void CinDBView::onParameterChanged(const QString &key, float value)
+void CinDBView::onParameterChanged()
 {
     updateArtifacts(); 
     // qDebug() << "ONPARAMCHANGED: " << key << ", " << value;

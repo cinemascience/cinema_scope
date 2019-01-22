@@ -28,7 +28,7 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type)
         mParamNames.push_back(name);
         mParameters.insert(name, param); 
 
-        QObject::connect(param, SIGNAL(valueChanged(const QString &, float)), this, SLOT(onParameterValueChanged(const QString &, float)));
+        QObject::connect(param, SIGNAL(valueChanged(const QString &, int)), this, SLOT(onParameterValueChanged()));
         retVal = true;
     }
 
@@ -71,7 +71,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
     if (found != mParameters.end())
     {
         found.value()->setValue(value);
-        emit parameterChanged(name, value);
+        emit parameterChanged();
         // qDebug() << "CINPARAMSET emit:" << name << value;
     }
 }
@@ -162,10 +162,10 @@ void CinParamSet::clear()
     mParamNames.clear();
 }
 
-void CinParamSet::onParameterValueChanged(const QString &name, float value)
+void CinParamSet::onParameterValueChanged()
 {
     // qDebug() << "CINPARAMSET onParameterValueChanged";
-    emit parameterChanged(name, value);
+    emit parameterChanged();
 }
 
 void CinParamSet::increment(const QString &name)

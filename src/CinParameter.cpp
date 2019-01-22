@@ -96,8 +96,6 @@ bool CinParameter::setToValueAt(int valueID)
         // current ID is set by this call
         setValue(fValue);
 
-        // emit valueChanged(getValue(), valueID);
-        // emit valueChanged(getName(), getValue()); 
     } else {
         // TODO report error
     }
@@ -115,8 +113,9 @@ bool CinParameter::setValue(float value)
         mCurValue = value;
         mCurID = getIDForValue(mCurValue);
 
-        emit valueChanged(getValue(), getCurID()); 
-        emit valueChanged(getName(), getValue()); 
+            // this needs to be changed, when the redesign to QString
+            // is complete.
+        emit valueChanged(QString::number(getValue()), getCurID()); 
     }
 
     return result;

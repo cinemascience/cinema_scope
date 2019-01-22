@@ -54,7 +54,7 @@ class CinDBView : public QObject
         CinDatabase    *getDatabase()   {return mDatabase;}
 
     public slots:
-        void onParameterChanged(const QString &key, float value);
+        void onParameterChanged();
 };
 
 #endif // CINDBVIEW_H

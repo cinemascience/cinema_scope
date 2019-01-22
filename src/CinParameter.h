@@ -35,7 +35,7 @@ class CinParameter : public QObject
         float getMax() const {return mMax;}
         float getValue() const {return mCurValue;}
         int   getCurID() {return mCurID;}
-        int   getLastID() { return mValues.size() - 1; }
+        int   getLastID() {return mValues.size() - 1;}
         void  incrementValue();
         void  decrementValue();
 
@@ -55,8 +55,7 @@ class CinParameter : public QObject
         void  finalizeValues();
 
     signals:
-        void valueChanged(float value, int valueID);
-        void valueChanged(const QString &name, float value);
+        void valueChanged(const QString &value, int valueID);
 
     private:
         bool valueAt(float &value, int valueID);

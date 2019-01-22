@@ -48,10 +48,10 @@ class CinParamSet : public QObject
         void print();
 
     public slots:
-        void onParameterValueChanged(const QString &name, float value);
+        void onParameterValueChanged();
 
     signals:
-        void parameterChanged(const QString &name, float value);
+        void parameterChanged();
 
     private:
         bool contains(const QString &name);

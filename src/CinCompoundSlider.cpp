@@ -74,7 +74,8 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
         getValue(stringValue, 0);
         mValue.setText(stringValue);
 
-        QObject::connect(mParameter, SIGNAL(valueChanged(float, int)), this, SLOT(onParameterValueChanged(float, int)));
+        QObject::connect(mParameter, SIGNAL(valueChanged(const QString &, int)), 
+                         this, SLOT(onParameterValueChanged(const QString &, int)));
 
         result = true;
     } else {
@@ -84,9 +85,9 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
     return result;
 }
 
-void CinCompoundSlider::onParameterValueChanged(float value, int valueID)
+void CinCompoundSlider::onParameterValueChanged(const QString &value, int valueID)
 {
     mSlider.setValue(valueID);
-    mValue.setText(QString::number(value));
+    mValue.setText(value);
     // qDebug() << "CINCOMPOUNDSLIDER onParameterValueChanged";
 }

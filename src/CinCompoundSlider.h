@@ -31,7 +31,7 @@ class CinCompoundSlider : public QWidget
 
     public slots:
         void onSliderValueChanged(int value);
-        void onParameterValueChanged(float value, int valueID);
+        void onParameterValueChanged(const QString &value, int valueID);
 
     private:
         bool getValue(QString &value, int id);

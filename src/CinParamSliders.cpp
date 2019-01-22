@@ -26,8 +26,6 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
     {
         mCurDatabase = cdb;
         mParameters  = params;
-        // QObject::connect(params, SIGNAL(parameterChanged(const QString &, float)), 
-                // this, SLOT(onParameterValueChanged(const QString &, float)));
         
     } else {
         qWarning() << "ERROR: NULL database passed to CinParamSliders";
