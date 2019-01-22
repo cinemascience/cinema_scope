@@ -109,114 +109,38 @@ void CinImageView::mouseReleaseEvent(QMouseEvent *e)
  */
 void CinImageView::mouseMoveEvent(QMouseEvent *e)
 {
-/*
     QPoint p = e->pos();
-
-    float min,max;
-    QStringList paramNames = mParamSet->getParameterNames();
-    vector<float> currentParamVals;
-
-    for(int i=0;i<paramNames.size();i++)
-    {
-        float val;
-        mParamSet->getValue(paramNames[i], val);
-        currentParamVals.push_back(val);
-    }
-
-    //get the current values of vert and horiz 
-    for(int i=0;i<paramNames.size();i++)
-    {
-        if(paramNames[i] == mCurHorParam)
-            mParamSet->getValue(paramNames[i], mCurrentHor);
-
-        if(paramNames[i] == mCurVerParam)
-            mParamSet->getValue(paramNames[i], mCurrentVer);
-    }
 
     // only the horizontal parameter
     if(fabs(p.rx() - mCurrentXloc) > mSlidePixelHor && fabs(p.ry() - mCurrentYloc) < mSlidePixelHor)
     {
         if((p.rx() - mCurrentXloc) > 0 && mLastXloc < p.rx()) //slide right
         {
-            //qDebug()<<"slide right";
-
-            float next;
-            bool nbool = mParamSet->getNextValue(  mCurHorParam, mCurrentHor, next );
-
-            if(!nbool)
-            {
-                mParamSet->getMinMax(mCurHorParam, min, max);
-                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
-                next=min;
-            }
-
-            //qDebug() << "PHI NEXT QUERY (" << nbool << ") : " << mCurrentHor << ": " << next;
-
-            // Modify the slider value at the end as a result of drag
-            mParamSet->changeParameter(mCurHorParam, next);
+           mParamSet->increment(mCurHorParam);
         }
 
         else if((p.rx() - mCurrentXloc) < 0 && mLastXloc > p.rx()) //slide left
         {
-            //qDebug()<<"slide left";
-
-            float prev;
-            bool nbool = mParamSet->getPrevValue( mCurHorParam, mCurrentHor, prev );
-            if(!nbool)
-            {
-                mParamSet->getMinMax( mCurHorParam, min, max);
-                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
-                prev=max;
-            }
-
-            //qDebug() << "PHI PREV QUERY (" << nbool << ") : " << mCurrentHor << ": " << prev;
-
-            //Modify the slider value at the end as a result of drag
-            mParamSet->changeParameter( mCurHorParam, prev);
+            mParamSet->decrement(mCurHorParam);
         }
     }
+    // only the vertical parameter
     else if(fabs(p.ry() - mCurrentYloc) > mSlidePixelVer && fabs(p.rx() - mCurrentXloc) < mSlidePixelVer)
     {
-        // only the vertical parameter
+
         if((p.ry() - mCurrentYloc) > 0 && mLastYloc < p.ry()) //slide up
         {
-            float next;
-            bool nbool = mParamSet->getNextValue( mCurVerParam, mCurrentVer, next );
-
-            if(!nbool)
-            {
-                mParamSet->getMinMax(mCurVerParam, min, max);
-                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
-                next=min;
-            }
-
-            //qDebug() << "THETA NEXT QUERY (" << nbool << ") : " << mCurrentVer << ": " << next;
-
-            // Modify the slider value at the end as a result of drag
-            mParamSet->changeParameter(mCurVerParam, next);
+            mParamSet->increment(mCurVerParam);
         }
 
         else if((p.ry() - mCurrentYloc) < 0 && mLastYloc > p.ry()) //slide down
         {
-            float prev;
-            bool nbool = mParamSet->getPrevValue( mCurVerParam, mCurrentVer, prev );
-            if(!nbool)
-            {
-                mParamSet->getMinMax( mCurVerParam, min, max);
-                //qDebug()<<"get min max: "<<min<<" "<<max<<endl;
-                prev=max;
-            }
-
-            //qDebug() << "THETA PREV QUERY (" << nbool << ") : " << mCurrentVer << ": " << prev;
-
-            // Modify the slider value at the end as a result of drag
-            mParamSet->changeParameter( mCurVerParam, prev);
+            mParamSet->decrement(mCurVerParam);
         }
     }
 
     mLastXloc = p.rx();
     mLastYloc = p.ry();
-*/
 }
 
 void CinImageView::clear()
