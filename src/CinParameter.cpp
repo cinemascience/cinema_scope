@@ -209,3 +209,33 @@ int CinParameter::getIDForValue(float value)
         return CinCore::NOTFOUND; 
     } 
 }
+
+/*! \brief Set this parameter to the prev value 
+ *
+ *  If the value is at the beginning, wrap to the end 
+ */
+void CinParameter::incrementValue()
+{
+    if (getCurID() == getLastID())
+    {
+        // wrap to beginning
+        setToValueAt(0);
+    } else {
+        setToValueAt( getCurID() + 1 );
+    }
+}
+
+/*! \brief Set this parameter to the next value 
+ *
+ *  If the value is at the end, wrap to beginning
+ */
+void CinParameter::decrementValue()
+{
+    if (getCurID() == 0)
+    {
+        // wrap to end
+        setToValueAt(getLastID());
+    } else {
+        setToValueAt( getCurID() - 1 );
+    }
+}

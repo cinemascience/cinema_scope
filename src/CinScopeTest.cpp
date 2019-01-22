@@ -91,6 +91,25 @@ void CinScopeTest::parameter()
     result = param.getNextValue(2.5, fResult);
     QVERIFY(result == true);
     QVERIFY(fResult == 3.0);
+
+    // increment/decrement
+    param.setToValueAt(0);
+    QVERIFY(param.getValue() == 1.0);
+    param.incrementValue();
+    QVERIFY(param.getValue() == 2.0);
+    param.incrementValue();
+    QVERIFY(param.getValue() == 3.0);
+    param.decrementValue();
+    QVERIFY(param.getValue() == 2.0);
+        // end wrap case
+    param.setToValueAt(0);
+    param.decrementValue();
+    QVERIFY(param.getValue() == 4.0);
+        // end wrap case
+    QVERIFY(param.getLastID() == 3);
+    param.setToValueAt(param.getLastID());
+    param.incrementValue();
+    QVERIFY(param.getValue() == 1.0);
 }
 
 void CinScopeTest::databaseReader()

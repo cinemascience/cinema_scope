@@ -37,6 +37,9 @@ class CinParameter : public QObject
         float getMax() const {return mMax;}
         float getValue() const {return mCurValue;}
         int   getCurID() {return mCurID;}
+        int   getLastID() { return mValues.size() - 1; }
+        void  incrementValue();
+        void  decrementValue();
 
         void  setName(const QString &name)     {mName = name;}
         void  setType(CinParameter::Type type) {mType = type;}
