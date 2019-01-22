@@ -72,8 +72,8 @@ private:
     int          mCurrentYloc;
     int          mLastXloc=0;
     int          mLastYloc=0;
-    const int    mSlidePixelHor=10;
-    const int    mSlidePixelVer=10;
+    const int    mSlidePixelHor=50;
+    const int    mSlidePixelVer=50;
     float        mCurrentHor;
     float        mCurrentVer;
     QPixmapCache mCache;
