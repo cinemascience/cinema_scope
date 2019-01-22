@@ -17,13 +17,13 @@ CinParamSet::CinParamSet()
  *  Adds uniquely named parameters. The class maintains a list of parameter names in the 
  *  order they were added as well.
  */
-bool CinParamSet::add(const QString &name, CinParameter::Type type, float min, float max, float value)
+bool CinParamSet::add(const QString &name, CinParameter::Type type)
 {
     bool retVal = false;
 
     if (not contains(name)) 
     {
-        CinParameter *param = new CinParameter(name, type, min, max, value);
+        CinParameter *param = new CinParameter(name, type);
 
         mParamNames.push_back(name);
         mParameters.insert(name, param); 
@@ -109,14 +109,8 @@ void CinParamSet::init(CinDatabase &db)
     const QStringList &cols = db.getParameterColumnNames();
     for (int i=0;i<cols.count();i++)
     {
-        // get the min and max values
-        query.exec("SELECT MIN([" + cols.at(i) + "]) , MAX([" + cols.at(i) + "]) FROM " + db.getTableName());
-        query.first();
-
         // add the parameter 
-        float min = query.value(0).toFloat(); 
-        float max = query.value(1).toFloat(); 
-        add(cols.at(i), CinParameter::FLOAT, min, max, min); 
+        add(cols.at(i), CinParameter::FLOAT); 
 
         // gather all the values
         query.exec("SELECT DISTINCT [" + cols.at(i) + "] FROM " + db.getTableName() + " ORDER BY [" + cols.at(i) + "]"); 
@@ -129,7 +123,8 @@ void CinParamSet::init(CinDatabase &db)
                 param->recordValue(query.value(0).toFloat());
                 // qDebug() << "PARAMSET: " << query.value(0).toFloat();
             }
-            param->sortValues();
+            param->finalizeValues();
+            param->setToValueAt(0);
             // param->print();
         } else {
             qWarning() << "PARAMSET: NULL pointer from getParameter";

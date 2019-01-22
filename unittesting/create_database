@@ -57,9 +57,3 @@ with open("data.csv", "w") as csvfile:
         d = ImageDraw.Draw(img)
         d.text((10,20), imgfile, font=font, fill=(255,255,255))
         img.save(imgfile, "PNG")
-
-
-# write to disk
-
-# write to hdf5 database
-

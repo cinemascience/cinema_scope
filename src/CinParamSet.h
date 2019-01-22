@@ -22,7 +22,7 @@ class CinParamSet : public QObject
         CinParamSet();
 
         // add/remove
-        bool add(const QString &name, CinParameter::Type type, float min, float max, float value);
+        bool add(const QString &name, CinParameter::Type type);
         // bool remove(const QString &name);
         void clear();
 

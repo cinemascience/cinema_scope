@@ -17,13 +17,14 @@ const char *CinParameter::GetNameForType(CinParameter::Type type)
     return TypeNames[type];
 }
 
-CinParameter::CinParameter(const QString &name, CinParameter::Type type, float min, float max, float cur) 
+CinParameter::CinParameter(const QString &name, CinParameter::Type type)
 {
-    mName  = name;
-    mType  = type;
-    mMin   = min;
-    mMax   = max;
-    mCurValue = cur;
+    mName     = name;
+    mType     = type;
+    mMin      = CinParameter::NOT_SET; 
+    mMax      = CinParameter::NOT_SET;
+    mCurValue = CinParameter::NOT_SET; 
+    mCurID    = 0;
 }
 
 /*! \brief Returns next biggest value of parameter
@@ -92,11 +93,15 @@ void CinParameter::recordValue(float value)
     }
 }
 
-void CinParameter::sortValues()
+/*! \brief Do internal data sync after all values added 
+ *
+ */
+void CinParameter::finalizeValues()
 {
     if (mValues.size() != 0) 
     {
         std::sort(mValues.begin(), mValues.end());
+
         // make sure min and max are still correct
         setMin(mValues.front());
         setMax(mValues.back());
@@ -144,6 +149,7 @@ bool CinParameter::setToValueAt(int valueID)
     if (result)
     {
         setValue(fValue);
+        mCurID = valueID;
 
         // emit valueChanged(getValue(), valueID);
         // emit valueChanged(getName(), getValue()); 
@@ -162,8 +168,9 @@ bool CinParameter::setValue(float value)
     if (result)
     {
         mCurValue = value;
+        mCurID = getIDForValue(mCurValue);
 
-        emit valueChanged(getValue(), getIDForValue(value));
+        emit valueChanged(getValue(), getCurID()); 
         emit valueChanged(getName(), getValue()); 
     }
 

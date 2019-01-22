@@ -25,18 +25,18 @@ class CinParameter : public QObject
         static const char *GetNameForType(CinParameter::Type type);
 
         // constructor
-        CinParameter(const QString &name, CinParameter::Type type=CinParameter::UNDEFINED, 
-                        float min=CinParameter::NOT_SET, float max=CinParameter::NOT_SET, 
-                        float cur=CinParameter::NOT_SET);
+        CinParameter(const QString &name, CinParameter::Type type=CinParameter::UNDEFINED);
 
         // member function
-        bool getNextValue(float value, float &next);
-        bool getPrevValue(float value, float &prev);
         const QString &getName() const {return mName;}
         CinParameter::Type getType() const {return mType;}
+
+        bool  getNextValue(float value, float &next);
+        bool  getPrevValue(float value, float &prev);
         float getMin() const {return mMin;}
         float getMax() const {return mMax;}
         float getValue() const {return mCurValue;}
+        int   getCurID() {return mCurID;}
 
         void  setName(const QString &name)     {mName = name;}
         void  setType(CinParameter::Type type) {mType = type;}
@@ -51,7 +51,7 @@ class CinParameter : public QObject
         bool  valueAsString(QString &value, int i);
 
         void  print();
-        void  sortValues();
+        void  finalizeValues();
 
     signals:
         void valueChanged(float value, int valueID);
@@ -68,6 +68,7 @@ class CinParameter : public QObject
         float   mMin;
         float   mMax;
         float   mCurValue;
+        int     mCurID;
         std::vector<float> mValues;
 };
 
