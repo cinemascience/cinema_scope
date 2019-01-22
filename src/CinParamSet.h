@@ -27,8 +27,8 @@ class CinParamSet : public QObject
         void clear();
 
         // parameter value query API
-        bool getNextValue(const QString &key, float value, float &next);
-        bool getPrevValue(const QString &key, float value, float &prex);
+        // bool getNextValue(const QString &key, float value, float &next);
+        // bool getPrevValue(const QString &key, float value, float &prex);
         bool getValue(const QString &name, float &value);
         bool getMinMax(const QString &name, float &min, float &max); 
         bool valueExists(const QString &key, float value);

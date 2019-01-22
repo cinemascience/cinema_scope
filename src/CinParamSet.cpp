@@ -143,29 +143,6 @@ CinParameter *CinParamSet::getParameter(const QString &name)
     return NULL;
 }
 
-bool CinParamSet::getNextValue(const QString &name, float value, float &next)
-{
-    CinParameter *p = getParameter(name);
-
-    if (p) 
-    {
-        return p->getNextValue(value, next);
-    } else {
-        return false;
-    }
-}
-
-bool CinParamSet::getPrevValue(const QString &name, float value, float &prev)
-{
-    CinParameter *p = getParameter(name);
-    if (p) 
-    {
-        return p->getPrevValue(value, prev);
-    } else 
-    {
-        return false;
-    }
-}
 
 bool CinParamSet::valueExists(const QString &key, float value)
 {

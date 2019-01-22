@@ -65,33 +65,6 @@ void CinScopeTest::parameter()
     float fResult = 0.0;
     bool result = false;
 
-    // previous
-    result = param.getPrevValue(1.0, fResult);
-    QVERIFY(result == false);
-
-    result = param.getPrevValue(1.5, fResult);
-    QVERIFY(result == true);
-    QVERIFY(fResult == 1.0);
-
-    result = param.getPrevValue(4.5, fResult);
-    QVERIFY(result == true);
-    QVERIFY(fResult == 4.0);
-
-    // next
-    result = param.getNextValue(4.0, fResult);
-    QVERIFY(result == false);
-
-    result = param.getNextValue(5.0, fResult);
-    QVERIFY(result == false);
-
-    result = param.getNextValue(0.0, fResult);
-    QVERIFY(result == true);
-    QVERIFY(fResult == 1.0);
-
-    result = param.getNextValue(2.5, fResult);
-    QVERIFY(result == true);
-    QVERIFY(fResult == 3.0);
-
     // increment/decrement
     param.setToValueAt(0);
     QVERIFY(param.getValue() == 1.0);

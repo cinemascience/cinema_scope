@@ -31,8 +31,6 @@ class CinParameter : public QObject
         const QString &getName() const {return mName;}
         CinParameter::Type getType() const {return mType;}
 
-        bool  getNextValue(float value, float &next);
-        bool  getPrevValue(float value, float &prev);
         float getMin() const {return mMin;}
         float getMax() const {return mMax;}
         float getValue() const {return mCurValue;}
