@@ -109,6 +109,7 @@ void CinImageView::mouseReleaseEvent(QMouseEvent *e)
  */
 void CinImageView::mouseMoveEvent(QMouseEvent *e)
 {
+/*
     QPoint p = e->pos();
 
     float min,max;
@@ -215,6 +216,7 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
 
     mLastXloc = p.rx();
     mLastYloc = p.ry();
+*/
 }
 
 void CinImageView::clear()
