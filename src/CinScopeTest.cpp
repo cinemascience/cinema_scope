@@ -60,7 +60,7 @@ void CinScopeTest::parameter()
     param.recordValue(4.0);
     param.recordValue(2.0);
     param.recordValue(3.0);
-    param.sortValues();
+    param.finalizeValues();
 
     float fResult = 0.0;
     bool result = false;
