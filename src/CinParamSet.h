@@ -32,6 +32,8 @@ class CinParamSet : public QObject
         bool getValue(const QString &name, float &value);
         bool getMinMax(const QString &name, float &min, float &max); 
         bool valueExists(const QString &key, float value);
+        void increment(const QString &name);
+        void decrement(const QString &name);
 
         // constituent data access
         const QStringList &getParameterNames() const {return mParamNames;}

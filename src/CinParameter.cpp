@@ -148,8 +148,8 @@ bool CinParameter::setToValueAt(int valueID)
     result = valueAt(fValue, valueID);
     if (result)
     {
+        // current ID is set by this call
         setValue(fValue);
-        mCurID = valueID;
 
         // emit valueChanged(getValue(), valueID);
         // emit valueChanged(getName(), getValue()); 

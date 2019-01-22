@@ -191,3 +191,22 @@ void CinParamSet::onParameterValueChanged(const QString &name, float value)
     emit parameterChanged(name, value);
 }
 
+void CinParamSet::increment(const QString &name)
+{
+    CinParameter *param = getParameter(name);
+
+    if (param)
+    {
+        param->incrementValue();
+    }
+}
+
+void CinParamSet::decrement(const QString &name)
+{
+    CinParameter *param = getParameter(name);
+
+    if (param)
+    {
+        param->decrementValue();
+    }
+}
