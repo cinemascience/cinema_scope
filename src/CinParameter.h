@@ -45,7 +45,6 @@ class CinParameter : public QObject
 
         // type-specific functions
         void  recordValue(float value);
-        bool  valueExists(float value);
         void  setMin(float min)                {mMin  = min;}
         void  setMax(float max)                {mMax  = max;}
         bool  setValue(float value);
@@ -59,9 +58,11 @@ class CinParameter : public QObject
 
     private:
         float getValue() const {return mCurValue;}
-        bool valueAt(float &value, int valueID);
-        bool isValidID(int valueID);
-        int  getIDForValue(float value);
+        bool  valueAt(float &value, int valueID);
+        bool  isValidID(int valueID);
+            // type-specific functions
+        int   getIDForValue(float value);
+        bool  valueExists(float value);
 
         // member variables
         QString mName;
