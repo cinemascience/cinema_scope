@@ -41,18 +41,13 @@ void CinCompoundSlider::onSliderValueChanged(int value)
 {
     QString stringValue;
 
-    if (getValue(stringValue, value))
+    if (mParameter->getValueAsString(stringValue, value))
     {
         mValue.setText(stringValue);
         mParameter->setToValueAt(value);
 
         emit valueChanged(mParameter->getName(), stringValue);
     }
-}
-
-bool CinCompoundSlider::getValue(QString &value, int id)
-{
-    return mParameter->valueAsString(value, id); 
 }
 
 bool CinCompoundSlider::setParameter(CinParameter *p)
@@ -71,7 +66,7 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
         mSlider.setValue(0);
 
         QString stringValue;
-        getValue(stringValue, 0);
+        mParameter->getValueAsString(stringValue, 0);
         mValue.setText(stringValue);
 
         QObject::connect(mParameter, SIGNAL(valueChanged(const QString &, int)), 

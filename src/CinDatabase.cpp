@@ -8,6 +8,7 @@
 #include <QSqlRecord>
 #include <QRegExp>
 #include <QRandomGenerator>
+// #include <QVariant>
 
 
 
@@ -79,6 +80,8 @@ void CinDatabase::setColumnNames()
     {
         column = record.field(i).name();
         // qDebug() << "COLUMN: " << column;
+        // QVariant variant = record.field(i).type();
+        // qDebug() << "COLUMN: " << column << ", TYPE: " << variant.typeName();
         if (not isArtifactColumn(column) ) {
             mParameterColNames.push_back(column);
         } else {

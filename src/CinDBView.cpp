@@ -95,6 +95,7 @@ void CinDBView::getArtifactQueryString(QString &query)
 
     QMap<QString, CinParameter*>::const_iterator i = mParams.getParameters().constBegin();
     bool first = true;
+    QString value;
     while ( i != mParams.getParameters().constEnd() )
     {
         if (not first)
@@ -103,7 +104,8 @@ void CinDBView::getArtifactQueryString(QString &query)
         } else {
             first = false;
         }
-        query += QString("%1]=%2").arg(i.key(), QString::number(i.value()->getValue()));
+        i.value()->getValueAsString(value);
+        query += QString("%1]=%2").arg(i.key(), value); 
         ++i;
     }
 
@@ -127,8 +129,7 @@ void CinDBView::reset()
 //      of 'set-ness'
 bool CinDBView::parameterExists(const QString &parameter)
 {
-    float value;
-    return mParams.getValue(parameter, value);
+    return mParams.parameterExists(parameter);
 }
 
 bool CinDBView::artifactExists(const QString &artifact)

@@ -14,7 +14,6 @@
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
-#include "CinParameter.h"
 #include "CinParamSet.h"
 #include "CinImageView.h"
 #include "CinParameterMapDialog.h"

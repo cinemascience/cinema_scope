@@ -64,13 +64,7 @@ bool CinParameter::valueExists(float value)
     return (std::find(mValues.begin(), mValues.end(), value) != mValues.end());
 }
 
-
-int  CinParameter::getNumValues() 
-{ 
-    return mValues.size();
-}
-
-bool CinParameter::valueAsString(QString &value, int id)
+bool CinParameter::getValueAsString(QString &value, int id)
 {
     bool result = false;
     float fValue = 0.0;
@@ -115,7 +109,9 @@ bool CinParameter::setValue(float value)
 
             // this needs to be changed, when the redesign to QString
             // is complete.
-        emit valueChanged(QString::number(getValue()), getCurID()); 
+        QString value;
+        getValueAsString(value);
+        emit valueChanged(value, getCurID()); 
     }
 
     return result;
@@ -182,4 +178,10 @@ void CinParameter::decrementValue()
     } else {
         setToValueAt( getCurID() - 1 );
     }
+}
+
+
+void CinParameter::getValueAsString(QString &value)
+{
+    value = QString::number(getValue());
 }

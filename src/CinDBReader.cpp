@@ -115,6 +115,7 @@ CinDBColData::Type CinDBReader::getType(QString &value)
 
     // is this a NaN?
     if (value.toLower() == "nan") {
+            // TODO: determine if this is the correct logic
         type = CinDBColData::FLOAT;
     } else if (value.isEmpty()) {
         type = CinDBColData::UNDEFINED;

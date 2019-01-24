@@ -5,11 +5,8 @@
 #include <QString>
 #include <vector>
 
-//! Manages a parameter 
+//! Manages a parameter for an application
 /*!
- *  A set of parameters defines the input values for a Cinema Database
- *  This class manages communication about these parameters as they
- *  change in a Qt application.
 */
 class CinParameter : public QObject
 {
@@ -31,25 +28,28 @@ class CinParameter : public QObject
         const QString &getName() const {return mName;}
         CinParameter::Type getType() const {return mType;}
 
-        float getMin() const {return mMin;}
-        float getMax() const {return mMax;}
-        float getValue() const {return mCurValue;}
+        // float getMin() const {return mMin;}
+        // float getMax() const {return mMax;}
+            // typeless operations
+        void  getValueAsString(QString &value);
+        bool  getValueAsString(QString &value, int i);
         int   getCurID() {return mCurID;}
         int   getLastID() {return mValues.size() - 1;}
+        int   getNumValues() {return mValues.size();}
         void  incrementValue();
         void  decrementValue();
 
         void  setName(const QString &name)     {mName = name;}
         void  setType(CinParameter::Type type) {mType = type;}
+        bool  setToValueAt(int id);
+
+        // type-specific functions
+        void  recordValue(float value);
+        bool  valueExists(float value);
         void  setMin(float min)                {mMin  = min;}
         void  setMax(float max)                {mMax  = max;}
         bool  setValue(float value);
-        bool  setToValueAt(int id);
-        void  recordValue(float value);
-        bool  valueExists(float value);
 
-        int   getNumValues();
-        bool  valueAsString(QString &value, int i);
 
         void  print();
         void  finalizeValues();
@@ -58,6 +58,7 @@ class CinParameter : public QObject
         void valueChanged(const QString &value, int valueID);
 
     private:
+        float getValue() const {return mCurValue;}
         bool valueAt(float &value, int valueID);
         bool isValidID(int valueID);
         int  getIDForValue(float value);
