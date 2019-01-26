@@ -127,15 +127,15 @@ void CinParamSet::init(CinDatabase &db)
         if (QString(variant.typeName()) == "int")
         {
             curType = CinParameter::INT;
-            qDebug() << "FIELD TYPE is INT";
+            // qDebug() << "FIELD TYPE is INT";
         } else if (QString(variant.typeName()) == "double")
         {
-            qDebug() << "FIELD TYPE is DOUBLE";
             curType = CinParameter::FLOAT;
+            // qDebug() << "FIELD TYPE is DOUBLE";
         } else 
         {
-            qDebug() << "FIELD TYPE is STRING";
             curType = CinParameter::STRING;
+            // qDebug() << "FIELD TYPE is STRING";
         }
 
         add(cols.at(i), CinParameter::FLOAT); 

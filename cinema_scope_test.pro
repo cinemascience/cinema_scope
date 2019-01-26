@@ -7,6 +7,7 @@ CONFIG += qt warn_on depend_includepath testcase
 TEMPLATE = app
 
 SOURCES +=  src/CinParameter.cpp \
+            src/CinParameterVariant.cpp \
             src/CinDBReader.cpp \
             src/CinScopeTest.cpp \
             src/CinDatabase.cpp \
@@ -16,6 +17,7 @@ SOURCES +=  src/CinParameter.cpp \
             src/CinCore.cpp
 
 HEADERS +=  src/CinParameter.h \
+            src/CinParameterVariant.h \
             src/CinDBReader.h \
             src/CinDatabase.h \
             src/CinDBView.h \

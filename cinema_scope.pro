@@ -45,6 +45,7 @@ SOURCES += \
         src/CinScopeWindow.cpp \
         src/CinDBReader.cpp \
         src/CinParamSliders.cpp \
+        src/CinParameterVariant.cpp \
         src/CinParameter.cpp \
         src/CinParamSet.cpp \
         src/CinDatabase.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
         src/CinScopeWindow.h \
         src/CinDBReader.h \
         src/CinParamSliders.h \
+        src/CinParameterVariant.h \
         src/CinParameter.h \
         src/CinParamSet.h \
         src/CinDatabase.h \
