@@ -4,6 +4,8 @@
 #include <QDebug>
 
 const char *CinParameterVariant::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
+const char *CinParameterVariant::NAN_VALUE = "NaN";
+const char *CinParameterVariant::NULL_VALUE = 0; 
 const float CinParameterVariant::NO_VALUE = -0.0001010101;
 const float CinParameterVariant::NO_PREV  = -0.0002020202;
 const float CinParameterVariant::NO_NEXT  = -0.0003030303;
@@ -24,26 +26,12 @@ CinParameterVariant::CinParameterVariant(const QString &name, CinParameterVarian
     mCurID    = 0;
 }
 
-bool CinParameterVariant::recordValue(float value)
-{
-    QVariant variant(value);
-    bool result = false;
-
-    if (mValues.indexOf(variant) < 0)
-    {
-        mValues.append(QVariant(value));
-        result = true;
-    }        
-
-    return result;
-}
 
 bool CinParameterVariant::recordValue(int value)
 {
-    QVariant variant(value);
     bool result = false;
 
-    if (mValues.indexOf(variant) < 0)
+    if (indexOf(value) < 0)
     {
         mValues.append(QVariant(value));
         result = true;
@@ -51,13 +39,23 @@ bool CinParameterVariant::recordValue(int value)
 
     return result;
 }
-
-bool CinParameterVariant::recordValue(const QString &value)
+bool CinParameterVariant::recordValue(double value)
 {
-    QVariant variant(value);
     bool result = false;
 
-    if (mValues.indexOf(variant) < 0)
+    if (indexOf(value) < 0)
+    {
+        mValues.append(QVariant(value));
+        result = true;
+    }        
+
+    return result;
+}
+bool CinParameterVariant::recordValue(const QString &value)
+{
+    bool result = false;
+
+    if (indexOf(value) < 0)
     {
         mValues.append(QVariant(value));
         result = true;
@@ -88,6 +86,11 @@ void CinParameterVariant::decrementValue()
     }
 }
 
+void CinParameterVariant::getValueAsString(QString &value)
+{
+    getValueAsString(value, getCurID());
+}
+
 bool CinParameterVariant::getValueAsString(QString &value, int i)
 {
     bool result = false;
@@ -96,8 +99,6 @@ bool CinParameterVariant::getValueAsString(QString &value, int i)
     {
         QVariant variant = mValues.at(i);
         value = variant.toString();
-    } else {
-        value = "";
     }
 
     return result;
@@ -120,11 +121,18 @@ void CinParameterVariant::print()
     qDebug() << "PRINTING";
     for (int i=0;i<mValues.size();i++)
     {
-        qDebug() << "    " << mValues.at(i).toString();
+        qDebug() << "    " << i << ": " << mValues.at(i).toString();
     }
 }
 
-bool CinParameterVariant::valueExists(float value)
+
+bool CinParameterVariant::valueExists(int value)
+{
+    QVariant variant(value);
+    return (mValues.indexOf(variant) >= 0);
+}
+
+bool CinParameterVariant::valueExists(double value)
 {
     QVariant variant(value);
     return (mValues.indexOf(variant) >= 0);
@@ -136,8 +144,65 @@ bool CinParameterVariant::valueExists(const QString &value)
     return (mValues.indexOf(variant) >= 0);
 }
 
-bool CinParameterVariant::valueExists(int value)
+bool CinParameterVariant::setValue(int value)
+{
+    bool result = false;
+
+    if (valueExists(value))
+    {
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}
+bool CinParameterVariant::setValue(double value)
+{
+    bool result = false;
+
+    if (valueExists(value))
+    {
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}
+bool CinParameterVariant::setValue(const QString &value)
+{
+    bool result = false;
+
+    if (valueExists(value))
+    {
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}
+
+int CinParameterVariant::indexOf(int value)
 {
     QVariant variant(value);
-    return (mValues.indexOf(variant) >= 0);
+    return mValues.indexOf(variant);
+}
+int CinParameterVariant::indexOf(double value)
+{
+    QVariant variant(value);
+    return mValues.indexOf(variant);
+}
+int CinParameterVariant::indexOf(const QString &value)
+{
+    QVariant variant(value);
+    return mValues.indexOf(variant);
+}
+
+void CinParameterVariant::postSetValue()
+{
+    QString value;
+    getValueAsString(value);
+    emit valueChanged(value, getCurID());
 }

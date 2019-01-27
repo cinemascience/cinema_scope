@@ -16,6 +16,8 @@ class CinParameterVariant : public QObject
     public:
         enum Type{UNDEFINED=0, STRING, FLOAT, INT, NUMTYPES};
         static const char *TypeNames[NUMTYPES];
+        static const char *NAN_VALUE; 
+        static const char *NULL_VALUE; 
         static const float NO_VALUE;
         static const float NO_PREV;
         static const float NO_NEXT;
@@ -38,34 +40,35 @@ class CinParameterVariant : public QObject
         int   getNumValues() {return mValues.size();}
         int   getCurID() {return mCurID;}
 
-                void  setName(const QString &name) {mName = name;}
-                void  setType(CinParameterVariant::Type type) {mType = type;}
-        // virtual bool  setToValueAt(int id)     = 0;
+        void  setName(const QString &name) {mName = name;}
+        // void  setType(CinParameterVariant::Type type) {mType = type;}
+        bool  setToValueAt(int id);
 
         void  print();
         // virtual void  finalizeValues()         = 0;
 
         // type-specific functions
-        bool  recordValue(float value);
-        bool  recordValue(int value);
-        bool  recordValue(const QString &value);
-        // virtual void  setMin(float min)        = 0; 
-        // virtual void  setMax(float max)        = 0; 
-        // virtual bool  setValue(float value)    = 0;
+        bool recordValue(int value);
+        bool recordValue(double value);
+        bool recordValue(const QString &value);
+        bool setValue(int value);
+        bool setValue(double value);
+        bool setValue(const QString &value);
         bool valueExists(int value);
-        bool valueExists(float value);
+        bool valueExists(double value);
         bool valueExists(const QString &value);
 
     signals:
         void valueChanged(const QString &value, int valueID);
 
     private:
-        // virtual void getValue(float &value) const = 0;
-        // virtual bool  valueAt(float &value, int valueID) = 0;
+        int indexOf(int value);
+        int indexOf(double value);
+        int indexOf(const QString &value);
 
         virtual bool  isValidID(int valueID);
             // type-specific functions
-        // virtual int   getIDForValue(float value) = 0;
+        void postSetValue();
 
         // member variables
         QString mName;

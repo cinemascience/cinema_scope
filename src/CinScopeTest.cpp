@@ -249,22 +249,46 @@ void CinScopeTest::cinParameterVariant()
 {
     CinParameterVariant pVar("test", CinParameterVariant::INT);
 
-    float fVal = 2.0;
-
     pVar.recordValue(1);
-    pVar.recordValue(fVal);
+    pVar.recordValue(2.0);
     pVar.recordValue("3.0");
+    pVar.recordValue("this");
 
     QVERIFY(pVar.valueExists(1));
     QVERIFY(pVar.valueExists(9) == false);
-    QVERIFY(pVar.valueExists(fVal));
-    QVERIFY(pVar.valueExists((float)2.1) == false);
+    QVERIFY(pVar.valueExists(2.0));
+    QVERIFY(pVar.valueExists(2.1) == false);
     QVERIFY(pVar.valueExists("3.0"));
     QVERIFY(pVar.valueExists("4.0") == false);
+    QVERIFY(pVar.valueExists("this"));
+    QVERIFY(pVar.valueExists("that") == false);
+
+    // Null and NaN testing
+    QVERIFY(pVar.valueExists(CinParameterVariant::NULL_VALUE) == false);
+    QVERIFY(pVar.valueExists(CinParameterVariant::NAN_VALUE) == false);
+    QVERIFY(pVar.setValue(CinParameterVariant::NULL_VALUE) == false);
+    QVERIFY(pVar.setValue(CinParameterVariant::NAN_VALUE) == false);
+        // now we create them
+    pVar.recordValue(CinParameterVariant::NULL_VALUE);
+    pVar.recordValue(CinParameterVariant::NAN_VALUE);
+    QVERIFY(pVar.valueExists(CinParameterVariant::NULL_VALUE));
+    QVERIFY(pVar.valueExists(CinParameterVariant::NAN_VALUE));
+    QVERIFY(pVar.setValue(CinParameterVariant::NULL_VALUE));
+    QVERIFY(pVar.setValue(CinParameterVariant::NAN_VALUE));
+
+    // set and get
+    QVERIFY(pVar.setValue(1));
+    QVERIFY(pVar.setValue(15) == false);
+    QVERIFY(pVar.setValue(2.0));
+    QVERIFY(pVar.setValue(3.0) == false);
+    QVERIFY(pVar.setValue("this"));
+    QVERIFY(pVar.setValue("that") == false);
 
     QString value;
     pVar.getValueAsString(value, 2);
     QVERIFY(value == "3.0");
+
+    pVar.print();
 }
 
 
