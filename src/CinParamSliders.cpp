@@ -38,13 +38,13 @@ void CinParamSliders::connect(CinDatabase *cdb, CinParamSet *params)
 void CinParamSliders::buildSliders()
 {
     CinCompoundSlider *compound = NULL;
-    CinParameter *parameter     = NULL; 
+    CinParameter      *param    = NULL; 
     const QStringList &cols = mParameters->getParameterNames();
     for (int i=0;i<cols.count();i++)
     {
         compound  = new CinCompoundSlider(this);
-        parameter = mParameters->getParameter(cols.at(i)); 
-        compound->setParameter(parameter);
+        param = mParameters->getParameter(cols.at(i)); 
+        compound->setParameter(param);
         mSliderLayout->addWidget(compound);
     }
     // add a spacer

@@ -206,3 +206,17 @@ void CinParameterVariant::postSetValue()
     getValueAsString(value);
     emit valueChanged(value, getCurID());
 }
+
+bool CinParameterVariant::setToValueAt(int ID)
+{
+    bool result = false;
+
+    if (isValidID(ID))
+    {
+        mCurID = ID;
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}

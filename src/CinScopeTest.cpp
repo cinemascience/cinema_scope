@@ -1,3 +1,4 @@
+#include <QtWidgets>
 #include <QtTest>
 #include <QCoreApplication>
 #include <QSqlDatabase>
@@ -9,7 +10,9 @@
 #include "CinParameter.h"
 #include "CinDBReader.h"
 #include "CinDatabase.h"
-#include "CinDBView.h"
+// #include "CinDBView.h"
+#include "CinParamSet.h"
+#include "CinCompoundSlider.h"
 #include "CinParameterVariant.h"
 #include <vector>
 
@@ -28,7 +31,8 @@ private slots:
     void parameter();
     void databaseReader();
     void cinDatabase();
-    void cinDBView();
+    // void cinDBView();
+    void cinParamSet();
     void rawDatabase();
     void cinParameterVariant();
 };
@@ -64,8 +68,8 @@ void CinScopeTest::parameter()
     param.recordValue(3.0);
     param.finalizeValues();
 
-    float fResult = 0.0;
-    bool result = false;
+    // float fResult = 0.0;
+    // bool result = false;
 
     // increment/decrement
     // param.setToValueAt(0);
@@ -159,6 +163,7 @@ void CinScopeTest::cinDatabase()
     QVERIFY(db.getArtifactColumnNames() == artifacts04);
 }
 
+/*
 void CinScopeTest::cinDBView()
 {
     CinDBView view;
@@ -187,6 +192,7 @@ void CinScopeTest::cinDBView()
     QVERIFY(not view.parameterExists("phi"));
     QVERIFY(not view.parameterExists("theta"));
 }
+*/
 
 //
 // example to test how database works with column names that have spaces
@@ -243,6 +249,80 @@ void CinScopeTest::rawDatabase()
         QVERIFY(query.value(0) == n.at(i));
         i++;
     }
+}
+
+void CinScopeTest::cinParamSet()
+{
+    CinParamSet params;
+
+    params.add("int", CinParameterVariant::INT);
+    params.add("float", CinParameterVariant::FLOAT);
+    params.add("string", CinParameterVariant::STRING);
+
+    QVERIFY(params.getNumParameters() == 3);
+    QVERIFY(params.parameterExists("int"));
+    QVERIFY(params.parameterExists("float"));
+    QVERIFY(params.parameterExists("string"));
+    QVERIFY(params.parameterExists("nothing") == false);
+
+    CinParameterVariant *param = NULL;
+    QVERIFY(params.getParameter("int") != NULL);
+    QVERIFY(params.getParameter("float") != NULL);
+    QVERIFY(params.getParameter("string") != NULL);
+    QVERIFY(params.getParameter("nothing") == NULL);
+
+    param = params.getParameter("int");
+    param->recordValue(1);
+    param->recordValue(3);
+    param->recordValue(5);
+    QVERIFY(param->valueExists(0) == false);
+    QVERIFY(param->valueExists(1));
+    QVERIFY(param->valueExists(3));
+    QVERIFY(param->valueExists(5));
+    QVERIFY(param->valueExists(7) == false);
+
+    param = params.getParameter("float");
+    param->recordValue(1.0);
+    param->recordValue(3.0);
+    param->recordValue(5.0);
+    QVERIFY(param->valueExists(0.1) == false);
+    QVERIFY(param->valueExists(1.0));
+    QVERIFY(param->valueExists(3.0));
+    QVERIFY(param->valueExists(5.0));
+    QVERIFY(param->valueExists(7.1) == false);
+
+    param = params.getParameter("string");
+    param->recordValue("first");
+    param->recordValue("second");
+    param->recordValue("third");
+    QVERIFY(param->valueExists("zero") == false);
+    QVERIFY(param->valueExists("first"));
+    QVERIFY(param->valueExists("second"));
+    QVERIFY(param->valueExists("third"));
+    QVERIFY(param->valueExists("this is long") == false);
+    QString value;
+    // param->getValueAsString(value);
+    // QVERIFY(value == "first");
+    QVERIFY(param->setToValueAt(2));
+    param->getValueAsString(value);
+    QVERIFY(value == "third");
+    // set and get the current value
+    QVERIFY(param->setToValueAt(1));
+    param->getValueAsString(value);
+    QVERIFY(value == "second");
+    // get a specific value
+    param->getValueAsString(value, 0);
+    QVERIFY(value == "first");
+
+    // test out of bounds queries
+    QVERIFY(param->getValueAsString(value, -1) == false);
+    QVERIFY(param->getValueAsString(value, 10) == false);
+    QVERIFY(param->setToValueAt(-1) == false);
+    QVERIFY(param->setToValueAt(3) == false);
+
+    // clear and test
+    params.clear();
+    QVERIFY(params.getNumParameters() == 0);
 }
 
 void CinScopeTest::cinParameterVariant()

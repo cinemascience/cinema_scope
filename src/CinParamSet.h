@@ -57,8 +57,8 @@ class CinParamSet : public QObject
     private:
         bool contains(const QString &name);
 
-        QStringList                   mParamNames;
-        QMap<QString, CinParameter*>  mParameters;
+        QStringList                  mParamNames;
+        QMap<QString, CinParameter*> mParameters;
 
     public:
         QMap<QString, CinParameter*> &getParameters() {return mParameters;}

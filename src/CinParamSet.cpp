@@ -160,7 +160,7 @@ void CinParamSet::init(CinDatabase &db)
                     qDebug() << "WARNING: STRING type not handled yet";
                 }
             }
-            param->finalizeValues();
+            // param->finalizeValues();
             param->setToValueAt(0);
             // param->print();
         } else {
