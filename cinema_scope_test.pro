@@ -9,8 +9,8 @@ TEMPLATE = app
 SOURCES +=  src/CinParameter.cpp \
             src/CinParamSet.cpp \
             src/CinParameterVariant.cpp \
-            src/CinCompoundSlider.cpp \
             src/CinDBReader.cpp \
+            src/CinDBView.cpp \
             src/CinScopeTest.cpp \
             src/CinDatabase.cpp \
             src/CinParamSet.cpp \
@@ -20,8 +20,8 @@ SOURCES +=  src/CinParameter.cpp \
 HEADERS +=  src/CinParameter.h \
             src/CinParamSet.h \
             src/CinParameterVariant.h \
-            src/CinCompoundSlider.h \
             src/CinDBReader.h \
+            src/CinDBView.h \
             src/CinDatabase.h \
             src/CinParamSet.h \
             src/CinArtifactSet.h \
