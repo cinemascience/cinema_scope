@@ -11,7 +11,6 @@
 #include "CinDatabase.h"
 #include "CinDBView.h"
 #include "CinParamSet.h"
-// #include "CinParameterVariant.h"
 #include <vector>
 
 //! CinemaScope Unit Testing Class
