@@ -137,32 +137,18 @@ void CinScopeTest::cinDatabase()
     QVERIFY(db.getParameterColumnNames() == parameters03);
     QVERIFY(db.getArtifactColumnNames() == artifacts03);
 
-    // string data type
-    db.reset();
-    db.load("../unittesting/test_string.cdb");
-    QStringList parameters04 = {"phi", "theta", "name"};
-    QStringList artifacts04  = {"FILE"};
-    QVERIFY(db.getParameterColumnNames() == parameters04);
-    QVERIFY(db.getArtifactColumnNames() == artifacts04);
-    QSqlQuery query_01(db.getDatabase());
-    query_01.exec("SELECT [FILE] FROM cinema WHERE [phi]='10' AND[theta]='20' AND [name]='one'");
-    while (query_01.next())
-    {
-        QVERIFY(query_01.value(0) == "image/10/20/one/image.png");
-    }
-
     // float data 
     db.reset();
-    db.load("../unittesting/test_float.cdb");
-    QStringList parameters05 = {"phi", "theta"};
+    db.load("../unittesting/test_paramtypes.cdb");
+    QStringList parameters05 = {"phi", "theta", "iphi", "itheta", "sphi", "stheta"};
     QStringList artifacts05  = {"FILE"};
     QVERIFY(db.getParameterColumnNames() == parameters05);
     QVERIFY(db.getArtifactColumnNames() == artifacts05);
     QSqlQuery query_02(db.getDatabase());
-    query_02.exec("SELECT [FILE] FROM cinema WHERE [phi]='-180.0' AND[theta]='-90.1'");
+    query_02.exec("SELECT [FILE] FROM cinema WHERE [phi]='-180.0' AND [theta]='-90.1' AND [iphi]='180' AND [itheta]='-180' AND [sphi]='one' AND [stheta]='three'");
     while (query_02.next())
     {
-        QVERIFY(query_02.value(0) == "image/0.png");
+        QVERIFY(query_02.value(0) == "image/-180.1/-90.1/180/-180/one/three/image.png");
     }
 }
 
