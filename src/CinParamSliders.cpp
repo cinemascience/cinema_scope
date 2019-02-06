@@ -59,15 +59,3 @@ void CinParamSliders::deleteSliders()
         delete child;
     }
 }
-
-void CinParamSliders::onParameterValueChanged(const QString &name, float value)
-{
-    CinParameter *param = mParameters->getParameter(name);
-    if (param)
-    {
-        param->setValue(value);
-    } else {
-        qDebug() << "ERROR: param not found";
-    }
-}
-

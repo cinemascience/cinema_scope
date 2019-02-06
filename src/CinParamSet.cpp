@@ -203,7 +203,6 @@ void CinParamSet::clear()
 
 void CinParamSet::onParameterValueChanged()
 {
-    // qDebug() << "CINPARAMSET onParameterValueChanged";
     emit parameterChanged();
 }
 

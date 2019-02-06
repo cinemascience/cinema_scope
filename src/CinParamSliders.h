@@ -31,7 +31,5 @@ private:
     CinDatabase *mCurDatabase=NULL;  /*!< Common database object */ 
     CinParamSet *mParameters=NULL;
     
-private slots:
-    void onParameterValueChanged(const QString &name, float value);
 };
 #endif // CINDBSLIDERS_H
