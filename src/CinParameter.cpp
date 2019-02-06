@@ -73,6 +73,8 @@ void CinParameter::incrementValue()
         // wrap around to start
         mCurID = 0;
     }
+
+    setToValueAt(mCurID);
 }
 
 void CinParameter::decrementValue()
@@ -84,6 +86,8 @@ void CinParameter::decrementValue()
         // wrap around to end
         mCurID = getLastID();
     }
+
+    setToValueAt(mCurID);
 }
 
 void CinParameter::getValueAsString(QString &value)
@@ -98,7 +102,19 @@ bool CinParameter::getValueAsString(QString &value, int i)
     if (isValidID(i))
     {
         QVariant variant = mValues.at(i);
-        value = variant.toString();
+
+        if (getType() == CinParameter::INT)
+        {
+            value = variant.toString();
+        } else if (getType() == CinParameter::FLOAT)
+        {
+            value = QString::number(variant.toFloat()); 
+        } else 
+        { 
+            value = variant.toString();
+        }
+        
+        result = true;
     }
 
     return result;

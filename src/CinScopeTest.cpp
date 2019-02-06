@@ -1,4 +1,3 @@
-#include <QtWidgets>
 #include <QtTest>
 #include <QCoreApplication>
 #include <QSqlDatabase>
@@ -10,10 +9,9 @@
 #include "CinParameter.h"
 #include "CinDBReader.h"
 #include "CinDatabase.h"
-// #include "CinDBView.h"
+#include "CinDBView.h"
 #include "CinParamSet.h"
-#include "CinCompoundSlider.h"
-#include "CinParameterVariant.h"
+// #include "CinParameterVariant.h"
 #include <vector>
 
 //! CinemaScope Unit Testing Class
@@ -31,10 +29,10 @@ private slots:
     void parameter();
     void databaseReader();
     void cinDatabase();
-    // void cinDBView();
+    void cinDBView();
     void cinParamSet();
     void rawDatabase();
-    void cinParameterVariant();
+    void cinParameter();
 };
 
 
@@ -66,7 +64,7 @@ void CinScopeTest::parameter()
     param.recordValue(4.0);
     param.recordValue(2.0);
     param.recordValue(3.0);
-    param.finalizeValues();
+    // param.finalizeValues();
 
     // float fResult = 0.0;
     // bool result = false;
@@ -138,32 +136,36 @@ void CinScopeTest::cinDatabase()
     QStringList artifacts03  = {"FILE"};
     QVERIFY(db.getParameterColumnNames() == parameters03);
     QVERIFY(db.getArtifactColumnNames() == artifacts03);
-/*
-    qDebug() << "THIRD : " << db.getParameterColumnNames();
-    QSqlRecord record = db.getDatabase().record(db.getTableName());
-    for (int i=0;i<record.count();i++) 
-    {
-        qDebug() << "NAME: " << record.field(i).name();
-    }
 
-    query.exec("SELECT [t heta] FROM " + db.getTableName());
-    qDebug() << "BEFORE TABLENAME: " << db.getTableName();
-    while (query.next())
-    {
-        qDebug() << "VALUE: " << query.value(0).toFloat();
-    }
-    qDebug() << "AFTER  TABLENAME: " << db.getTableName();
-*/
-
+    // string data type
     db.reset();
     db.load("../unittesting/test_string.cdb");
     QStringList parameters04 = {"phi", "theta", "name"};
     QStringList artifacts04  = {"FILE"};
     QVERIFY(db.getParameterColumnNames() == parameters04);
     QVERIFY(db.getArtifactColumnNames() == artifacts04);
+    QSqlQuery query_01(db.getDatabase());
+    query_01.exec("SELECT [FILE] FROM cinema WHERE [phi]='10' AND[theta]='20' AND [name]='one'");
+    while (query_01.next())
+    {
+        QVERIFY(query_01.value(0) == "image/10/20/one/image.png");
+    }
+
+    // float data 
+    db.reset();
+    db.load("../unittesting/test_float.cdb");
+    QStringList parameters05 = {"phi", "theta"};
+    QStringList artifacts05  = {"FILE"};
+    QVERIFY(db.getParameterColumnNames() == parameters05);
+    QVERIFY(db.getArtifactColumnNames() == artifacts05);
+    QSqlQuery query_02(db.getDatabase());
+    query_02.exec("SELECT [FILE] FROM cinema WHERE [phi]='-180.0' AND[theta]='-90.1'");
+    while (query_02.next())
+    {
+        QVERIFY(query_02.value(0) == "image/0.png");
+    }
 }
 
-/*
 void CinScopeTest::cinDBView()
 {
     CinDBView view;
@@ -192,7 +194,6 @@ void CinScopeTest::cinDBView()
     QVERIFY(not view.parameterExists("phi"));
     QVERIFY(not view.parameterExists("theta"));
 }
-*/
 
 //
 // example to test how database works with column names that have spaces
@@ -255,9 +256,9 @@ void CinScopeTest::cinParamSet()
 {
     CinParamSet params;
 
-    params.add("int", CinParameterVariant::INT);
-    params.add("float", CinParameterVariant::FLOAT);
-    params.add("string", CinParameterVariant::STRING);
+    params.add("int", CinParameter::INT);
+    params.add("float", CinParameter::FLOAT);
+    params.add("string", CinParameter::STRING);
 
     QVERIFY(params.getNumParameters() == 3);
     QVERIFY(params.parameterExists("int"));
@@ -265,7 +266,7 @@ void CinScopeTest::cinParamSet()
     QVERIFY(params.parameterExists("string"));
     QVERIFY(params.parameterExists("nothing") == false);
 
-    CinParameterVariant *param = NULL;
+    CinParameter*param = NULL;
     QVERIFY(params.getParameter("int") != NULL);
     QVERIFY(params.getParameter("float") != NULL);
     QVERIFY(params.getParameter("string") != NULL);
@@ -325,9 +326,9 @@ void CinScopeTest::cinParamSet()
     QVERIFY(params.getNumParameters() == 0);
 }
 
-void CinScopeTest::cinParameterVariant()
+void CinScopeTest::cinParameter()
 {
-    CinParameterVariant pVar("test", CinParameterVariant::INT);
+    CinParameter pVar("test", CinParameter::INT);
 
     pVar.recordValue(1);
     pVar.recordValue(2.0);
@@ -344,17 +345,17 @@ void CinScopeTest::cinParameterVariant()
     QVERIFY(pVar.valueExists("that") == false);
 
     // Null and NaN testing
-    QVERIFY(pVar.valueExists(CinParameterVariant::NULL_VALUE) == false);
-    QVERIFY(pVar.valueExists(CinParameterVariant::NAN_VALUE) == false);
-    QVERIFY(pVar.setValue(CinParameterVariant::NULL_VALUE) == false);
-    QVERIFY(pVar.setValue(CinParameterVariant::NAN_VALUE) == false);
+    QVERIFY(pVar.valueExists(CinParameter::NULL_VALUE) == false);
+    QVERIFY(pVar.valueExists(CinParameter::NAN_VALUE) == false);
+    QVERIFY(pVar.setValue(CinParameter::NULL_VALUE) == false);
+    QVERIFY(pVar.setValue(CinParameter::NAN_VALUE) == false);
         // now we create them
-    pVar.recordValue(CinParameterVariant::NULL_VALUE);
-    pVar.recordValue(CinParameterVariant::NAN_VALUE);
-    QVERIFY(pVar.valueExists(CinParameterVariant::NULL_VALUE));
-    QVERIFY(pVar.valueExists(CinParameterVariant::NAN_VALUE));
-    QVERIFY(pVar.setValue(CinParameterVariant::NULL_VALUE));
-    QVERIFY(pVar.setValue(CinParameterVariant::NAN_VALUE));
+    pVar.recordValue(CinParameter::NULL_VALUE);
+    pVar.recordValue(CinParameter::NAN_VALUE);
+    QVERIFY(pVar.valueExists(CinParameter::NULL_VALUE));
+    QVERIFY(pVar.valueExists(CinParameter::NAN_VALUE));
+    QVERIFY(pVar.setValue(CinParameter::NULL_VALUE));
+    QVERIFY(pVar.setValue(CinParameter::NAN_VALUE));
 
     // set and get
     QVERIFY(pVar.setValue(1));

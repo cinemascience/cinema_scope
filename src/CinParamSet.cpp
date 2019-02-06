@@ -31,7 +31,7 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type)
         mParamNames.push_back(name);
         mParameters.insert(name, param); 
 
-        QObject::connect(param, SIGNAL(valueChanged(const QString &, int)), this, SLOT(onParameterValueChanged()));
+        connect(param, &CinParameter::valueChanged, this, &CinParamSet::onParameterValueChanged);
         retVal = true;
     }
 
@@ -119,7 +119,7 @@ void CinParamSet::init(CinDatabase &db)
     QSqlQuery query(db.getDatabase());
     QSqlRecord record = db.getDatabase().record(db.getTableName());
     const QStringList &cols = db.getParameterColumnNames();
-    int curType;
+    CinParameter::Type curType;
     for (int i=0;i<cols.count();i++)
     {
         // add the parameter 
@@ -138,7 +138,7 @@ void CinParamSet::init(CinDatabase &db)
             // qDebug() << "FIELD TYPE is STRING";
         }
 
-        add(cols.at(i), CinParameter::FLOAT); 
+        add(cols.at(i), curType); 
 
         // gather all the values
         query.exec("SELECT DISTINCT [" + cols.at(i) + "] FROM " + db.getTableName() + " ORDER BY [" + cols.at(i) + "]"); 
@@ -150,14 +150,13 @@ void CinParamSet::init(CinDatabase &db)
             {
                 if (curType == CinParameter::INT) {
                     // this call is currently not differentiated from FLOAT
-                    param->recordValue(query.value(0).toFloat());
+                    param->recordValue(query.value(0).toInt());
 
                 } else if (curType == CinParameter::FLOAT) {
                     param->recordValue(query.value(0).toFloat());
 
                 } else {
-                    // not implemented
-                    qDebug() << "WARNING: STRING type not handled yet";
+                    param->recordValue(query.value(0).toString());
                 }
             }
             // param->finalizeValues();

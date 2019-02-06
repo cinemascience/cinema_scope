@@ -85,7 +85,7 @@ void CinImageView :: mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        //cout<<"CINIMAGE: on left mouse press"<<endl;
+        cout<<"CINIMAGE: on left mouse press"<<endl;
         mCurrentXloc = e->pos().rx();
         mCurrentYloc = e->pos().ry();
     }
@@ -98,7 +98,7 @@ void CinImageView::mouseReleaseEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
-        //cout<<"CINIMAGE: n left mouse release"<<endl;
+        cout<<"CINIMAGE: n left mouse release"<<endl;
         mLastXloc = e->pos().rx();
         mLastYloc = e->pos().ry();
     }
@@ -116,10 +116,8 @@ void CinImageView::mouseMoveEvent(QMouseEvent *e)
     {
         if((p.rx() - mCurrentXloc) > 0 && mLastXloc < p.rx()) //slide right
         {
-           mParamSet->increment(mCurHorParam);
-        }
-
-        else if((p.rx() - mCurrentXloc) < 0 && mLastXloc > p.rx()) //slide left
+            mParamSet->increment(mCurHorParam);
+        } else if((p.rx() - mCurrentXloc) < 0 && mLastXloc > p.rx()) //slide left
         {
             mParamSet->decrement(mCurHorParam);
         }

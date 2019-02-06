@@ -34,7 +34,7 @@ CinCompoundSlider::CinCompoundSlider(QWidget *parent) : QWidget(parent)
 
     this->setLayout(&mLayout);
 
-    QObject::connect(&mSlider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
+    connect(&mSlider, &QSlider::valueChanged, this, &CinCompoundSlider::onSliderValueChanged);
 }
 
 void CinCompoundSlider::onSliderValueChanged(int value)
@@ -69,8 +69,8 @@ bool CinCompoundSlider::setParameter(CinParameter *p)
         mParameter->getValueAsString(stringValue, 0);
         mValue.setText(stringValue);
 
-        QObject::connect(mParameter, SIGNAL(valueChanged(const QString &, int)), 
-                         this, SLOT(onParameterValueChanged(const QString &, int)));
+        connect(mParameter, &CinParameter::valueChanged, 
+                this, &CinCompoundSlider::onParameterValueChanged);
 
         result = true;
     } else {

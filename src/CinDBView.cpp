@@ -12,8 +12,8 @@ CinDBView::CinDBView()
 {
     mArtifact = "FILE";
     
-    QObject::connect(&mParams, SIGNAL(parameterChanged()), 
-                     this, SLOT(onParameterChanged()));
+    connect(&mParams, &CinParamSet::parameterChanged,
+            this, &CinDBView::onParameterChanged);
 }
 
 void CinDBView::setDatabase(CinDatabase *db)
@@ -105,11 +105,9 @@ void CinDBView::getArtifactQueryString(QString &query)
             first = false;
         }
         i.value()->getValueAsString(value);
-        query += QString("%1]=%2").arg(i.key(), value); 
+        query += QString("%1]='%2'").arg(i.key(), value); 
         ++i;
     }
-
-    // qDebug() << "CINDBVIEW: " << query;
 }
 
 void CinDBView::onParameterChanged()
