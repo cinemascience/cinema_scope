@@ -29,9 +29,10 @@ class CinParamSet : public QObject
         // parameter value query API
         // bool getNextValue(const QString &key, float value, float &next);
         // bool getPrevValue(const QString &key, float value, float &prex);
-        bool getValue(const QString &name, float &value);
-        bool getMinMax(const QString &name, float &min, float &max); 
-        bool valueExists(const QString &key, float value);
+        // bool getValue(const QString &name, float &value);
+        // bool getMinMax(const QString &name, float &min, float &max); 
+        // bool valueExists(const QString &key, float value);
+        bool parameterExists(const QString &key);
         void increment(const QString &name);
         void decrement(const QString &name);
 
@@ -43,7 +44,7 @@ class CinParamSet : public QObject
             // TODO make this a const reference
         void init(CinDatabase &db);
 
-        void changeParameter(const QString &name, float value);
+        // void changeParameter(const QString &name, float value);
 
         void print();
 
@@ -56,8 +57,8 @@ class CinParamSet : public QObject
     private:
         bool contains(const QString &name);
 
-        QStringList                   mParamNames;
-        QMap<QString, CinParameter*>  mParameters;
+        QStringList                  mParamNames;
+        QMap<QString, CinParameter*> mParameters;
 
     public:
         QMap<QString, CinParameter*> &getParameters() {return mParameters;}

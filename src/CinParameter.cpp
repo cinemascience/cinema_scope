@@ -4,6 +4,8 @@
 #include <QDebug>
 
 const char *CinParameter::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
+const char *CinParameter::NAN_VALUE = "NaN";
+const char *CinParameter::NULL_VALUE = 0; 
 const float CinParameter::NO_VALUE = -0.0001010101;
 const float CinParameter::NO_PREV  = -0.0002020202;
 const float CinParameter::NO_NEXT  = -0.0003030303;
@@ -21,101 +23,98 @@ CinParameter::CinParameter(const QString &name, CinParameter::Type type)
 {
     mName     = name;
     mType     = type;
-    mMin      = CinParameter::NOT_SET; 
-    mMax      = CinParameter::NOT_SET;
-    mCurValue = CinParameter::NOT_SET; 
     mCurID    = 0;
 }
 
-/*! \brief Add unique values to the datastructure
- *
- */
-void CinParameter::recordValue(float value)
-{
-    if (not (std::find(mValues.begin(), mValues.end(), value) != mValues.end()))
-    {
-        mValues.push_back(value);
-    }
-}
 
-/*! \brief Do internal data sync after all values added 
- *
- */
-void CinParameter::finalizeValues()
-{
-    if (mValues.size() != 0) 
-    {
-        std::sort(mValues.begin(), mValues.end());
-
-        // make sure min and max are still correct
-        setMin(mValues.front());
-        setMax(mValues.back());
-    }
-}
-
-void CinParameter::print()
-{
-    qDebug() << "PARAMETER: " << mName << mValues;
-}
-
-
-bool CinParameter::valueExists(float value)
-{
-    return (std::find(mValues.begin(), mValues.end(), value) != mValues.end());
-}
-
-
-int  CinParameter::getNumValues() 
-{ 
-    return mValues.size();
-}
-
-bool CinParameter::valueAsString(QString &value, int id)
+bool CinParameter::recordValue(int value)
 {
     bool result = false;
-    float fValue = 0.0;
 
-    result = valueAt(fValue, id);
-    value = "";
-    if (result)
+    if (indexOf(value) < 0)
     {
-        value = QString::number(fValue);
-    }
+        mValues.append(QVariant(value));
+        result = true;
+    }        
+
+    return result;
+}
+bool CinParameter::recordValue(double value)
+{
+    bool result = false;
+
+    if (indexOf(value) < 0)
+    {
+        mValues.append(QVariant(value));
+        result = true;
+    }        
+
+    return result;
+}
+bool CinParameter::recordValue(const QString &value)
+{
+    bool result = false;
+
+    if (indexOf(value) < 0)
+    {
+        mValues.append(QVariant(value));
+        result = true;
+    }        
 
     return result;
 }
 
-bool CinParameter::setToValueAt(int valueID)
+void CinParameter::incrementValue()
 {
-    bool result = false;
-    float fValue;
+    mCurID++;
 
-    result = valueAt(fValue, valueID);
-    if (result)
+    if (mCurID > getLastID())
     {
-        // current ID is set by this call
-        setValue(fValue);
-
-    } else {
-        // TODO report error
+        // wrap around to start
+        mCurID = 0;
     }
 
-    return result;
+    setToValueAt(mCurID);
 }
 
-// TODO error checking
-bool CinParameter::setValue(float value)
+void CinParameter::decrementValue()
 {
-    bool result = valueExists(value); 
+    mCurID--;
 
-    if (result)
+    if (mCurID < 0) 
     {
-        mCurValue = value;
-        mCurID = getIDForValue(mCurValue);
+        // wrap around to end
+        mCurID = getLastID();
+    }
 
-            // this needs to be changed, when the redesign to QString
-            // is complete.
-        emit valueChanged(QString::number(getValue()), getCurID()); 
+    setToValueAt(mCurID);
+}
+
+void CinParameter::getValueAsString(QString &value)
+{
+    getValueAsString(value, getCurID());
+}
+
+bool CinParameter::getValueAsString(QString &value, int i)
+{
+    bool result = false;
+
+    if (isValidID(i))
+    {
+        QVariant variant = mValues.at(i);
+
+        if (getType() == CinParameter::INT)
+        {
+            value = variant.toString();
+        } else if (getType() == CinParameter::FLOAT)
+        {
+            value = QString::number(variant.toFloat()); 
+        } else 
+        { 
+            value = variant.toString();
+        }
+        
+        result = true;
     }
 
     return result;
@@ -123,63 +122,117 @@ bool CinParameter::setValue(float value)
 
 bool CinParameter::isValidID(int valueID)
 {
-    return ((valueID >= 0) && (static_cast<unsigned int>(valueID) < mValues.size()));
-}
-
-bool CinParameter::valueAt(float &value, int valueID)
-{
     bool result = false;
 
-    value = CinParameter::NO_VALUE;
-    result = isValidID(valueID);
-    if (result)
+    if ((valueID >= 0) && (valueID <= getLastID()))
     {
-        value = mValues.at(valueID);
-    } else {
-        qDebug() << "ERROR: invalid ID passed to CinParameter: " << valueID;
+        result = true;
     }
 
     return result;
 }
 
-int CinParameter::getIDForValue(float value)
+void CinParameter::print()
 {
-    std::vector<float>::iterator it = std::find(mValues.begin(), mValues.end(), value);
-    if (it != mValues.end())
+    qDebug() << "PRINTING";
+    for (int i=0;i<mValues.size();i++)
     {
-        return std::distance(mValues.begin() , it);
-    } else {
-        qDebug() << "ERROR value not found";
-        return CinCore::NOTFOUND; 
-    } 
-}
-
-/*! \brief Set this parameter to the prev value 
- *
- *  If the value is at the beginning, wrap to the end 
- */
-void CinParameter::incrementValue()
-{
-    if (getCurID() == getLastID())
-    {
-        // wrap to beginning
-        setToValueAt(0);
-    } else {
-        setToValueAt( getCurID() + 1 );
+        qDebug() << "    " << i << ": " << mValues.at(i).toString();
     }
 }
 
-/*! \brief Set this parameter to the next value 
- *
- *  If the value is at the end, wrap to beginning
- */
-void CinParameter::decrementValue()
+
+bool CinParameter::valueExists(int value)
 {
-    if (getCurID() == 0)
+    QVariant variant(value);
+    return (mValues.indexOf(variant) >= 0);
+}
+
+bool CinParameter::valueExists(double value)
+{
+    QVariant variant(value);
+    return (mValues.indexOf(variant) >= 0);
+}
+
+bool CinParameter::valueExists(const QString &value)
+{
+    QVariant variant(value);
+    return (mValues.indexOf(variant) >= 0);
+}
+
+bool CinParameter::setValue(int value)
+{
+    bool result = false;
+
+    if (valueExists(value))
     {
-        // wrap to end
-        setToValueAt(getLastID());
-    } else {
-        setToValueAt( getCurID() - 1 );
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
     }
+
+    return result;
+}
+bool CinParameter::setValue(double value)
+{
+    bool result = false;
+
+    if (valueExists(value))
+    {
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}
+bool CinParameter::setValue(const QString &value)
+{
+    bool result = false;
+
+    if (valueExists(value))
+    {
+        mCurID = indexOf(value);
+        result = true;
+        postSetValue();
+    }
+
+    return result;
+}
+
+int CinParameter::indexOf(int value)
+{
+    QVariant variant(value);
+    return mValues.indexOf(variant);
+}
+int CinParameter::indexOf(double value)
+{
+    QVariant variant(value);
+    return mValues.indexOf(variant);
+}
+int CinParameter::indexOf(const QString &value)
+{
+    QVariant variant(value);
+    return mValues.indexOf(variant);
+}
+
+void CinParameter::postSetValue()
+{
+    QString value;
+    getValueAsString(value);
+    emit valueChanged(value, getCurID());
+}
+
+bool CinParameter::setToValueAt(int ID)
+{
+    bool result = false;
+
+    if (isValidID(ID))
+    {
+        mCurID = ID;
+        result = true;
+        postSetValue();
+    }
+
+    return result;
 }

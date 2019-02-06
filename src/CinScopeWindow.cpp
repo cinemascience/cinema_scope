@@ -14,7 +14,6 @@
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
 #include "CinDatabase.h"
-#include "CinParameter.h"
 #include "CinParamSet.h"
 #include "CinImageView.h"
 #include "CinParameterMapDialog.h"
@@ -71,8 +70,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
 
     // connect slots
-    QObject::connect(mDBV,       SIGNAL(artifactChanged(const QString &, const QString &)), 
-                     mImageView, SLOT(onLoadImage(const QString &, const QString &)));
+    connect(mDBV, &CinDBView::artifactChanged, mImageView, &CinImageView::onLoadImage);
 
 }
 

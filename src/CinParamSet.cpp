@@ -5,8 +5,11 @@
 #include <QDebug>
 #include <QMap>
 #include <QString>
+#include <QSqlField>
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QStringList>
+#include <QVariant>
 
 CinParamSet::CinParamSet() 
 {
@@ -28,13 +31,14 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type)
         mParamNames.push_back(name);
         mParameters.insert(name, param); 
 
-        QObject::connect(param, SIGNAL(valueChanged(const QString &, int)), this, SLOT(onParameterValueChanged()));
+        connect(param, &CinParameter::valueChanged, this, &CinParamSet::onParameterValueChanged);
         retVal = true;
     }
 
     return retVal;
 }
 
+/*
 bool CinParamSet::getValue(const QString &name, float &value) 
 {
     bool success = false;
@@ -48,7 +52,9 @@ bool CinParamSet::getValue(const QString &name, float &value)
 
     return success;
 }
+*/
 
+/*
 bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
 {
     bool success = false;
@@ -63,7 +69,9 @@ bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
 
     return success;
 }
+*/
 
+/*
 void CinParamSet::changeParameter(const QString &name, float value)
 {
     QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
@@ -75,6 +83,7 @@ void CinParamSet::changeParameter(const QString &name, float value)
         // qDebug() << "CINPARAMSET emit:" << name << value;
     }
 }
+*/
 
 bool CinParamSet::contains(const QString &name)
 {
@@ -85,6 +94,7 @@ bool CinParamSet::contains(const QString &name)
 
 void CinParamSet::print()
 {
+    /*
     QMap<QString, CinParameter*>::iterator cur;
     // qDebug() << "CINPARAMSET: (parameters)";
     for (cur = mParameters.begin(); cur != mParameters.end(); ++cur)
@@ -95,6 +105,7 @@ void CinParamSet::print()
         qDebug() << "  " << cur.value()->getMin() << ", " << cur.value()->getMax();
     }
     qDebug() << " ";
+    */
 }
 
 
@@ -106,11 +117,28 @@ void CinParamSet::init(CinDatabase &db)
     // now load new data 
     QString curColumn;
     QSqlQuery query(db.getDatabase());
+    QSqlRecord record = db.getDatabase().record(db.getTableName());
     const QStringList &cols = db.getParameterColumnNames();
+    CinParameter::Type curType;
     for (int i=0;i<cols.count();i++)
     {
         // add the parameter 
-        add(cols.at(i), CinParameter::FLOAT); 
+        QVariant variant = record.field(cols.at(i)).type();
+        if (QString(variant.typeName()) == "int")
+        {
+            curType = CinParameter::INT;
+            // qDebug() << "FIELD TYPE is INT";
+        } else if (QString(variant.typeName()) == "double")
+        {
+            curType = CinParameter::FLOAT;
+            // qDebug() << "FIELD TYPE is DOUBLE";
+        } else 
+        {
+            curType = CinParameter::STRING;
+            // qDebug() << "FIELD TYPE is STRING";
+        }
+
+        add(cols.at(i), curType); 
 
         // gather all the values
         query.exec("SELECT DISTINCT [" + cols.at(i) + "] FROM " + db.getTableName() + " ORDER BY [" + cols.at(i) + "]"); 
@@ -120,10 +148,18 @@ void CinParamSet::init(CinDatabase &db)
         {
             while (query.next())
             {
-                param->recordValue(query.value(0).toFloat());
-                // qDebug() << "PARAMSET: " << query.value(0).toFloat();
+                if (curType == CinParameter::INT) {
+                    // this call is currently not differentiated from FLOAT
+                    param->recordValue(query.value(0).toInt());
+
+                } else if (curType == CinParameter::FLOAT) {
+                    param->recordValue(query.value(0).toFloat());
+
+                } else {
+                    param->recordValue(query.value(0).toString());
+                }
             }
-            param->finalizeValues();
+            // param->finalizeValues();
             param->setToValueAt(0);
             // param->print();
         } else {
@@ -144,6 +180,8 @@ CinParameter *CinParamSet::getParameter(const QString &name)
 }
 
 
+
+/*
 bool CinParamSet::valueExists(const QString &key, float value)
 {
     CinParameter *p = getParameter(key);
@@ -155,6 +193,7 @@ bool CinParamSet::valueExists(const QString &key, float value)
         return false;
     }
 }
+*/
 
 void CinParamSet::clear()
 {
@@ -186,4 +225,10 @@ void CinParamSet::decrement(const QString &name)
     {
         param->decrementValue();
     }
+}
+
+bool CinParamSet::parameterExists(const QString &name)
+{
+    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
+    return (found != mParameters.end());
 }

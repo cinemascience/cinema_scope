@@ -56,6 +56,7 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
     if (input)
     {
         // get column names and create data structure for results 
+            // TODO: remove this size constraint on the line
         input.getline(str, 10000);
         std::vector<std::string> colnames;
         split(str, ',', colnames);
@@ -113,9 +114,9 @@ CinDBColData::Type CinDBReader::getType(QString &value)
     bool iTest = false;
     bool fTest = false;
 
-    // is this a NaN?
     if (value.toLower() == "nan") {
-        type = CinDBColData::FLOAT;
+        // this cannot alone determine the type of a column
+        type = CinDBColData::UNDEFINED;
     } else if (value.isEmpty()) {
         type = CinDBColData::UNDEFINED;
     } else {

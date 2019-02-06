@@ -34,13 +34,10 @@ class CinCompoundSlider : public QWidget
         void onParameterValueChanged(const QString &value, int valueID);
 
     private:
-        bool getValue(QString &value, int id);
-
-        QHBoxLayout mLayout;
-
-        QLabel      mLabel;
-        QSlider     mSlider;
-        QLabel      mValue;
+        QHBoxLayout   mLayout;
+        QLabel        mLabel;
+        QSlider       mSlider;
+        QLabel        mValue;
         CinParameter *mParameter=NULL;
 };
 
