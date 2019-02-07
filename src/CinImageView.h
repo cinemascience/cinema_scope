@@ -54,7 +54,6 @@ public:
 
 
 public slots:
-    // TODO discuss use of const
     void onLoadImage(const QString &key, const QString &path);
 
 protected:

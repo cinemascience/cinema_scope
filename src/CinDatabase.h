@@ -20,13 +20,13 @@ class CinDatabase
 
         int                   load(const QString &dbPath);
         void                  reset();
-        inline const QString &getTableName() {return mTableName;}
+        inline const QString &getTableName() const {return mTableName;}
 
         const QString        &getPath();
-        const QStringList    &getParameterColumnNames() {return mParameterColNames;}
-        const QStringList    &getArtifactColumnNames() {return mArtifactColNames;} 
+        const QStringList    &getParameterColumnNames() const {return mParameterColNames;}
+        const QStringList    &getArtifactColumnNames() const {return mArtifactColNames;} 
         void                  addArtifactColumnName(const QString &name);
-        QSqlDatabase         &getDatabase() {return mDatabase;}
+        const QSqlDatabase   &getDatabase() const {return mDatabase;}
 
 
     private:

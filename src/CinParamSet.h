@@ -23,15 +23,10 @@ class CinParamSet : public QObject
 
         // add/remove
         bool add(const QString &name, CinParameter::Type type);
+        // TODO: implement 'remove' method
         // bool remove(const QString &name);
         void clear();
 
-        // parameter value query API
-        // bool getNextValue(const QString &key, float value, float &next);
-        // bool getPrevValue(const QString &key, float value, float &prex);
-        // bool getValue(const QString &name, float &value);
-        // bool getMinMax(const QString &name, float &min, float &max); 
-        // bool valueExists(const QString &key, float value);
         bool parameterExists(const QString &key);
         void increment(const QString &name);
         void decrement(const QString &name);
@@ -41,10 +36,7 @@ class CinParamSet : public QObject
         int  getNumParameters() {return mParamNames.count();}
         CinParameter *getParameter(const QString &name);
 
-            // TODO make this a const reference
-        void init(CinDatabase &db);
-
-        // void changeParameter(const QString &name, float value);
+        void init(const CinDatabase &db);
 
         void print();
 

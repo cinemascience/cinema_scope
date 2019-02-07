@@ -38,53 +38,6 @@ bool CinParamSet::add(const QString &name, CinParameter::Type type)
     return retVal;
 }
 
-/*
-bool CinParamSet::getValue(const QString &name, float &value) 
-{
-    bool success = false;
-
-    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
-    if (found != mParameters.end())
-    {
-        value = found.value()->getValue(); 
-        success = true;
-    }
-
-    return success;
-}
-*/
-
-/*
-bool CinParamSet::getMinMax(const QString &name, float &min, float &max)
-{
-    bool success = false;
-
-    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
-    if (found != mParameters.end())
-    {
-        min = found.value()->getMin(); 
-        max = found.value()->getMax(); 
-        success = true;
-    }
-
-    return success;
-}
-*/
-
-/*
-void CinParamSet::changeParameter(const QString &name, float value)
-{
-    QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
-    // qDebug() << "CINPARAMSET: " << name;
-    if (found != mParameters.end())
-    {
-        found.value()->setValue(value);
-        emit parameterChanged();
-        // qDebug() << "CINPARAMSET emit:" << name << value;
-    }
-}
-*/
-
 bool CinParamSet::contains(const QString &name)
 {
     QMap<QString, CinParameter*>::iterator found = mParameters.find(name);
@@ -94,22 +47,20 @@ bool CinParamSet::contains(const QString &name)
 
 void CinParamSet::print()
 {
-    /*
     QMap<QString, CinParameter*>::iterator cur;
-    // qDebug() << "CINPARAMSET: (parameters)";
     for (cur = mParameters.begin(); cur != mParameters.end(); ++cur)
     {
+        QString value;
+        cur.value()->getValueAsString(value);
         qDebug() << cur.value()->getName();
         qDebug() << "  " << CinParameter::GetNameForType(cur.value()->getType());
-        qDebug() << "  " << cur.value()->getValue();
-        qDebug() << "  " << cur.value()->getMin() << ", " << cur.value()->getMax();
+        qDebug() << "  " << value; 
     }
     qDebug() << " ";
-    */
 }
 
 
-void CinParamSet::init(CinDatabase &db)
+void CinParamSet::init(const CinDatabase &db)
 {
     // first clear everything
     this->clear();
@@ -178,22 +129,6 @@ CinParameter *CinParamSet::getParameter(const QString &name)
 
     return NULL;
 }
-
-
-
-/*
-bool CinParamSet::valueExists(const QString &key, float value)
-{
-    CinParameter *p = getParameter(key);
-    if (p) 
-    {
-        return p->valueExists(value);
-    } else 
-    {
-        return false;
-    }
-}
-*/
 
 void CinParamSet::clear()
 {
