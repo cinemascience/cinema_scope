@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Manages a parameter.  
+<p>Manages a parameter for an application.  
  <a href="class_cin_parameter.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_cin_parameter_8h_source.html">CinParameter.h</a>&gt;</code></p>
@@ -102,75 +102,78 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:ad47d4444dc0dd7ba520da6523500a735"><td class="memItemLeft" align="right" valign="top"><a id="ad47d4444dc0dd7ba520da6523500a735"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>valueChanged</b> (float value, int valueID)</td></tr>
-<tr class="separator:ad47d4444dc0dd7ba520da6523500a735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d9c27a95afd62b19acbd622ede8ec25"><td class="memItemLeft" align="right" valign="top"><a id="a7d9c27a95afd62b19acbd622ede8ec25"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>valueChanged</b> (const QString &amp;name, float value)</td></tr>
-<tr class="separator:a7d9c27a95afd62b19acbd622ede8ec25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731cd453840113af449aee84d56ff44f"><td class="memItemLeft" align="right" valign="top"><a id="a731cd453840113af449aee84d56ff44f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>valueChanged</b> (const QString &amp;value, int valueID)</td></tr>
+<tr class="separator:a731cd453840113af449aee84d56ff44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac2f510b41f43e1fe950cd3d565bb636a"><td class="memItemLeft" align="right" valign="top"><a id="ac2f510b41f43e1fe950cd3d565bb636a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>CinParameter</b> (const QString &amp;name, CinParameter::Type type=CinParameter::UNDEFINED, float min=CinParameter::NOT_SET, float max=CinParameter::NOT_SET, float cur=CinParameter::NOT_SET)</td></tr>
-<tr class="separator:ac2f510b41f43e1fe950cd3d565bb636a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80744f864ed0f7be51e74fc5fa7596a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cin_parameter.html#a80744f864ed0f7be51e74fc5fa7596a9">getNextValue</a> (float value, float &amp;next)</td></tr>
-<tr class="memdesc:a80744f864ed0f7be51e74fc5fa7596a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns next biggest value of parameter.  <a href="#a80744f864ed0f7be51e74fc5fa7596a9">More...</a><br /></td></tr>
-<tr class="separator:a80744f864ed0f7be51e74fc5fa7596a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1fd49b32cee2f92182648426e116559"><td class="memItemLeft" align="right" valign="top"><a id="af1fd49b32cee2f92182648426e116559"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getPrevValue</b> (float value, float &amp;prev)</td></tr>
-<tr class="separator:af1fd49b32cee2f92182648426e116559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a369d735a8d5f8ce5a5dca4c7ad85a977"><td class="memItemLeft" align="right" valign="top"><a id="a369d735a8d5f8ce5a5dca4c7ad85a977"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CinParameter</b> (const QString &amp;name, CinParameter::Type type=CinParameter::UNDEFINED)</td></tr>
+<tr class="separator:a369d735a8d5f8ce5a5dca4c7ad85a977"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55ed09b6f87e0f15130897a213850cba"><td class="memItemLeft" align="right" valign="top"><a id="a55ed09b6f87e0f15130897a213850cba"></a>
 const QString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const</td></tr>
 <tr class="separator:a55ed09b6f87e0f15130897a213850cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb8c1b23d16784fc2c3a0b17bb1ec3d"><td class="memItemLeft" align="right" valign="top"><a id="afeb8c1b23d16784fc2c3a0b17bb1ec3d"></a>
 CinParameter::Type&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
 <tr class="separator:afeb8c1b23d16784fc2c3a0b17bb1ec3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af54671b090bee5d3d5926021d7b90cf6"><td class="memItemLeft" align="right" valign="top"><a id="af54671b090bee5d3d5926021d7b90cf6"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getMin</b> () const</td></tr>
-<tr class="separator:af54671b090bee5d3d5926021d7b90cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeddfb23aa398a866fb7c8627e77a471a"><td class="memItemLeft" align="right" valign="top"><a id="aeddfb23aa398a866fb7c8627e77a471a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getMax</b> () const</td></tr>
-<tr class="separator:aeddfb23aa398a866fb7c8627e77a471a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2806d8466325386170661486f163f26c"><td class="memItemLeft" align="right" valign="top"><a id="a2806d8466325386170661486f163f26c"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> () const</td></tr>
-<tr class="separator:a2806d8466325386170661486f163f26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1920f5f712ef7b9dfae65c3b6dc475e"><td class="memItemLeft" align="right" valign="top"><a id="ad1920f5f712ef7b9dfae65c3b6dc475e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (const QString &amp;name)</td></tr>
-<tr class="separator:ad1920f5f712ef7b9dfae65c3b6dc475e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28f1aa58710b44185b1c9c15b0d06380"><td class="memItemLeft" align="right" valign="top"><a id="a28f1aa58710b44185b1c9c15b0d06380"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setType</b> (CinParameter::Type type)</td></tr>
-<tr class="separator:a28f1aa58710b44185b1c9c15b0d06380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86f419ce500436493170ee68a92cc4a2"><td class="memItemLeft" align="right" valign="top"><a id="a86f419ce500436493170ee68a92cc4a2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMin</b> (float min)</td></tr>
-<tr class="separator:a86f419ce500436493170ee68a92cc4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b82d075e5b7e6c2fd17cce24139b2af"><td class="memItemLeft" align="right" valign="top"><a id="a8b82d075e5b7e6c2fd17cce24139b2af"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMax</b> (float max)</td></tr>
-<tr class="separator:a8b82d075e5b7e6c2fd17cce24139b2af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e9276c58ab5b23034f42f119026cc0d"><td class="memItemLeft" align="right" valign="top"><a id="a0e9276c58ab5b23034f42f119026cc0d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (float value)</td></tr>
-<tr class="separator:a0e9276c58ab5b23034f42f119026cc0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3155e64c3771ef018169d5a6dec2e0"><td class="memItemLeft" align="right" valign="top"><a id="a6a3155e64c3771ef018169d5a6dec2e0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>setToValueAt</b> (int id)</td></tr>
-<tr class="separator:a6a3155e64c3771ef018169d5a6dec2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae450780ab328db4d5e60e7ca243a20a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cin_parameter.html#ae450780ab328db4d5e60e7ca243a20a9">recordValue</a> (float value)</td></tr>
-<tr class="memdesc:ae450780ab328db4d5e60e7ca243a20a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add unique values to the datastructure.  <a href="#ae450780ab328db4d5e60e7ca243a20a9">More...</a><br /></td></tr>
-<tr class="separator:ae450780ab328db4d5e60e7ca243a20a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad40253b01e8cc7e15cbdce8ad7164be6"><td class="memItemLeft" align="right" valign="top"><a id="ad40253b01e8cc7e15cbdce8ad7164be6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>valueExists</b> (float value)</td></tr>
-<tr class="separator:ad40253b01e8cc7e15cbdce8ad7164be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeab209eac444f03195f36e58a403cadd"><td class="memItemLeft" align="right" valign="top"><a id="aeab209eac444f03195f36e58a403cadd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getValueAsString</b> (QString &amp;value)</td></tr>
+<tr class="separator:aeab209eac444f03195f36e58a403cadd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab465e1ada0b3a0234d289ba60f459584"><td class="memItemLeft" align="right" valign="top"><a id="ab465e1ada0b3a0234d289ba60f459584"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getValueAsString</b> (QString &amp;value, int i)</td></tr>
+<tr class="separator:ab465e1ada0b3a0234d289ba60f459584"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e921e5b5c774be08a50ead1e3cf1b0f"><td class="memItemLeft" align="right" valign="top"><a id="a9e921e5b5c774be08a50ead1e3cf1b0f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>incrementValue</b> ()</td></tr>
+<tr class="separator:a9e921e5b5c774be08a50ead1e3cf1b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad486edfde48fe7c7339b7cd86e7c41fb"><td class="memItemLeft" align="right" valign="top"><a id="ad486edfde48fe7c7339b7cd86e7c41fb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>decrementValue</b> ()</td></tr>
+<tr class="separator:ad486edfde48fe7c7339b7cd86e7c41fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f23e6d51b9a72abd5774ef2ad966d6f"><td class="memItemLeft" align="right" valign="top"><a id="a4f23e6d51b9a72abd5774ef2ad966d6f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getLastID</b> ()</td></tr>
+<tr class="separator:a4f23e6d51b9a72abd5774ef2ad966d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59139173db6e70797306e1843bb2ab06"><td class="memItemLeft" align="right" valign="top"><a id="a59139173db6e70797306e1843bb2ab06"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getNumValues</b> ()</td></tr>
 <tr class="separator:a59139173db6e70797306e1843bb2ab06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90cffb1448cdfe9f21b514a488073e81"><td class="memItemLeft" align="right" valign="top"><a id="a90cffb1448cdfe9f21b514a488073e81"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>valueAsString</b> (QString &amp;value, int i)</td></tr>
-<tr class="separator:a90cffb1448cdfe9f21b514a488073e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2306167475501d10db6f87759fffc37"><td class="memItemLeft" align="right" valign="top"><a id="aa2306167475501d10db6f87759fffc37"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getCurID</b> ()</td></tr>
+<tr class="separator:aa2306167475501d10db6f87759fffc37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1920f5f712ef7b9dfae65c3b6dc475e"><td class="memItemLeft" align="right" valign="top"><a id="ad1920f5f712ef7b9dfae65c3b6dc475e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (const QString &amp;name)</td></tr>
+<tr class="separator:ad1920f5f712ef7b9dfae65c3b6dc475e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a3155e64c3771ef018169d5a6dec2e0"><td class="memItemLeft" align="right" valign="top"><a id="a6a3155e64c3771ef018169d5a6dec2e0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>setToValueAt</b> (int id)</td></tr>
+<tr class="separator:a6a3155e64c3771ef018169d5a6dec2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa342732d5f6c4275ef1c2512b3511487"><td class="memItemLeft" align="right" valign="top"><a id="aa342732d5f6c4275ef1c2512b3511487"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> ()</td></tr>
 <tr class="separator:aa342732d5f6c4275ef1c2512b3511487"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12548442d5b41af9974d8cd01f3c01e7"><td class="memItemLeft" align="right" valign="top"><a id="a12548442d5b41af9974d8cd01f3c01e7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sortValues</b> ()</td></tr>
-<tr class="separator:a12548442d5b41af9974d8cd01f3c01e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a670cbd160cbb5d0a3e99ddf799a91ed0"><td class="memItemLeft" align="right" valign="top"><a id="a670cbd160cbb5d0a3e99ddf799a91ed0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>recordValue</b> (int value)</td></tr>
+<tr class="separator:a670cbd160cbb5d0a3e99ddf799a91ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6d74eb10fbc7fbbbb09778bfc5134f4"><td class="memItemLeft" align="right" valign="top"><a id="af6d74eb10fbc7fbbbb09778bfc5134f4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>recordValue</b> (double value)</td></tr>
+<tr class="separator:af6d74eb10fbc7fbbbb09778bfc5134f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e50aeb3282140dc8a57aac63351aaca"><td class="memItemLeft" align="right" valign="top"><a id="a0e50aeb3282140dc8a57aac63351aaca"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>recordValue</b> (const QString &amp;value)</td></tr>
+<tr class="separator:a0e50aeb3282140dc8a57aac63351aaca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12587cf5e9834b92c357f30726017542"><td class="memItemLeft" align="right" valign="top"><a id="a12587cf5e9834b92c357f30726017542"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (int value)</td></tr>
+<tr class="separator:a12587cf5e9834b92c357f30726017542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd6ac8345e936785ced79857eb1f0978"><td class="memItemLeft" align="right" valign="top"><a id="abd6ac8345e936785ced79857eb1f0978"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (double value)</td></tr>
+<tr class="separator:abd6ac8345e936785ced79857eb1f0978"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2415fd206524a64f277898ba550480b8"><td class="memItemLeft" align="right" valign="top"><a id="a2415fd206524a64f277898ba550480b8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const QString &amp;value)</td></tr>
+<tr class="separator:a2415fd206524a64f277898ba550480b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae458a2aa8034e01df4b0dbaacc93d747"><td class="memItemLeft" align="right" valign="top"><a id="ae458a2aa8034e01df4b0dbaacc93d747"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>valueExists</b> (int value)</td></tr>
+<tr class="separator:ae458a2aa8034e01df4b0dbaacc93d747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf3b87be32f99a47275f6b2f3d14b2e"><td class="memItemLeft" align="right" valign="top"><a id="aadf3b87be32f99a47275f6b2f3d14b2e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>valueExists</b> (double value)</td></tr>
+<tr class="separator:aadf3b87be32f99a47275f6b2f3d14b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4a1e68523fe0bedbfb06c575ca62e52"><td class="memItemLeft" align="right" valign="top"><a id="ad4a1e68523fe0bedbfb06c575ca62e52"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>valueExists</b> (const QString &amp;value)</td></tr>
+<tr class="separator:ad4a1e68523fe0bedbfb06c575ca62e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -183,6 +186,12 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae6f2ae28255693fb8478d6ca40509ee4"><td class="memItemLeft" align="right" valign="top"><a id="ae6f2ae28255693fb8478d6ca40509ee4"></a>
 static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>TypeNames</b> [NUMTYPES] = {&quot;UNDEFINED&quot;, &quot;STRING&quot;, &quot;FLOAT&quot;, &quot;INT&quot;}</td></tr>
 <tr class="separator:ae6f2ae28255693fb8478d6ca40509ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac894bde859040e4dfba1567683a25398"><td class="memItemLeft" align="right" valign="top"><a id="ac894bde859040e4dfba1567683a25398"></a>
+static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>NAN_VALUE</b> = &quot;NaN&quot;</td></tr>
+<tr class="separator:ac894bde859040e4dfba1567683a25398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5995ad30c36f07f8b18774dbe5da73f4"><td class="memItemLeft" align="right" valign="top"><a id="a5995ad30c36f07f8b18774dbe5da73f4"></a>
+static const char *&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_VALUE</b> = 0</td></tr>
+<tr class="separator:a5995ad30c36f07f8b18774dbe5da73f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c2174ccaef0326c74444651228c8cb0"><td class="memItemLeft" align="right" valign="top"><a id="a4c2174ccaef0326c74444651228c8cb0"></a>
 static const float&#160;</td><td class="memItemRight" valign="bottom"><b>NO_VALUE</b> = -0.0001010101</td></tr>
 <tr class="separator:a4c2174ccaef0326c74444651228c8cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,8 +206,7 @@ static const float&#160;</td><td class="memItemRight" valign="bottom"><b>NOT_SET
 <tr class="separator:a3e033af506c819e930944dcdbeb8ceb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Manages a parameter. </p>
-<p>A set of parameters defines the input values for a Cinema Database This class manages communication about these parameters as they change in a Qt application. </p>
+<div class="textblock"><p>Manages a parameter for an application. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab440298399882f5ea33c21ea2db70261"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab440298399882f5ea33c21ea2db70261">&#9670;&nbsp;</a></span>GetNameForType()</h2>
@@ -225,58 +233,6 @@ static const float&#160;</td><td class="memItemRight" valign="bottom"><b>NOT_SET
 </div><div class="memdoc">
 
 <p>Convenience function to print names instead of ints. </p>
-
-</div>
-</div>
-<a id="a80744f864ed0f7be51e74fc5fa7596a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80744f864ed0f7be51e74fc5fa7596a9">&#9670;&nbsp;</a></span>getNextValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CinParameter::getNextValue </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>next</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns next biggest value of parameter. </p>
-<p>Sets value for 'next' if successful</p>
-<p>False if biggest value in array or bigger than largest value True otherwise </p>
-
-</div>
-</div>
-<a id="ae450780ab328db4d5e60e7ca243a20a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae450780ab328db4d5e60e7ca243a20a9">&#9670;&nbsp;</a></span>recordValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CinParameter::recordValue </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Add unique values to the datastructure. </p>
 
 </div>
 </div>
