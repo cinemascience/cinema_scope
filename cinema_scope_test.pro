@@ -12,7 +12,6 @@ SOURCES +=  src/CinParameter.cpp \
             src/CinDBView.cpp \
             src/CinScopeTest.cpp \
             src/CinDatabase.cpp \
-            src/CinParamSet.cpp \
             src/CinArtifactSet.cpp \
             src/CinCore.cpp
 
@@ -21,6 +20,5 @@ HEADERS +=  src/CinParameter.h \
             src/CinDBReader.h \
             src/CinDBView.h \
             src/CinDatabase.h \
-            src/CinParamSet.h \
             src/CinArtifactSet.h \
             src/CinCore.h
