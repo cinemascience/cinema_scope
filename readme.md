@@ -1,4 +1,4 @@
-## Cinema Scope v0.1 cross-platform application
+## Cinema Scope v0.1 cross-platform viewer application
 [![Build Status](https://travis-ci.org/cinemascience/cinema_scope.svg?branch=master)](https://travis-ci.org/cinemascience/cinema_scope)
 
 <img src="docs/html/img/cinema_scope.png" width="800" border="1">
