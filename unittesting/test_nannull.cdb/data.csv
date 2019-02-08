@@ -1,0 +1,10 @@
+phi,theta,FILE
+,-90.1,image/image0000.png
+,90.1,image/image0001.png
+,NaN,image/image0002.png
+180.1,-90.1,image/image0003.png
+180.1,90.1,image/image0004.png
+180.1,NaN,image/image0005.png
+NaN,-90.1,image/image0006.png
+NaN,90.1,image/image0007.png
+NaN,NaN,image/image0008.png

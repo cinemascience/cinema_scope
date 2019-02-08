@@ -99,15 +99,26 @@ void CinParamSet::init(const CinDatabase &db)
         {
             while (query.next())
             {
-                if (curType == CinParameter::INT) {
-                    // this call is currently not differentiated from FLOAT
-                    param->recordValue(query.value(0).toInt());
-
-                } else if (curType == CinParameter::FLOAT) {
-                    param->recordValue(query.value(0).toFloat());
-
+                if (query.value(0) == "")
+                {
+                    param->recordValue("");
+                } else if (query.value(0).toString().toLower() == "\"\"")
+                {
+                    param->recordValue("\"\"");
+                } else if (query.value(0).toString().toLower() == "nan")
+                {
+                    param->recordValue("NaN");
                 } else {
-                    param->recordValue(query.value(0).toString());
+                    if (curType == CinParameter::INT) {
+                        // this call is currently not differentiated from FLOAT
+                        param->recordValue(query.value(0).toInt());
+
+                    } else if (curType == CinParameter::FLOAT) {
+                        param->recordValue(query.value(0).toFloat());
+
+                    } else {
+                        param->recordValue(query.value(0).toString());
+                    }
                 }
             }
             // param->finalizeValues();
