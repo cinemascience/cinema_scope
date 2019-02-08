@@ -103,16 +103,28 @@ bool CinParameter::getValueAsString(QString &value, int i)
     {
         QVariant variant = mValues.at(i);
 
-        if (getType() == CinParameter::INT)
+        qDebug() << "PARAMETER " << getName() << " " << variant;
+
+        // NULL case
+        if (variant == "")
         {
-            value = variant.toString();
-        } else if (getType() == CinParameter::FLOAT)
+            value = "";
+        } else if (variant.toString().toLower() == "nan")
         {
-            value = QString::number(variant.toFloat()); 
-        } else 
-        { 
-            value = variant.toString();
+            value = "NaN";
+        } else {
+            if (getType() == CinParameter::INT)
+            {
+                value = variant.toString();
+            } else if (getType() == CinParameter::FLOAT)
+            {
+                value = QString::number(variant.toFloat()); 
+            } else 
+            { 
+                value = variant.toString();
+            }
         }
+
         
         result = true;
     }

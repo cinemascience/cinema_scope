@@ -28,8 +28,8 @@ parameters = [[10,11,12,13],[20,21,22,23],["text_0","text_1","text_2","text_3"]]
 names      = "phi,theta,name,FILE"
 # parameters = [[10,11,12,13],[20,21,22,23]]
 # names      = "phi,theta,FILE"
-parameters = [["",180.1],[-90.1,90.1],[180,90],[-180,-90],["one","two"],["three","four"]] 
-names      = "phi,theta,iphi,itheta,sphi,stheta,FILE"
+parameters = [["",180.1,"NaN"],[-90.1,"\"\"","NaN"]] 
+names      = "phi,theta,FILE"
 allParams  = list(itertools.product(*parameters))
 
 os.mkdir("image")
