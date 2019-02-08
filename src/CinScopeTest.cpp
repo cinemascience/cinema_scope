@@ -362,7 +362,7 @@ void CinScopeTest::nannull()
 {
     CinDatabase db;
 
-    db.load("../unittesting/test_null.cdb");
+    db.load("../unittesting/test_nannull.cdb");
     QStringList parameters = {"phi", "theta"};
     QStringList artifacts  = {"FILE"};
 
@@ -375,10 +375,10 @@ void CinScopeTest::nannull()
     {
         QVERIFY(query.value(0) == "image/image0000.png");
     }
-    query.exec("SELECT [FILE] FROM cinema WHERE [phi]='180.0' AND [theta]='-90.1'");
+    query.exec("SELECT [FILE] FROM cinema WHERE [phi]='180.1' AND [theta]='-90.1'");
     while (query.next())
     {
-        QVERIFY(query.value(0) == "image/image0001.png");
+        QVERIFY(query.value(0) == "image/image0003.png");
     }
 
     // NULL
@@ -390,14 +390,14 @@ void CinScopeTest::nannull()
     }
 
     // NaN
-    query.exec("SELECT [theta] FROM cinema WHERE [FILE]='image/image0001.png' AND [phi]='180.0'");
+    query.exec("SELECT [theta] FROM cinema WHERE [FILE]='image/image0005.png' AND [phi]='180.1'");
     while (query.next())
     {
         QVERIFY(query.value(0) == "NaN");
     }
 
     // empty string
-    query.exec("SELECT [phi] FROM cinema WHERE [FILE]='image/image0002.png' AND [theta]='-90.1'");
+    query.exec("SELECT [theta] FROM cinema WHERE [FILE]='image/image0004.png' AND [phi]='-180.1'");
     while (query.next())
     {
         QVERIFY(query.value(0) == "\"\"");
