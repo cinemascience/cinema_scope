@@ -4,12 +4,12 @@
 #include <QDebug>
 
 const char *CinParameter::TypeNames[] = {"UNDEFINED", "STRING", "FLOAT", "INT"};
-const char *CinParameter::NAN_VALUE = "NaN";
-const char *CinParameter::NULL_VALUE = 0; 
-const float CinParameter::NO_VALUE = -0.0001010101;
-const float CinParameter::NO_PREV  = -0.0002020202;
-const float CinParameter::NO_NEXT  = -0.0003030303;
-const float CinParameter::NOT_SET  = -0.0004040404;
+const char *CinParameter::NAN_VALUE   = "NaN";
+const char *CinParameter::NULL_VALUE  = 0; 
+const float CinParameter::NO_VALUE    = -0.0001010101;
+const float CinParameter::NO_PREV     = -0.0002020202;
+const float CinParameter::NO_NEXT     = -0.0003030303;
+const float CinParameter::NOT_SET     = -0.0004040404;
 
 /*! \brief Convenience function to print names instead of ints
  *

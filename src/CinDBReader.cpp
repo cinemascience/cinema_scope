@@ -1,4 +1,5 @@
 #include "CinDBReader.h"
+#include "CinCore.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
@@ -89,10 +90,8 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
                     QString value = cur->c_str();
                     curColData->type = getType(value);
                 }
-
                 curColData++;
             }
-
             colvals.clear();
         }
 
@@ -108,13 +107,13 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
     return res;
 }
 
-CinDBColData::Type CinDBReader::getType(QString &value)
+CinDBColData::Type CinDBReader::getType(const QString &value)
 {
     CinDBColData::Type type = CinDBColData::UNDEFINED;
     bool iTest = false;
     bool fTest = false;
 
-    if (value.toLower() == "nan") {
+    if (CinCore::IsNAN(value)) {
         // this cannot alone determine the type of a column
         type = CinDBColData::UNDEFINED;
     } else if (value.isEmpty()) {
