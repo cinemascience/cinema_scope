@@ -32,38 +32,38 @@ git:
 # Matrix of operating systems and dependencies
 matrix:
   include:
-    - os: linux
-      sudo: required
-      # Start xvfb to get be able to run GUI tests
-      services: xvfb
-      dist: xenial
-      addons:
-        apt:
-          update: true
-          sources:
-            - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
-          packages:
-            - libgl1-mesa-dev
-            - qt511base
-    - os: osx
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
-    - os: osx
-      osx_image: xcode10
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env:
-        - PATH="${PATH}:/usr/local/opt/qt/bin"
-        - osx_image="xcode10"
+#    - os: linux
+#      sudo: required
+#      # Start xvfb to get be able to run GUI tests
+#      services: xvfb
+#      dist: xenial
+#      addons:
+#        apt:
+#          update: true
+#          sources:
+#            - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
+#          packages:
+#            - libgl1-mesa-dev
+#            - qt511base
+#    - os: osx
+#      addons:
+#        brew:
+#          update: true
+#          packages:
+#            - qt5
+#      # Brew doesn't automatically set qt5 bins to PATH anymore
+#      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
+#    - os: osx
+#      osx_image: xcode10
+#      addons:
+#        brew:
+#          update: true
+#          packages:
+#            - qt5
+#      # Brew doesn't automatically set qt5 bins to PATH anymore
+#      env:
+#        - PATH="${PATH}:/usr/local/opt/qt/bin"
+#        - osx_image="xcode10"
     - os: windows
       # Start xvfb to get be able to run GUI tests
       services: xvfb
