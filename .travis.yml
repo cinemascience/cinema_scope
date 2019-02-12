@@ -85,8 +85,9 @@ script:
 # What to do if success or failure
 # non-zero exit status: build status returns failed but continues running
 after_success:
-  - cd $TRAVIS_BUILD_DIR/build 
-  - xvfb-run $TRAVIS_BUILD_DIR/cinema_scope_test
+  # cd to a next level directory because of the relative path in /src/CinScopeTest.cpp
+  - cd $TRAVIS_BUILD_DIR/src 
+  - $TRAVIS_BUILD_DIR/cinema_scope_test
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
