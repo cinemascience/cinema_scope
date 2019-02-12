@@ -16,7 +16,7 @@ case $TRAVIS_OS_NAME in
         ;;
     windows)
         cd $TRAVIS_BUILD_DIR/src
-        find ../ -name "cinema_scope_test" -print0 -quit | xargs -0 cmd //c
+        sh -c `find .. -name "cinema_scope_test" -exec echo {} \; -quit`
         cd $TRAVIS_BUILD_DIR
         ;;
 esac
