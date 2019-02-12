@@ -6,6 +6,14 @@ language: cpp
 #  - master
 #  - /v[0-9].*$/
 
+#stages:
+#  name:
+#    - before_deploy
+#    - deploy
+#    if: 
+#      - os = osx
+#      - osx_image != "xcode10"
+
 # Notification settings
 notifications:
   email: false
@@ -80,33 +88,31 @@ install:
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
   - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
+  # cd to a next level directory because of the relative path in /src/CinScopeTest.cpp
+  - cd $TRAVIS_BUILD_DIR/src 
+  # find the test executable, run it, and quit so it's not run more than once
+  - find $TRAVIS_BUILD_DIR -name "cinema_scope_test" -exec {} \; -quit
 
 # OPTIONAL - Cleaning up the cache
 #before_cache:
 
 # What to do if success or failure
 # non-zero exit status: build status returns failed but continues running
-after_success:
-  # cd to a next level directory because of the relative path in /src/CinScopeTest.cpp
-  #- cd $TRAVIS_BUILD_DIR/src 
-  # find the test executable, run it, and quit so it's not run more than once
-  - find $TRAVIS_BUILD_DIR -name "cinema_scope_test" -exec {} \; -quit
+#after_success:
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
 #before_deploy:
-#  git clone https://github.com/${TRAVIS_REPO_SLUG}.git ${TRAVIS_TAG} && \
-#    cd ${TRAVIS_TAG} && git checkout ${TRAVIS_TAG} && cd ../ && \
-#    zip -r ${TRAVIS_TAG}.zip ${TRAVIS_TAG} && \
-#    tar czf ${TRAVIS_TAG}.tar.gz ${TRAVIS_TAG} 
+#  - cd $TRAVIS_BUILD_DIR
+#  - doxygen ./doxyfile.cfg
+#  - 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 #deploy:
-#  provider: releases
-#  api_key: "GITHUB OATH TOKEN"
+#  provider: pages
 #  file:
 #    - "${TRAVIS_TAG}.zip"
 #    - "${TRAVIS_TAG}.tar.gz"
