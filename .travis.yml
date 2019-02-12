@@ -37,6 +37,7 @@ matrix:
             - libgl1-mesa-dev
             - qt511base
 #    - os: osx
+#      services: xvfb
 #      addons:
 #        brew:
 #          update: true
@@ -45,6 +46,7 @@ matrix:
 #      # Brew doesn't automatically set qt5 bins to PATH anymore
 #      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
 #    - os: osx
+#      services: xvfb
 #      osx_image: xcode10
 #      addons:
 #        brew:
@@ -86,8 +88,9 @@ script:
 # non-zero exit status: build status returns failed but continues running
 after_success:
   # cd to a next level directory because of the relative path in /src/CinScopeTest.cpp
-  - cd $TRAVIS_BUILD_DIR/src 
-  - $TRAVIS_BUILD_DIR/cinema_scope_test
+  #- cd $TRAVIS_BUILD_DIR/src 
+  # find the test executable, run it, and quit so it's not run more than once
+  - find $TRAVIS_BUILD_DIR -name "cinema_scope_test" -exec {} \; -quit
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
