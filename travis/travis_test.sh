@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -x
 set -e
 
 case $TRAVIS_OS_NAME in
