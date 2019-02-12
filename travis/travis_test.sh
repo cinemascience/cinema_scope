@@ -11,6 +11,7 @@ case $TRAVIS_OS_NAME in
         ;;
     osx)
         cd $TRAVIS_BUILD_DIR/src
+        find ../ -name "cinema_scope_test" -print0 -quit | xargs -0 bash 2>&1
         cd $TRAVIS_BUILD_DIR
         ;;
     windows)
