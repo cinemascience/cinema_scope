@@ -89,7 +89,7 @@ install:
 script:
   - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
   # cd to a next level directory because of the relative path in /src/CinScopeTest.cpp
-  - cd $TRAVIS_BUILD_DIR/src 
+  #- cd $TRAVIS_BUILD_DIR/src 
   # find the test executable, run it, and quit so it's not run more than once
   - find $TRAVIS_BUILD_DIR -name "cinema_scope_test" -exec {} \; -quit
 
