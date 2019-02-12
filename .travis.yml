@@ -89,7 +89,7 @@ install:
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
   - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
-  - $TRAVIS_BUILD_DIR/travis/travis_test.sh
+  - bash $TRAVIS_BUILD_DIR/travis/travis_test.sh
 
 # OPTIONAL - Cleaning up the cache
 #before_cache:
