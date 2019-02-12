@@ -89,7 +89,9 @@ install:
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
   - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
-  - bash $TRAVIS_BUILD_DIR/travis/travis_test.sh
+  - cd $TRAVIS_BUILD_DIR/src
+  - find ../ -name "cinema_scope_test.exe" -exec {} \;
+  - . $TRAVIS_BUILD_DIR/travis/travis_test.sh 
 
 # OPTIONAL - Cleaning up the cache
 #before_cache:
@@ -104,19 +106,14 @@ script:
 #before_deploy:
 #  - cd $TRAVIS_BUILD_DIR
 #  - doxygen ./doxyfile.cfg
-#  - 
+#  - git commit -am "Updating doxygen" 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 #deploy:
 #  provider: pages
-#  file:
-#    - "${TRAVIS_TAG}.zip"
-#    - "${TRAVIS_TAG}.tar.gz"
 #  skip_cleanup: true
-#  on:
-#    tags: true
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
