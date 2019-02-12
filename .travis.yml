@@ -85,7 +85,8 @@ script:
 # What to do if success or failure
 # non-zero exit status: build status returns failed but continues running
 after_success:
-  - . $TRAVIS_BUILD_DIR/travis/travis_test.sh
+  - cd $TRAVIS_BUILD_DIR/build 
+  - xvfb-run $TRAVIS_BUILD_DIR/cinema_scope_test
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
