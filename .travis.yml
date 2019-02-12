@@ -35,26 +35,26 @@ matrix:
           packages:
             - libgl1-mesa-dev
             - qt511base
-    - os: osx
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
-    - os: osx
-      osx_image: xcode10
-      addons:
-        brew:
-          update: true
-          packages:
-            - qt5
-      # Brew doesn't automatically set qt5 bins to PATH anymore
-      env:
-        - PATH="${PATH}:/usr/local/opt/qt/bin"
-        - osx_image="xcode10"
-    - os: windows
+#    - os: osx
+#      addons:
+#        brew:
+#          update: true
+#          packages:
+#            - qt5
+#      # Brew doesn't automatically set qt5 bins to PATH anymore
+#      env: PATH="${PATH}:/usr/local/opt/qt/bin"    
+#    - os: osx
+#      osx_image: xcode10
+#      addons:
+#        brew:
+#          update: true
+#          packages:
+#            - qt5
+#      # Brew doesn't automatically set qt5 bins to PATH anymore
+#      env:
+#        - PATH="${PATH}:/usr/local/opt/qt/bin"
+#        - osx_image="xcode10"
+#    - os: windows
 
 # OPTIONAL - which components to cache 
 #cache components:
@@ -83,7 +83,8 @@ script:
 
 # What to do if success or failure
 # non-zero exit status: build status returns failed but continues running
-#after_success:
+after_success:
+  - . $TRAVIS_BUILD_DIR/travis/travis_test.sh
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
