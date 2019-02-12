@@ -27,6 +27,7 @@ matrix:
     - os: linux
       sudo: required
       dist: xenial
+      services: xvfb
       addons:
         apt:
           update: true
