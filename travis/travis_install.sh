@@ -14,6 +14,9 @@ case $TRAVIS_OS_NAME in
     osx)
         brew update
         brew install qt5
+        which xvfb
+        which Xvfb
+        sudo Xvfb :99 -ac -screen 0 &
         ;;
     windows)
         # Download and run qt installer

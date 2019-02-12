@@ -34,6 +34,8 @@ matrix:
   include:
     - os: linux
       sudo: required
+      # Start xvfb to get be able to run GUI tests
+      services: xvfb
       dist: xenial
       addons:
         apt:
@@ -63,9 +65,8 @@ matrix:
         - PATH="${PATH}:/usr/local/opt/qt/bin"
         - osx_image="xcode10"
     - os: windows
-
-# Start xvfb to get be able to run GUI tests
-services: xvfb
+      # Start xvfb to get be able to run GUI tests
+      services: xvfb
 
 # OPTIONAL - which components to cache 
 #cache components:
