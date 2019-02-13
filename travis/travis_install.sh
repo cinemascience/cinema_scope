@@ -15,6 +15,7 @@ case $TRAVIS_OS_NAME in
         sudo Xvfb :99 &
         brew update
         brew install qt5
+        brew install doxygen
         ;;
     windows)
         # Download and run qt installer
