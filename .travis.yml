@@ -99,16 +99,16 @@ script:
 before_deploy:
   - cd $TRAVIS_BUILD_DIR
   - doxygen ./doxyfile.cfg
-#  - git commit -am "Updating doxygen" 
+  - git commit -am "Updating doxygen" 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 deploy:
   provider: pages
-  all_branches: true
   github-token: ${GITHUB_TOKEN}
   skip_cleanup: true
+  target-branch: master
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
