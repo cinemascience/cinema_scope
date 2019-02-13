@@ -9,7 +9,7 @@ case $TRAVIS_OS_NAME in
           cd $TRAVIS_BUILD_DIR
           doxygen ./doxyfile.cfg
           git commit -am "Updating doxygen"
-          git push "https://${GITHUB_TOKEN}@github.com/EthanS94/master.git" HEAD
+          git push "https://${GITHUB_TOKEN}@github.com/EthanS94/cinema_scope" HEAD:master
         fi
         ;;
     windows)
