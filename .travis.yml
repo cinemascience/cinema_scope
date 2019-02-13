@@ -6,12 +6,6 @@ language: cpp
 #  - master
 #  - /v[0-9].*$/
 
-stages:
-  - name: before_deploy
-    if: os = osx AND osx_image != "xcode10"
-  - name: deploy
-    if: os = osx AND osx_image != "xcode10"
-
 # Notification settings
 notifications:
   email: false
@@ -100,6 +94,9 @@ script:
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
 before_deploy:
+  on:
+    os: osx
+    condition: osx_image != xcode10
   - cd $TRAVIS_BUILD_DIR
   - doxygen ./doxyfile.cfg
 #  - git commit -am "Updating doxygen" 
