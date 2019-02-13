@@ -90,8 +90,6 @@ script:
 # non-zero exit status: build status returns failed but continues running
 after_success:
   - bash $TRAVIS_BUILD_DIR/travis/travis_deploy.sh
-  on:
-    branch: master
 #after_failure:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
