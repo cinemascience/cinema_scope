@@ -38,9 +38,6 @@ matrix:
 #            - libgl1-mesa-dev
 #            - qt511base
     - os: osx
-      stages:
-        - name: before_deploy
-        - name: deploy
       addons:
         brew:
           update: true
@@ -99,7 +96,10 @@ script:
 before_deploy:
   - cd $TRAVIS_BUILD_DIR
   - doxygen ./doxyfile.cfg
-  - git commit -am "Updating doxygen" 
+  - git commit -am "Updating doxygen"
+  on:
+    os: osx
+    condition: "$osx_image" = "xcode10" 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
@@ -109,6 +109,9 @@ deploy:
   github-token: ${GITHUB_TOKEN}
   skip_cleanup: true
   target-branch: master
+  on:
+    os: osx
+    condition: "$osx_image" = "xcode10" 
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
