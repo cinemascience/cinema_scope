@@ -6,13 +6,13 @@ language: cpp
 #  - master
 #  - /v[0-9].*$/
 
-#stages:
-#  name:
-#    - before_deploy
-#    - deploy
-#    if: 
-#      - os = osx
-#      - osx_image != "xcode10"
+stages:
+  name:
+    - before_deploy
+    - deploy
+    if: 
+      - os = osx
+      - osx_image != "xcode10"
 
 # Notification settings
 notifications:
@@ -32,19 +32,19 @@ git:
 # Matrix of operating systems and dependencies
 matrix:
   include:
-    - os: linux
-      sudo: required
-      # Start xvfb to get be able to run GUI tests
-      services: xvfb
-      dist: xenial
-      addons:
-        apt:
-          update: true
-          sources:
-            - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
-          packages:
-            - libgl1-mesa-dev
-            - qt511base
+#    - os: linux
+#      sudo: required
+#      # Start xvfb to get be able to run GUI tests
+#      services: xvfb
+#      dist: xenial
+#      addons:
+#        apt:
+#          update: true
+#          sources:
+#            - sourceline: ppa:beineri/opt-qt-5.11.1-xenial
+#          packages:
+#            - libgl1-mesa-dev
+#            - qt511base
     - os: osx
       addons:
         brew:
@@ -64,9 +64,9 @@ matrix:
       env:
         - PATH="${PATH}:/usr/local/opt/qt/bin"
         - osx_image="xcode10"
-    - os: windows
-      # Start xvfb to get be able to run GUI tests
-      services: xvfb
+#    - os: windows
+#      # Start xvfb to get be able to run GUI tests
+#      services: xvfb
 
 # OPTIONAL - which components to cache 
 #cache components:
@@ -101,17 +101,18 @@ script:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
-#before_deploy:
-#  - cd $TRAVIS_BUILD_DIR
-#  - doxygen ./doxyfile.cfg
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR
+  - doxygen ./doxyfile.cfg
 #  - git commit -am "Updating doxygen" 
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
-#deploy:
-#  provider: pages
-#  skip_cleanup: true
+deploy:
+  provider: pages
+  github-token: ${GITHUB_TOKEN}
+  skip_cleanup: true
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
