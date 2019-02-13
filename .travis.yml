@@ -101,6 +101,7 @@ script:
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 deploy:
   provider: script
+  script: $TRAVIS_BUILD_DIR/travis/travis_deploy.sh
 #  github-token: ${GITHUB_TOKEN}
 #  target-branch: master
 #  keep-history: true
