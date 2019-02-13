@@ -66,12 +66,12 @@ matrix:
 # Stuff to do before installing the dependencies          
 # non-zero exit status: build status returns failed and exits immediately
 before_install:
- - . $TRAVIS_BUILD_DIR/travis/travis_before_install.sh
+ - bash $TRAVIS_BUILD_DIR/travis/travis_before_install.sh
 
 # Install dependencies here      
 # non-zero exit status: build status returns failed and exits immediately
 install:
-  - . $TRAVIS_BUILD_DIR/travis/travis_install.sh
+  - bash $TRAVIS_BUILD_DIR/travis/travis_install.sh
 
 # OPTIONAL - After dependencies but before the build step
 # non-zero exit status: build status returns failed and exits immediately
@@ -80,7 +80,7 @@ install:
 # The build step
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
-  - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
+  - bash $TRAVIS_BUILD_DIR/travis/travis_script.sh
   - bash $TRAVIS_BUILD_DIR/travis/travis_test.sh 
 
 # OPTIONAL - Cleaning up the cache
@@ -94,13 +94,7 @@ script:
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
 before_deploy:
-  script:
-    - cd $TRAVIS_BUILD_DIR
-    - doxygen ./doxyfile.cfg
-    - git commit -am "Updating doxygen"
-  on:
-    os: osx
-    osx_image: xcode10
+  script: bash $TRAVIS_BUILD_DIR/travis/travis_before_deploy.sh
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
