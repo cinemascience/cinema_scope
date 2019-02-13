@@ -17,6 +17,7 @@
 #include "CinParamSet.h"
 #include "CinImageView.h"
 #include "CinParameterMapDialog.h"
+#include "CinLinechartWidget.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -49,6 +50,11 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
     mainWidgetLayout->addWidget(mSplitter);
+
+    // begin chart 
+    CinLinechartWidget *chart = new CinLinechartWidget();
+    mainWidgetLayout->addWidget(chart);
+    // end chart
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -173,4 +179,3 @@ void CinScopeWindow::flushUI()
 {
     mSliders->deleteSliders();
 }
-

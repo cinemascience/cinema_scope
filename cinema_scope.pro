@@ -6,6 +6,7 @@
 
 QT += core gui
 QT += sql
+QT += charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -49,6 +50,7 @@ SOURCES += \
         src/CinParamSet.cpp \
         src/CinDatabase.cpp \
         src/CinImageView.cpp \
+        src/CinLinechartWidget.cpp \
         src/CinArtifactSet.cpp \
         src/CinDBView.cpp \
         src/CinCore.cpp \
@@ -63,6 +65,7 @@ HEADERS += \
         src/CinParamSet.h \
         src/CinDatabase.h \
         src/CinImageView.h \
+        src/CinLinechartWidget.h \
         src/CinArtifactSet.h \
         src/CinDBView.h \
         src/CinCore.h \
