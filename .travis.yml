@@ -94,7 +94,7 @@ script:
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
 before_deploy:
-  script: bash $TRAVIS_BUILD_DIR/travis/travis_before_deploy.sh
+  - bash $TRAVIS_BUILD_DIR/travis/travis_before_deploy.sh
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
