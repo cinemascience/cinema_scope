@@ -93,20 +93,19 @@ script:
 
 # OPTIONAL - Steps before deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
-before_deploy:
-  - bash $TRAVIS_BUILD_DIR/travis/travis_before_deploy.sh
+#before_deploy:
+#  - bash $TRAVIS_BUILD_DIR/travis/travis_before_deploy.sh
 
 # OPTIONAL - Deployment
 # non-zero exit status: build status returns failed but continues running
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 deploy:
-  provider: pages
-  github-token: ${GITHUB_TOKEN}
-  skip_cleanup: true
-  target-branch: master
+  provider: script
+#  github-token: ${GITHUB_TOKEN}
+#  target-branch: master
+#  keep-history: true
   on:
-    os: linux
-    osx_image: xcode10
+    branch: master
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
 # non-zero exit status: build status returns failed but continues running
