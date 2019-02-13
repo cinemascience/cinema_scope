@@ -89,8 +89,6 @@ install:
 # non-zero exit status: build status returns failed, but continues to run. Intended for the after_failure step
 script:
   - . $TRAVIS_BUILD_DIR/travis/travis_script.sh
-  - cd $TRAVIS_BUILD_DIR/src
-  - find ../ -name "cinema_scope_test.exe" -exec {} \;
   - . $TRAVIS_BUILD_DIR/travis/travis_test.sh 
 
 # OPTIONAL - Cleaning up the cache

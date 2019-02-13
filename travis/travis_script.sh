@@ -28,7 +28,6 @@ case $TRAVIS_OS_NAME in
         #mingw32-make
         qmake cinema_scope_test.pro
         mingw32-make
-        ls -lrt ./*
         #. $TRAVIS_BUILD_DIR/travis/build_installer.sh
         ;;
 esac

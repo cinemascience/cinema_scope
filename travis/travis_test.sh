@@ -15,7 +15,7 @@ case $TRAVIS_OS_NAME in
         cd $TRAVIS_BUILD_DIR
         ;;
     windows)
-        cd $TRAVIS_BUILD_DIR/src
+        #cd $TRAVIS_BUILD_DIR/src
         bash -c "$(find ../ -name 'cinema_scope_test.exe')"
         cd $TRAVIS_BUILD_DIR
         ;;
