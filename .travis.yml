@@ -105,7 +105,7 @@ deploy:
   skip_cleanup: true
   target-branch: master
   on:
-    os: osx
+    os: linux
     osx_image: xcode10
 
 # OPTIONAL - Steps after deployement. Runs for each deployement if there are multiple deployements
