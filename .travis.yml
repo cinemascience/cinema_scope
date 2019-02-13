@@ -7,12 +7,10 @@ language: cpp
 #  - /v[0-9].*$/
 
 stages:
-  name:
-    - before_deploy
-    - deploy
-    if: 
-      - os = osx
-      - osx_image != "xcode10"
+  - name: before_deploy
+    if: os = osx AND osx_image != "xcode10"
+  - name: deploy
+    if: os = osx AND osx_image != "xcode10"
 
 # Notification settings
 notifications:
@@ -111,6 +109,7 @@ before_deploy:
 # This deploys a zip and a tarball to Github Releases if it is a tagged push request
 deploy:
   provider: pages
+  all_branches: true
   github-token: ${GITHUB_TOKEN}
   skip_cleanup: true
 
