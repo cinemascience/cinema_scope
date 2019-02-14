@@ -11,7 +11,7 @@ case $TRAVIS_OS_NAME in
           git commit -am "Updating doxygen"
           git subtree split --prefix docs -b gh-pages
           git checkout gh-pages
-          git push "https://${GITHUB_TOKEN}@github.com/EthanS94/cinema_scope" HEAD:gh-pages
+          git push --force "https://${GITHUB_TOKEN}@github.com/EthanS94/cinema_scope" HEAD:gh-pages
         fi
         ;;
     windows)
