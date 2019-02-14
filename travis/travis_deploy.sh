@@ -6,7 +6,8 @@ case $TRAVIS_OS_NAME in
         ;;
     osx)
         if [[ "$osx_image" == "xcode10" ]]; then
-          cd $TRAVIS_BUILD_DIR
+          git clone "https://github.com/EthanS94/cinema_scope"
+          cd cinema_scope
           doxygen ./doxyfile.cfg
           git commit -am "Updating doxygen"
           git subtree split --prefix docs -b gh-pages
