@@ -6,7 +6,7 @@ case $TRAVIS_OS_NAME in
         ;;
     osx)
         if [[ "$osx_image" == "xcode10" ]]; then
-          git clone "https://github.com/${TRAVIS_REPO_SLUG}"
+          git clone --depth 1 "https://github.com/${TRAVIS_REPO_SLUG}"
           cd cinema_scope
           doxygen ./doxyfile.cfg
           git commit -am "Updating doxygen"
