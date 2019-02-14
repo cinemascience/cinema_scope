@@ -1,9 +1,9 @@
 language: cpp
 
 #Which branches to build. Currently set for master and any tag
-#branches:
-#  only:
-#  - master
+branches:
+  only:
+  - master
 #  - /v[0-9].*$/
 
 # Notification settings
