@@ -12,8 +12,10 @@ case $TRAVIS_OS_NAME in
         export PATH="$HOME/Qt/Tools/QtInstallerFramework/3.0/bin:$PATH"
         ;;
     osx)
+        sudo Xvfb :99 &
         brew update
         brew install qt5
+        brew install doxygen
         ;;
     windows)
         # Download and run qt installer
