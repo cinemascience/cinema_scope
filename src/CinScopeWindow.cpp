@@ -54,6 +54,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     // begin chart 
     CinLinechartWidget *chart = new CinLinechartWidget();
     mainWidgetLayout->addWidget(chart);
+    chart->load("/Users/dhr/LANL/git/github/cinemascience/cinema_scope/src/data/output.csv");
     // end chart
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

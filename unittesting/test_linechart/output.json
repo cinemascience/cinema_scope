@@ -1,0 +1,7 @@
+{
+    "file"   : "output.csv",
+    "numrows": 1620,
+    "numcols": 1001,
+    "min"    : 7.2607743e-08,
+    "max"    : 203.99976
+}

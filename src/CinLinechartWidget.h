@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -23,10 +24,14 @@ class CinLinechartWidget : public QWidget
         CinLinechartWidget();
         ~CinLinechartWidget();
 
+        void load(const QString &file);
+
     private:
         QMap<QString, QLineSeries *> mData;
         QChart                       mChart;
         QChartView                   mChartView;
+        QValueAxis                   mAxisX;
+        QValueAxis                   mAxisY;
 };
 
 #endif // CINCOMPOUNDSLIDER_H
