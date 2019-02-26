@@ -24,14 +24,16 @@ class CinLinechartWidget : public QWidget
         CinLinechartWidget();
         ~CinLinechartWidget();
 
-        void load(const QString &file);
+        void loadData(const QString &file);
+        void loadSeries(const QString &name);
 
     private:
-        QMap<QString, QLineSeries *> mData;
+
         QChart                       mChart;
         QChartView                   mChartView;
         QValueAxis                   mAxisX;
         QValueAxis                   mAxisY;
+        QMap<QString,QString>        mData;
 };
 
 #endif // CINCOMPOUNDSLIDER_H
