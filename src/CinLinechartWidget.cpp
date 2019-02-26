@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QListIterator>
 #include <QVBoxLayout>
+#include <QLegendMarker>
 
 CinLinechartWidget::~CinLinechartWidget()
 {
@@ -13,9 +14,7 @@ CinLinechartWidget::~CinLinechartWidget()
 CinLinechartWidget::CinLinechartWidget()
 {
     QVBoxLayout *layout = new QVBoxLayout;
-    QLineSeries *series = new QLineSeries;
 
-    mChart.addSeries(series);
     mChart.setTitle("Emulated Results");
 
     mAxisX.setLabelFormat("%i");
@@ -24,7 +23,6 @@ CinLinechartWidget::CinLinechartWidget()
     mAxisX.setMax(10.0);
     mAxisX.setTickCount(11);
     mChart.addAxis(&mAxisX, Qt::AlignBottom);
-    series->attachAxis(&mAxisX);
 
     mAxisY.setLabelFormat("%i");
     mAxisY.setTitleText("Value");
@@ -32,10 +30,10 @@ CinLinechartWidget::CinLinechartWidget()
     mAxisY.setMax(10.0);
     mAxisY.setTickCount(11);
     mChart.addAxis(&mAxisY, Qt::AlignLeft);
-    series->attachAxis(&mAxisY);
 
     mChartView.setChart(&mChart);
     mChartView.setRenderHint(QPainter::Antialiasing);
+
 
     layout->addWidget(&mChartView);
     this->setLayout(layout);
@@ -75,7 +73,7 @@ void CinLinechartWidget::load(const QString &path)
             values = line.split(",");
             QListIterator<QString> it(values);
             float value = 0.0;
-            // swallow the first value
+            // swallow the first value, which is the name of the vector
             it.next();
             while (it.hasNext())
             {
@@ -88,26 +86,38 @@ void CinLinechartWidget::load(const QString &path)
                     // break;
                 // } 
             }
-            qDebug() << "loaded";
             mChart.addSeries(series);
-            qDebug() << "added";
+            series->setVisible(false);
 
             // get the next line
             line = stream.readLine();
 
             series->attachAxis(&mAxisY);
             series->attachAxis(&mAxisX);
-            qDebug() << "attached";
 
             // debug
-            set++;
-            qDebug() << "set: " << set;
+            // set++;
+            // qDebug() << "set: " << set;
 
-            if (set > 50)
-            {
-                break;
-            }
+            // if (set > 50)
+            // {
+                // break;
+            // }
         }
+        // turn on some of the series
+        mChart.series().at(10)->setVisible(true);
+        mChart.series().at(500)->setVisible(true);
+        mChart.series().at(1000)->setVisible(true);
+        mChart.series().at(1500)->setVisible(true);
+
+        // turn off the legend
+        const auto markers = mChart.legend()->markers();
+        for (QLegendMarker *marker : markers)
+        {
+            marker->setVisible(false);
+        }
+
+
     } else {
         qDebug() << "COULD NOT OPEN FILE: " << path;
     }
