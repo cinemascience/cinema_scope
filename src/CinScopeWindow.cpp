@@ -49,7 +49,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
-    mainWidgetLayout->addWidget(mSplitter);
+    // mainWidgetLayout->addWidget(mSplitter);
 
     // begin chart 
     CinLinechartWidget *chart = new CinLinechartWidget();
@@ -74,8 +74,8 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mScene = new QGraphicsScene();
     mImageView->setScene(mScene);
     mImageView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mSplitter->addWidget(mImageView);
-    mSplitter->addWidget(mSliders);
+    // mSplitter->addWidget(mImageView);
+    // mSplitter->addWidget(mSliders);
     mSplitter->setSizes(QList<int>({INT_MAX, INT_MAX}));
 
     // connect slots
