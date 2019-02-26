@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
-#include <QStringListIterator>
+#include <QListIterator>
 #include <QVBoxLayout>
 
 CinLinechartWidget::~CinLinechartWidget()
@@ -49,7 +49,8 @@ void CinLinechartWidget::load(const QString &path)
     // for the moment, assume that the json file is loaded
     int   numCols = 1000;
     float yMin    = 0.0;
-    float yMax    = 0.1;
+    float yMax    = 210.0;
+    // float yMax    = 0.01;
 
     mAxisX.setMin(0);
     mAxisX.setMax(numCols);
@@ -72,30 +73,37 @@ void CinLinechartWidget::load(const QString &path)
             int cur = 0;
             series = new QLineSeries;
             values = line.split(",");
-            QStringListIterator it(values);
+            QListIterator<QString> it(values);
+            float value = 0.0;
+            // swallow the first value
+            it.next();
             while (it.hasNext())
             {
-                series->append((float)cur, QString(it.next().toLocal8Bit().constData()).toFloat());
-                qDebug() << QString(it.next().toLocal8Bit().constData()).toFloat() << endl;
+                value = QString(it.next().toLocal8Bit().constData()).toFloat();
+                series->append((float)cur, value); 
+                // qDebug() << value << endl; 
                 cur++;
-                if (cur > 200) 
-                {
-                    break;
-                } 
+                // if (cur > 200) 
+                // {
+                    // break;
+                // } 
             }
+            qDebug() << "loaded";
             mChart.addSeries(series);
+            qDebug() << "added";
 
             // get the next line
             line = stream.readLine();
 
             series->attachAxis(&mAxisY);
             series->attachAxis(&mAxisX);
+            qDebug() << "attached";
 
             // debug
             set++;
             qDebug() << "set: " << set;
 
-            if (set > 1)
+            if (set > 50)
             {
                 break;
             }
