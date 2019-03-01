@@ -28,6 +28,10 @@
 #include "CinParamSet.h"
 #include "CinImageView.h"
 #include "CinDBView.h"
+#include "CinLinechartWidget.h"
+
+#include "EmuEmulator.h"
+#include "EmuInputSliders.h"
 
 #include <iostream>
 #include <sstream>
@@ -65,7 +69,16 @@ private:
     CinParamSliders *mSliders=NULL;
     QString          mSettingsFile;
 
+    // emu
+    EmuInputSliders *mEmuSliders=NULL;
+    EmuEmulator     *mEmu=NULL;
+    CinLinechartWidget mEmuChart;
+
+private:
+    void runEmulate();
+
 private slots:
+    void onEmulate();
     void onOpenFile();
     void onQuit();
     void onAbout();

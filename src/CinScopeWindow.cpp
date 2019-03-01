@@ -12,6 +12,7 @@
 #include <QList>
 #include <QVector>
 #include <time.h>
+#include <QPushButton>
 #include "CinCore.h"
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -22,6 +23,7 @@
 #include "CinLinechartWidget.h"
 #include "EmuEmulator.h"
 #include "EmuLoader.h"
+#include "EmuInputSliders.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -53,43 +55,48 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainWidget->setLayout(mainWidgetLayout);
-    // mainWidgetLayout->addWidget(mSplitter);
+    mainWidgetLayout->addWidget(mSplitter);
 
     // begin chart 
-    CinLinechartWidget *chart = new CinLinechartWidget();
-    mainWidgetLayout->addWidget(chart);
-    EmuLoader eLoader;
     // TODO: manage this memory ...
-    EmuDatabase *eDatabase = new EmuDatabase();
-    eLoader.setDatabase(eDatabase);
-    eLoader.load("test.emu");
-    chart->loadData("test.emu/output.csv");
-    // chart->loadSeries("1");
-    // chart->loadSeries("10");
-    // chart->loadSeries("100");
-    // chart->loadSeries("1001");
+    mSplitter->addWidget(&mEmuChart);
+    // EmuLoader eLoader;
+    // TODO: manage this memory ...
+    // EmuDatabase *eDatabase = new EmuDatabase();
+    // eLoader.setDatabase(eDatabase);
+    // eLoader.load("test.emu");
+    mEmuChart.loadData("test.emu/output.csv");
+    // mEmuChart->loadSeries("1");
+    // mEmuChart->loadSeries("10");
+    // mEmuChart->loadSeries("100");
+    // mEmuChart->loadSeries("1001");
 
     // emulate results and load
     EmuEmulator emu;
-    int numInputs = emu.getNumInputs();
-    QVector<double> emuEmulation;
-    emuEmulation.reserve(numInputs);
+    mEmu = new EmuEmulator();
+    int numInputs = mEmu->getNumInputs();
+    // QVector<double> emuEmulation;
+    // emuEmulation.reserve(numInputs);
+
+    // begin sliders
+    QVector<double> minMax;
+    mEmuSliders = new EmuInputSliders();
+    for (int j=0;j<numInputs;j++)
+    {
+        mEmu->getInputMinMax(j, minMax);
+        mEmuSliders->addSlider(QString("x%1").arg(j), minMax[0], minMax[1]);
+    }
+    mEmuSliders->complete();
+    mSplitter->addWidget(mEmuSliders);
+
+    // add the emulate button
+    QPushButton *emulate = new QPushButton();
+    emulate->setText("emulate");
+    mainWidgetLayout->addWidget(emulate);
+    connect(emulate, &QPushButton::clicked, this, &CinScopeWindow::onEmulate);
 
     // emulate ...
-    QVector<double> values;
-    QRandomGenerator rgen;
-    rgen.seed(time(NULL));
-    const int numEmulations = 50;
-    for (int i=0;i<numEmulations;i++)
-    {
-        for (int j=0;j<numInputs;j++)
-        {
-            emu.getInputMinMax(j, values);
-            emuEmulation[j] = values[0] + rgen.generateDouble()*(values[1]-values[0]); 
-        }
-        emu.emulate(emuEmulation);
-        chart->addSeries(emu.getResults());
-    }
+    // runEmulate();
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -213,4 +220,48 @@ void CinScopeWindow::onParameters()
 void CinScopeWindow::flushUI()
 {
     mSliders->deleteSliders();
+}
+
+void CinScopeWindow::onEmulate()
+{
+    QVector<double> values;
+
+    mEmuSliders->getValues(values);
+    mEmu->emulate(values);
+    for (int i=0;i<values.count();i++)
+    {
+        qDebug() << "VAL: " << values[i];
+    }
+    qDebug() << "\n";
+    mEmuChart.addSeries(mEmu->getResults());
+}
+
+void CinScopeWindow::runEmulate()
+{
+    qDebug() << "RUN EMULATE";
+
+    QVector<double> values;
+    QRandomGenerator rgen;
+    rgen.seed(time(NULL));
+    const int numEmulations = 1;
+    QVector<double> emuEmulation;
+    int numInputs = mEmu->getNumInputs();
+    emuEmulation.resize(numInputs);
+    for (int i=0;i<numEmulations;i++)
+    {
+        for (int j=0;j<numInputs;j++)
+        {
+            mEmu->getInputMinMax(j, values);
+            emuEmulation[j] = values[0] + rgen.generateDouble()*(values[1]-values[0]); 
+        }
+        // mEmu->emulate(emuEmulation);
+        // mEmuChart->addSeries(mEmu->getResults());
+        QVector<double> tSeries;
+        tSeries.resize(1620);
+        for (int k=0;k<1620;k++)
+        {
+            tSeries[k] = (double)k;
+        }
+        mEmuChart.addSeries(tSeries);
+    }
 }

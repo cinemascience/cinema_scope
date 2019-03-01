@@ -112,13 +112,15 @@ void CinLinechartWidget::addSeries(const QVector<double> &series)
     QVectorIterator<double> it(series);
 
     double cur = 0.0;
+    double dValue = 0.0;
     while (it.hasNext())
     {
-        lineSeries->append(cur, it.next()); 
+        dValue = it.next();
+        lineSeries->append(cur, dValue);
         cur++;
     }
 
-    addSeries(lineSeries);
+    mChart.addSeries(lineSeries);
 }
 
 void CinLinechartWidget::addSeries(QLineSeries *series)
@@ -126,8 +128,8 @@ void CinLinechartWidget::addSeries(QLineSeries *series)
     if (series)
     {
         mChart.addSeries(series);
-        series->attachAxis(&mAxisY);
-        series->attachAxis(&mAxisX);
-        series->setVisible(true);
+        // series->attachAxis(&mAxisY);
+        // series->attachAxis(&mAxisX);
+        // series->setVisible(true);
     }
 }
