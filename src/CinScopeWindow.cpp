@@ -64,7 +64,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     // emulate results and load
     EmuEmulator emu;
-    QVector<double> emuInputs = ;
+    QVector<double> emuInputs;
     emuInputs.reserve(5);
     emuInputs[0] = 0.002;
     emuInputs[1] = 0.002;
