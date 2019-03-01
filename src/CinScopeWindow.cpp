@@ -196,8 +196,8 @@ void CinScopeWindow::onQuit()
 
 void CinScopeWindow::onAbout()
 {
-    QMessageBox::about(this, tr("EmuRunner"),
-                       tr("EmuRunner v0.1<br><br>Los Alamos National Laboratory<br>Copyright 2018"));
+    QMessageBox::about(this, tr("EmuTracker"),
+                       tr("EmuTracker v0.1<br><br>Los Alamos National Laboratory<br>Copyright 2018"));
 }
 
 void CinScopeWindow::onParameters()
