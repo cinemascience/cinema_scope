@@ -3,6 +3,43 @@
 #include <time.h>
 #include <QVector>
 
+int EmuEmulator::getNumInputs()
+{
+    return p;
+}
+
+int EmuEmulator::getInputDim()
+{
+    return m;
+}
+
+bool EmuEmulator::isValidInputID(int ID)
+{
+    bool result = false;
+
+    if ((ID >= 0) && (ID < getNumInputs()))
+    {
+        result = true;
+    }
+
+    return result;
+}
+
+bool EmuEmulator::getInputMinMax(int ID, QVector<double> &values)
+{
+    bool result = false;
+
+    if (isValidInputID(ID))
+    {
+        result = true;
+        values.resize(2);
+        values[0] = xmin[ID];
+        values[1] = xmax[ID];
+    }
+
+    return result;
+}
+
 EmuEmulator::EmuEmulator()
 {
     mYStar = (double *)(malloc(neta * sizeof(double)));

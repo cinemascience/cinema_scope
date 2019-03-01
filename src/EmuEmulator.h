@@ -3,7 +3,7 @@
 
 #include <QVector>
 
-//! A class that manages emu computation 
+//! A class that manages emu computation and metadata
 /*!
 */
 class EmuEmulator
@@ -15,7 +15,13 @@ class EmuEmulator
         void emulate(const QVector<double> &inputs);
         QVector<double> &getResults() {return mResults;}
 
+        int getNumInputs();
+        int getInputDim();
+        bool getInputMinMax(int ID, QVector<double> &values);
+
     private:
+        bool isValidInputID(int ID);
+
         double *mYStar=0;
         QVector<double> mResults;
 };

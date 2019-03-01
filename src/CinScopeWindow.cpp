@@ -11,6 +11,7 @@
 #include <QSettings>
 #include <QList>
 #include <QVector>
+#include <time.h>
 #include "CinCore.h"
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -20,6 +21,7 @@
 #include "CinParameterMapDialog.h"
 #include "CinLinechartWidget.h"
 #include "EmuEmulator.h"
+#include "EmuLoader.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -56,7 +58,12 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     // begin chart 
     CinLinechartWidget *chart = new CinLinechartWidget();
     mainWidgetLayout->addWidget(chart);
-    chart->loadData("/Users/dhr/LANL/git/github/cinemascience/cinema_scope/unittesting/test_linechart/output.csv");
+    EmuLoader eLoader;
+    // TODO: manage this memory ...
+    EmuDatabase *eDatabase = new EmuDatabase();
+    eLoader.setDatabase(eDatabase);
+    eLoader.load("test.emu");
+    chart->loadData("test.emu/output.csv");
     // chart->loadSeries("1");
     // chart->loadSeries("10");
     // chart->loadSeries("100");
@@ -64,15 +71,25 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     // emulate results and load
     EmuEmulator emu;
-    QVector<double> emuInputs;
-    emuInputs.reserve(5);
-    emuInputs[0] = 0.002;
-    emuInputs[1] = 0.002;
-    emuInputs[2] = 0.01;
-    emuInputs[3] = 0.4;
-    emuInputs[4] = 0.5;
-    emu.emulate(emuInputs);
-    chart->addSeries(emu.getResults());
+    int numInputs = emu.getNumInputs();
+    QVector<double> emuEmulation;
+    emuEmulation.reserve(numInputs);
+
+    // emulate ...
+    QVector<double> values;
+    QRandomGenerator rgen;
+    rgen.seed(time(NULL));
+    const int numEmulations = 50;
+    for (int i=0;i<numEmulations;i++)
+    {
+        for (int j=0;j<numInputs;j++)
+        {
+            emu.getInputMinMax(j, values);
+            emuEmulation[j] = values[0] + rgen.generateDouble()*(values[1]-values[0]); 
+        }
+        emu.emulate(emuEmulation);
+        chart->addSeries(emu.getResults());
+    }
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -179,8 +196,8 @@ void CinScopeWindow::onQuit()
 
 void CinScopeWindow::onAbout()
 {
-    QMessageBox::about(this, tr("CinemaScope"),
-                       tr("Cinema Scope v0.1<br><br>Los Alamos National Laboratory<br>Copyright 2018"));
+    QMessageBox::about(this, tr("EmuRunner"),
+                       tr("EmuRunner v0.1<br><br>Los Alamos National Laboratory<br>Copyright 2018"));
 }
 
 void CinScopeWindow::onParameters()

@@ -11,11 +11,11 @@ int main(int argc, char *argv[])
     // 
     // handle command line args 
     //
-    QCoreApplication::setApplicationName("CinemaScope");
+    QCoreApplication::setApplicationName("EmuRunner");
     QCoreApplication::setApplicationVersion("0.1");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("CinemaScope v0.1");
+    parser.setApplicationDescription("EmuRunner v0.1");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("database", 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     const QStringList args = parser.positionalArguments();
 
     CinScopeWindow mainWindow(NULL);
-    mainWindow.setWindowTitle("CinemaScope");
+    mainWindow.setWindowTitle("EmuRunner");
     mainWindow.show();
 
     // currently, there is one positional argument

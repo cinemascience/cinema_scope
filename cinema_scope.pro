@@ -27,8 +27,6 @@ MOC_DIR = $$DESTDIR/.moc
 RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.u
 
-LIBS += -L/opt/local/lib -lgsl -lgslcblas
-
 INCLUDEPATH += /opt/local/include
 
 # The following define makes your compiler emit warnings if you use
@@ -59,9 +57,7 @@ SOURCES += \
         src/CinDBView.cpp \
         src/CinCore.cpp \
         src/CinParameterMapDialog.cpp \
-        src/CinCompoundSlider.cpp \
-        src/EmuEmulator.cpp \
-        src/test.emu/emu.c
+        src/CinCompoundSlider.cpp
 
 HEADERS += \
         src/CinScopeWindow.h \
@@ -76,7 +72,5 @@ HEADERS += \
         src/CinDBView.h \
         src/CinCore.h \
         src/CinParameterMapDialog.h \
-        src/CinCompoundSlider.h \
-        src/EmuEmulator.h \
-        src/test.emu/params.h
+        src/CinCompoundSlider.h
 
