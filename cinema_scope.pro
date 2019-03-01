@@ -27,7 +27,7 @@ MOC_DIR = $$DESTDIR/.moc
 RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.u
 
-LIBS += -L/opt/local/lib -lgsl
+LIBS += -L/opt/local/lib -lgsl -lgslcblas
 
 INCLUDEPATH += /opt/local/include
 
