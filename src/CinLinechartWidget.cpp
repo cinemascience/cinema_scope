@@ -18,7 +18,7 @@ CinLinechartWidget::CinLinechartWidget()
     mChart.setTitle("Emulated Results");
 
     mAxisX.setLabelFormat("%i");
-    mAxisX.setTitleText("Run ID");
+    mAxisX.setTitleText("Time ID");
     mAxisX.setMin(0.0);
     mAxisX.setMax(10.0);
     mAxisX.setTickCount(11);
@@ -45,17 +45,17 @@ void CinLinechartWidget::loadData(const QString &path)
     QFile file(path);
 
     // for the moment, assume that the json file is loaded
-    int   numCols = 1000;
-    float yMin    = 0.0;
-    float yMax    = 210.0;
+    setSeriesSize(1000);
+    setYMinMax(0.0, 210.0);
+    setXMinMax(0.0, getSeriesSize());
 
-    mAxisX.setMin(0);
-    mAxisX.setMax(numCols);
-    mAxisX.setTickCount(10);
+    mAxisX.setMin(getXMin());
+    mAxisX.setMax(getXMax());
+    mAxisX.setTickCount(getXTickCount());
 
-    mAxisY.setMin(yMin);
-    mAxisY.setMax(yMax);
-    mAxisY.setTickCount(10);
+    mAxisY.setMin(getYMin());
+    mAxisY.setMax(getYMax());
+    mAxisY.setTickCount(getYTickCount());
 
     // load the data into an internal data structure
     qDebug() << "FILE: " << path << file.exists();
@@ -63,13 +63,19 @@ void CinLinechartWidget::loadData(const QString &path)
     {
         QTextStream stream(&file);
         QString line = stream.readLine();
+
+        // skip past the first line, as that's the one with the var names
+        line = stream.readLine();
+        int cur = 0;
         while (!line.isNull()) 
         {
             // use the first CSV value as the key, the rest as the value
-            int id = line.indexOf(",");
-            mData.insert(line.left(id), line.mid(id+1));
+            // int id = line.indexOf(",");
+            // mData.insert(line.left(id), line.mid(id+1));
+            mData.insert(QString::number(cur), line);
 
             line = stream.readLine();
+            cur++;
         }
 
     } else {
@@ -96,8 +102,30 @@ void CinLinechartWidget::loadSeries(const QString &key)
             series->append(cur, value); 
             cur++;
         }
-        mChart.addSeries(series);
+        addSeries(series);
+    }
+}
 
+void CinLinechartWidget::addSeries(const QVector<double> &series)
+{
+    QLineSeries *lineSeries = new QLineSeries;
+    QVectorIterator<double> it(series);
+
+    double cur = 0.0;
+    while (it.hasNext())
+    {
+        lineSeries->append(cur, it.next()); 
+        cur++;
+    }
+
+    addSeries(lineSeries);
+}
+
+void CinLinechartWidget::addSeries(QLineSeries *series)
+{
+    if (series)
+    {
+        mChart.addSeries(series);
         series->attachAxis(&mAxisY);
         series->attachAxis(&mAxisX);
         series->setVisible(true);

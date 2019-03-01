@@ -10,6 +10,7 @@
 #include <QSplitter>
 #include <QSettings>
 #include <QList>
+#include <QVector>
 #include "CinCore.h"
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -18,6 +19,7 @@
 #include "CinImageView.h"
 #include "CinParameterMapDialog.h"
 #include "CinLinechartWidget.h"
+#include "EmuEmulator.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -55,9 +57,22 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     CinLinechartWidget *chart = new CinLinechartWidget();
     mainWidgetLayout->addWidget(chart);
     chart->loadData("/Users/dhr/LANL/git/github/cinemascience/cinema_scope/unittesting/test_linechart/output.csv");
-    chart->loadSeries("v500");
-    chart->loadSeries("v1000");
-    // end chart
+    // chart->loadSeries("1");
+    // chart->loadSeries("10");
+    // chart->loadSeries("100");
+    // chart->loadSeries("1001");
+
+    // emulate results and load
+    EmuEmulator emu;
+    QVector<double> emuInputs = ;
+    emuInputs.reserve(5);
+    emuInputs[0] = 0.002;
+    emuInputs[1] = 0.002;
+    emuInputs[2] = 0.01;
+    emuInputs[3] = 0.4;
+    emuInputs[4] = 0.5;
+    emu.emulate(emuInputs);
+    chart->addSeries(emu.getResults());
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 

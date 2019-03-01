@@ -27,6 +27,10 @@ MOC_DIR = $$DESTDIR/.moc
 RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.u
 
+LIBS += -L/opt/local/lib -lgsl
+
+INCLUDEPATH += /opt/local/include
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -55,7 +59,9 @@ SOURCES += \
         src/CinDBView.cpp \
         src/CinCore.cpp \
         src/CinParameterMapDialog.cpp \
-        src/CinCompoundSlider.cpp
+        src/CinCompoundSlider.cpp \
+        src/EmuEmulator.cpp \
+        src/test.emu/emu.c
 
 HEADERS += \
         src/CinScopeWindow.h \
@@ -70,5 +76,7 @@ HEADERS += \
         src/CinDBView.h \
         src/CinCore.h \
         src/CinParameterMapDialog.h \
-        src/CinCompoundSlider.h
+        src/CinCompoundSlider.h \
+        src/EmuEmulator.h \
+        src/test.emu/params.h
 
