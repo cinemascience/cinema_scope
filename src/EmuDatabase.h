@@ -3,8 +3,9 @@
 
 #include <QMap>
 #include <QString>
-#include "EmuDatabase.h"
+#include <QVector>
 #include "EmuResult.h"
+#include "EmuDatabase.h"
 
 //! A class that manages emu data for the application 
 /*!
@@ -16,11 +17,18 @@ class EmuDatabase
         ~EmuDatabase();
 
         bool load(const QString &path);
-        void addResult(int ID, const EmuResult &result);
+        int  addResult(QString name, QString notes,
+                        const QVector<double> &inputs, 
+                        const QVector<double> &results);
+        const EmuResult &getResult(int ID);
+        void print();
 
     private:
+        int getNextResultID();
+
+        static int              NextResultID;
         QString                 mPath;
-        QMap<int, EmuResult &>  mResults;
+        QMap<int, EmuResult>    mResults;
 };
 
 #endif // EMUDATABASE_H

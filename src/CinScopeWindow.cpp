@@ -59,6 +59,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mEmuChart.loadData("test.emu/output.csv");
     mSplitter->addWidget(&mEmuInput);
     mEmuInput.setChart(&mEmuChart);
+    mEmuInput.setDatabase(&mEmuDB);
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 

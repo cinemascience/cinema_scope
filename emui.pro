@@ -62,11 +62,11 @@ SOURCES += \
         src/CinCompoundSlider.cpp \
         src/EmuEmulator.cpp \
         src/EmuLoader.cpp \
+        src/EmuResult.cpp \
         src/EmuDatabase.cpp \
         src/EmuSlider.cpp \
         src/EmuInputSliders.cpp \
         src/EmuInputPanel.cpp \
-        src/EmuResult.cpp \
         src/test.emu/emu.c
 
 HEADERS += \
@@ -85,10 +85,10 @@ HEADERS += \
         src/CinCompoundSlider.h \
         src/EmuEmulator.h \
         src/EmuLoader.h \
+        src/EmuResult.h \
         src/EmuDatabase.h \
         src/EmuSlider.h \
         src/EmuInputSliders.h \
         src/EmuInputPanel.h \
-        src/EmuResult.h \
         src/test.emu/params.h
 

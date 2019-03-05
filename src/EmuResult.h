@@ -20,8 +20,8 @@ class EmuResult
 
         const QString &getName()    {return mName;}
         const QString &getNotes()   {return mNotes;}
-        const QVector<double> &getInputs()  {return mInputs;}
-        const QVector<double> &getResults() {return mResults;}
+        const QVector<double> &getInputs()  const {return mInputs;}
+        const QVector<double> &getResults() const {return mResults;}
 
     private:
         QString mName;

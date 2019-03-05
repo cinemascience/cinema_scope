@@ -7,3 +7,5 @@ EmuResult::EmuResult()
 EmuResult::~EmuResult()
 {
 }
+
+

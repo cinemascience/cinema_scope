@@ -1,5 +1,6 @@
 #include "EmuInputPanel.h"
 #include "EmuSlider.h"
+#include "EmuDatabase.h"
 #include <QDebug>
 #include <QLayoutItem>
 #include <QGridLayout>
@@ -45,10 +46,17 @@ void EmuInputPanel::setChart(CinLinechartWidget *chart)
 
 void EmuInputPanel::onEmulate()
 {
-    QVector<double> inputValues;
+    QVector<double> inputs;
+    QString name;
+    QString notes;
 
-    mSliders.getValues(inputValues);
-    mEmulator.emulate(inputValues);
+    mSliders.getValues(inputs);
+    mEmulator.emulate(inputs);
 
-    mChart->addSeries(mEmulator.getResults());
+    int ID = mDatabase->addResult(name, notes, inputs, mEmulator.getResults());
+    const EmuResult &result = mDatabase->getResult(ID);
+    mChart->addSeries(result.getResults());
+
+    // debug
+    // mDatabase->print();
 }

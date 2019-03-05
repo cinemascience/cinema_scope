@@ -8,6 +8,7 @@
 #include "CinLinechartWidget.h"
 #include "EmuEmulator.h"
 #include "EmuInputSliders.h"
+#include "EmuDatabase.h"
 
 /*! \brief Manages a set of input sliders
  *
@@ -20,6 +21,7 @@ public:
     EmuInputPanel();
 
     void setChart(CinLinechartWidget *chart);
+    void setDatabase(EmuDatabase *db) {mDatabase = db;}
 
 
 private slots:
@@ -29,8 +31,9 @@ private:
     QVBoxLayout         mLayout;
     EmuInputSliders     mSliders;
     QPushButton         mEmulate;
-    EmuEmulator         mEmulator;
-    CinLinechartWidget *mChart;
+    EmuEmulator       mEmulator;
+    EmuDatabase        *mDatabase=NULL;
+    CinLinechartWidget *mChart=NULL;
     QScrollArea         mEmuList;
 };
 #endif // EMUINPUTPANEL_H

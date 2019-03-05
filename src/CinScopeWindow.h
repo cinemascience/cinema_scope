@@ -31,6 +31,7 @@
 #include "CinLinechartWidget.h"
 
 #include "EmuEmulator.h"
+#include "EmuDatabase.h"
 #include "EmuInputSliders.h"
 #include "EmuInputPanel.h"
 
@@ -75,6 +76,7 @@ private:
     EmuEmulator        *mEmu=NULL;
     CinLinechartWidget  mEmuChart;
     EmuInputPanel       mEmuInput;
+    EmuDatabase         mEmuDB;
 
 private slots:
     void onOpenFile();
