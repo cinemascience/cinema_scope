@@ -67,7 +67,10 @@ void CinScopeWindow::buildApplication(QWidget *parent)
 
     // set up initial state
     setCentralWidget(mainWidget);
-    resize(900,600);
+    resize(1500,750);
+    // QList<int> sizes = {1000, 500};
+    // mSplitter->setSizes(sizes);
+    // qDebug() << mSplitter->sizes();
     createActions();
     setUnifiedTitleAndToolBarOnMac(true);
     menuBar()->setNativeMenuBar(false);
