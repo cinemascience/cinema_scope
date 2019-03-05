@@ -43,9 +43,10 @@ void EmuInputPanel::setChart(CinLinechartWidget *chart)
 
 void EmuInputPanel::onEmulate()
 {
-    QVector<double> values;
+    QVector<double> inputValues;
 
-    mSliders.getValues(values);
-    mEmulator.emulate(values);
+    mSliders.getValues(inputValues);
+    mEmulator.emulate(inputValues);
+
     mChart->addSeries(mEmulator.getResults());
 }

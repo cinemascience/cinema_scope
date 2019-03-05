@@ -14,7 +14,7 @@ TEMPLATE = app
 
 CONFIG += debug_and_release
 
-# TARGET = EmuRunner
+# TARGET = EmuTracker
 
 # debug/release
 CONFIG(release, debug|release) {
@@ -66,6 +66,7 @@ SOURCES += \
         src/EmuSlider.cpp \
         src/EmuInputSliders.cpp \
         src/EmuInputPanel.cpp \
+        src/EmuResult.cpp \
         src/test.emu/emu.c
 
 HEADERS += \
@@ -88,5 +89,6 @@ HEADERS += \
         src/EmuSlider.h \
         src/EmuInputSliders.h \
         src/EmuInputPanel.h \
+        src/EmuResult.h \
         src/test.emu/params.h
 

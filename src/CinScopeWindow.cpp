@@ -54,8 +54,7 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mainWidget->setLayout(mainWidgetLayout);
     mainWidgetLayout->addWidget(mSplitter);
 
-    // begin chart 
-    // TODO: manage this memory ...
+    // Emulation UI 
     mSplitter->addWidget(&mEmuChart);
     mEmuChart.loadData("test.emu/output.csv");
     mSplitter->addWidget(&mEmuInput);
@@ -183,13 +182,4 @@ void CinScopeWindow::onParameters()
 void CinScopeWindow::flushUI()
 {
     mSliders->deleteSliders();
-}
-
-void CinScopeWindow::onEmulate()
-{
-    QVector<double> values;
-
-    mEmuSliders->getValues(values);
-    mEmu->emulate(values);
-    mEmuChart.addSeries(mEmu->getResults());
 }

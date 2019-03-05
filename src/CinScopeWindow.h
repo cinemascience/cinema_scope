@@ -77,7 +77,6 @@ private:
     EmuInputPanel       mEmuInput;
 
 private slots:
-    void onEmulate();
     void onOpenFile();
     void onQuit();
     void onAbout();
