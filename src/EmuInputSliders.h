@@ -16,7 +16,6 @@ public:
 
     void addSlider(const QString &, double, double);
     void deleteSliders();
-    void complete();
     void getValues(QVector<double> &values);
 
 private:

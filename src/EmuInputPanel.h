@@ -2,6 +2,7 @@
 #define EMUINPUTPANEL_H
 
 #include <QPushButton>
+#include <QScrollArea>
 #include <QWidget>
 #include <QVBoxLayout>
 #include "CinLinechartWidget.h"
@@ -30,5 +31,6 @@ private:
     QPushButton         mEmulate;
     EmuEmulator         mEmulator;
     CinLinechartWidget *mChart;
+    QScrollArea         mEmuList;
 };
 #endif // EMUINPUTPANEL_H

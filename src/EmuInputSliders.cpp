@@ -21,11 +21,6 @@ void EmuInputSliders::addSlider(const QString &name, double min, double max)
     mSliderLayout.addWidget(slider);
 }
 
-void EmuInputSliders::complete()
-{
-    mSliderLayout.insertSpacerItem(-1, new QSpacerItem(10,10,QSizePolicy::Minimum, QSizePolicy::Expanding));
-}
-
 void EmuInputSliders::deleteSliders()
 {
     QLayoutItem *child = NULL;
@@ -39,8 +34,7 @@ void EmuInputSliders::getValues(QVector<double> &values)
 {
     QVector<double> curValues;
 
-    // TODO: make this number robust
-    int numSliders = mSliderLayout.count() - 1;
+    int numSliders = mSliderLayout.count();
     for (int i=0;i<numSliders;i++)
     {
         EmuSlider *curSlider = 

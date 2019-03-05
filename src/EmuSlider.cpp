@@ -32,7 +32,7 @@ EmuSlider::EmuSlider()
     mValue.setText("unset");
     mValue.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     mValue.setFixedSize(100, 20);
-    mValue.setAlignment(Qt::AlignRight);
+    mValue.setAlignment(Qt::AlignLeft);
 
     mSlider.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     mSlider.setMinimum(0);

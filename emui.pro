@@ -65,6 +65,7 @@ SOURCES += \
         src/EmuDatabase.cpp \
         src/EmuSlider.cpp \
         src/EmuInputSliders.cpp \
+        src/EmuInputPanel.cpp \
         src/test.emu/emu.c
 
 HEADERS += \
@@ -86,5 +87,6 @@ HEADERS += \
         src/EmuDatabase.h \
         src/EmuSlider.h \
         src/EmuInputSliders.h \
+        src/EmuInputPanel.h \
         src/test.emu/params.h
 
