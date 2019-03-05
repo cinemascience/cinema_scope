@@ -2,6 +2,8 @@
 extern "C" {
 
 #include <gsl/gsl_rng.h>
+
+namespace emu {
 #endif
 
 static int m = 1000;
@@ -58,5 +60,6 @@ void emuInit();
 void emu(gsl_rng *, double *, double *, double *, double *, double *, double *);
 
 #ifdef __cplusplus
-}
+} // namespace
+} // extern
 #endif

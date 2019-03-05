@@ -95,9 +95,6 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     mainWidgetLayout->addWidget(emulate);
     connect(emulate, &QPushButton::clicked, this, &CinScopeWindow::onEmulate);
 
-    // emulate ...
-    // runEmulate();
-
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     mSliders->connect(mDBV->getDatabase(), mDBV->getParameters());
@@ -228,40 +225,5 @@ void CinScopeWindow::onEmulate()
 
     mEmuSliders->getValues(values);
     mEmu->emulate(values);
-    for (int i=0;i<values.count();i++)
-    {
-        qDebug() << "VAL: " << values[i];
-    }
-    qDebug() << "\n";
     mEmuChart.addSeries(mEmu->getResults());
-}
-
-void CinScopeWindow::runEmulate()
-{
-    qDebug() << "RUN EMULATE";
-
-    QVector<double> values;
-    QRandomGenerator rgen;
-    rgen.seed(time(NULL));
-    const int numEmulations = 1;
-    QVector<double> emuEmulation;
-    int numInputs = mEmu->getNumInputs();
-    emuEmulation.resize(numInputs);
-    for (int i=0;i<numEmulations;i++)
-    {
-        for (int j=0;j<numInputs;j++)
-        {
-            mEmu->getInputMinMax(j, values);
-            emuEmulation[j] = values[0] + rgen.generateDouble()*(values[1]-values[0]); 
-        }
-        // mEmu->emulate(emuEmulation);
-        // mEmuChart->addSeries(mEmu->getResults());
-        QVector<double> tSeries;
-        tSeries.resize(1620);
-        for (int k=0;k<1620;k++)
-        {
-            tSeries[k] = (double)k;
-        }
-        mEmuChart.addSeries(tSeries);
-    }
 }

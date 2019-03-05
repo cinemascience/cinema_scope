@@ -74,9 +74,6 @@ private:
     EmuEmulator     *mEmu=NULL;
     CinLinechartWidget mEmuChart;
 
-private:
-    void runEmulate();
-
 private slots:
     void onEmulate();
     void onOpenFile();

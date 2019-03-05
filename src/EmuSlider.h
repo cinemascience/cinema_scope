@@ -21,9 +21,11 @@ class EmuSlider : public QWidget
         void setRange(double min, double max);
         void setLabel(const QString &name);
         double getValue();
+        double getMin() {return mMin;}
+        double getMax() {return mMax;}
 
     public slots:
-        void onSliderValueChanged(int value);
+        void onSliderValueChanged();
 
     private:
         QHBoxLayout     mLayout;

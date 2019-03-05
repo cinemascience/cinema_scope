@@ -51,15 +51,14 @@ EmuSlider::EmuSlider()
     connect(&mSlider, &QSlider::valueChanged, this, &EmuSlider::onSliderValueChanged);
 }
 
-void EmuSlider::onSliderValueChanged(int value)
+void EmuSlider::onSliderValueChanged()
 {
     QString stringValue;
 
-    double dValue = mMin + ((double)value/(double)mNumDivisions)*(mMax-mMin);
-    mValue.setText(QString::number(dValue));
+    mValue.setText(QString::number(getValue()));
 }
 
 double EmuSlider::getValue()
 {
-    return mValue.text().toDouble();
+    return mMin + ((double)mSlider.value()/(double)mNumDivisions)*(mMax-mMin);
 }

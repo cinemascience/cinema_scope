@@ -23,6 +23,12 @@
 
 #include "params.h"
 
+
+#ifdef __cplusplus
+namespace emu {
+#endif
+
+
 // Initialization function that computes the Kriging basis
 // Some day, we might just want to store the Kriging basis instead of all of the parameters.
 void emuInit() {
@@ -112,10 +118,11 @@ void emu(gsl_rng *r, double *xstar, double *ystar, double *ysd, double *wstar, d
   double sumDiag;
   
   // Check the inputs to make sure we're interpolating.
-  for(i=0; i<p; i++) {
-    if((xstar[i] < xmin[i]) || (xstar[i] > xmax[i])) {
+  for (i=0; i<p; i++) {
+    if ( ! (xmin[i] <= xstar[i]) && (xstar[i] <= xmax[i])) {
       //printf("The inputs are outside the domain of the emulator.\n");
-      printf("Parameter %i must be between %f and %f.\n", i, xmin[i], xmax[i]);
+      printf("Parameter %i (%E) must be between %E and %E (%E).\n", 
+                    i, xstar[i], xmin[i], xmax[i], xstar[i]-xmin[i]);
       exit(1);
     }
   } // for(i=0; i<p; i++)
@@ -366,4 +373,9 @@ int main(int argc, char **argv) {
   
 }
 
+#endif
+
+
+#ifdef __cplusplus
+} // namespace
 #endif
