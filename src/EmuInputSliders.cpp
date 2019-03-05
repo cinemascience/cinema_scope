@@ -6,7 +6,7 @@
 
 EmuInputSliders::EmuInputSliders() 
 {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     setLayout(&mSliderLayout);
 }
 

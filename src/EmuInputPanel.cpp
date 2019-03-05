@@ -21,6 +21,8 @@ EmuInputPanel::EmuInputPanel()
     QGridLayout *grid = new QGridLayout();
     mLayout.addLayout(grid);
     mEmulate.setFixedSize(100,30);
+    mEmulate.setAutoDefault(true);
+    mEmulate.setDefault(true);
     grid->addWidget(&mEmulate,0,1,1,1);
     grid->setColumnStretch(0,1);
 
