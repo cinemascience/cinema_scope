@@ -32,6 +32,7 @@
 
 #include "EmuEmulator.h"
 #include "EmuInputSliders.h"
+#include "EmuInputPanel.h"
 
 #include <iostream>
 #include <sstream>
@@ -70,9 +71,10 @@ private:
     QString          mSettingsFile;
 
     // emu
-    EmuInputSliders *mEmuSliders=NULL;
-    EmuEmulator     *mEmu=NULL;
-    CinLinechartWidget mEmuChart;
+    EmuInputSliders    *mEmuSliders=NULL;
+    EmuEmulator        *mEmu=NULL;
+    CinLinechartWidget  mEmuChart;
+    EmuInputPanel       mEmuInput;
 
 private slots:
     void onEmulate();

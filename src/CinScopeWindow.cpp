@@ -12,7 +12,6 @@
 #include <QList>
 #include <QVector>
 #include <time.h>
-#include <QPushButton>
 #include "CinCore.h"
 #include "CinDBReader.h"
 #include "CinParamSliders.h"
@@ -21,9 +20,7 @@
 #include "CinImageView.h"
 #include "CinParameterMapDialog.h"
 #include "CinLinechartWidget.h"
-#include "EmuEmulator.h"
-#include "EmuLoader.h"
-#include "EmuInputSliders.h"
+#include "EmuInputPanel.h"
 
 CinScopeWindow::~CinScopeWindow()
 {
@@ -60,40 +57,9 @@ void CinScopeWindow::buildApplication(QWidget *parent)
     // begin chart 
     // TODO: manage this memory ...
     mSplitter->addWidget(&mEmuChart);
-    // EmuLoader eLoader;
-    // TODO: manage this memory ...
-    // EmuDatabase *eDatabase = new EmuDatabase();
-    // eLoader.setDatabase(eDatabase);
-    // eLoader.load("test.emu");
     mEmuChart.loadData("test.emu/output.csv");
-    // mEmuChart->loadSeries("1");
-    // mEmuChart->loadSeries("10");
-    // mEmuChart->loadSeries("100");
-    // mEmuChart->loadSeries("1001");
-
-    // emulate results and load
-    EmuEmulator emu;
-    mEmu = new EmuEmulator();
-    int numInputs = mEmu->getNumInputs();
-    // QVector<double> emuEmulation;
-    // emuEmulation.reserve(numInputs);
-
-    // begin sliders
-    QVector<double> minMax;
-    mEmuSliders = new EmuInputSliders();
-    for (int j=0;j<numInputs;j++)
-    {
-        mEmu->getInputMinMax(j, minMax);
-        mEmuSliders->addSlider(QString("x%1").arg(j), minMax[0], minMax[1]);
-    }
-    mEmuSliders->complete();
-    mSplitter->addWidget(mEmuSliders);
-
-    // add the emulate button
-    QPushButton *emulate = new QPushButton();
-    emulate->setText("emulate");
-    mainWidgetLayout->addWidget(emulate);
-    connect(emulate, &QPushButton::clicked, this, &CinScopeWindow::onEmulate);
+    mSplitter->addWidget(&mEmuInput);
+    mEmuInput.setChart(&mEmuChart);
 
     mSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
