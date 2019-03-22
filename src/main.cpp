@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
     // handle command line args 
     //
     QCoreApplication::setApplicationName("CinemaScope");
-    QCoreApplication::setApplicationVersion("0.1");
+    QCoreApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("CinemaScope v0.1");
+    parser.setApplicationDescription("CinemaScope v1.0");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("database", 
