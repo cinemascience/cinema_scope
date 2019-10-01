@@ -1,9 +1,8 @@
-## Cinema Scope v0.1 cross-platform viewer application
-[![Build Status](https://travis-ci.org/cinemascience/cinema_scope.svg?branch=master)](https://travis-ci.org/cinemascience/cinema_scope)
+## Cinema EMUI prototype viewer
 
-<img src="docs/html/img/cinema_scope.png" width="800" border="1">
+<img src="docs/html/img/emui.png" width="800" border="1">
 
-This is a cross-platform viewer for Cinema databases. The project contains a set of components for accessing and viewing databases which can be used to build other viewers and Cinema applications.
+This is a cross-platform viewer for the EMU [emulator](link). With it, the user can run emulations and view the results in real time. This builds on the Cinema:Scope project.
 
 ### Documentation 
 
