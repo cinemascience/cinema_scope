@@ -2,7 +2,7 @@
 
 <img src="docs/html/img/emui.png" width="800" border="1">
 
-This is a cross-platform viewer for the EMU [emulator](link). With it, the user can run emulations and view the results in real time. This builds on the Cinema:Scope project.
+This is a cross-platform viewer for the EMU [emulator](https://github.com/lanl/EGG). With it, the user can run emulations and view the results in real time. This builds on the Cinema:Scope project.
 
 ### Documentation 
 
