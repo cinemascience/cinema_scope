@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rf *.moc moc_* *.xcodeproj build debug Info.plist .cmake.stash .xcode
