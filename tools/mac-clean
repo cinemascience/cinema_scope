@@ -1,3 +1,4 @@
 #!/bin/bash
 
 rm -rf *.moc moc_* *.xcodeproj build debug Info.plist .qmake.stash .xcode
+rm -rf installer/cinema_scope.dmg
