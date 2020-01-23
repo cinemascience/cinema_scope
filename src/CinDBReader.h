@@ -54,7 +54,7 @@ class CinDBReader
         bool hasSettingsFile() {return mCurSettingsFile != CinDBReader::NOFILE;}
 
     private:
-        CinDBColData::Type getType(const QString &value);
+        // CinDBColData::Type getType(const QString &value);
         void split(const std::string & s, char c, std::vector<std::string>& v);
         void loadDB(QSqlDatabase &db, const QString &tableName, std::vector<CinDBColData> &coldata);
         void constructCommands(const QString &tableName, std::vector<CinDBColData> &coldata, QString &create);

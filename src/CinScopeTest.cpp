@@ -25,7 +25,6 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void parameter();
     void databaseReader();
     void cinDatabase();
     void cinDBView();
@@ -33,6 +32,7 @@ private slots:
     void rawDatabase();
     void cinParameter();
     void nannull();
+    void timestep();
 };
 
 
@@ -54,39 +54,6 @@ void CinScopeTest::initTestCase()
 void CinScopeTest::cleanupTestCase()
 {
 
-}
-
-void CinScopeTest::parameter()
-{
-    // testing CinParameter class
-    CinParameter param("test", CinParameter::FLOAT);
-    param.recordValue(1.0);
-    param.recordValue(4.0);
-    param.recordValue(2.0);
-    param.recordValue(3.0);
-    // param.finalizeValues();
-
-    // float fResult = 0.0;
-    // bool result = false;
-
-    // increment/decrement
-    // param.setToValueAt(0);
-    // QVERIFY(param.getValue() == 1.0);
-    // param.incrementValue();
-    // QVERIFY(param.getValue() == 2.0);
-    // param.incrementValue();
-    // QVERIFY(param.getValue() == 3.0);
-    // param.decrementValue();
-    // QVERIFY(param.getValue() == 2.0);
-        // end wrap case
-    param.setToValueAt(0);
-    param.decrementValue();
-    // QVERIFY(param.getValue() == 4.0);
-        // end wrap case
-    QVERIFY(param.getLastID() == 3);
-    param.setToValueAt(param.getLastID());
-    param.incrementValue();
-    // QVERIFY(param.getValue() == 1.0);
 }
 
 void CinScopeTest::databaseReader()
@@ -316,11 +283,15 @@ void CinScopeTest::cinParameter()
 {
     CinParameter pVar("test", CinParameter::INT);
 
+    // set some initial values
+    pVar.recordValue(0.098765432109);
     pVar.recordValue(1);
     pVar.recordValue(2.0);
     pVar.recordValue("3.0");
     pVar.recordValue("this");
 
+    // test for existence of above values, including checks that should fail 
+    QVERIFY(pVar.valueExists(0.098765432109));
     QVERIFY(pVar.valueExists(1));
     QVERIFY(pVar.valueExists(9) == false);
     QVERIFY(pVar.valueExists(2.0));
@@ -331,11 +302,14 @@ void CinScopeTest::cinParameter()
     QVERIFY(pVar.valueExists("that") == false);
 
     // Null and NaN testing
+        // these values have not been recorded, so they cannot exist, and the
+        // parameter cannot be set to these values
     QVERIFY(pVar.valueExists(CinParameter::NULL_VALUE) == false);
     QVERIFY(pVar.valueExists(CinParameter::NAN_VALUE) == false);
     QVERIFY(pVar.setValue(CinParameter::NULL_VALUE) == false);
     QVERIFY(pVar.setValue(CinParameter::NAN_VALUE) == false);
-        // now we create them
+        // now we create these values, and test for existence, and test to 
+        // set the values
     pVar.recordValue(CinParameter::NULL_VALUE);
     pVar.recordValue(CinParameter::NAN_VALUE);
     QVERIFY(pVar.valueExists(CinParameter::NULL_VALUE));
@@ -343,16 +317,11 @@ void CinScopeTest::cinParameter()
     QVERIFY(pVar.setValue(CinParameter::NULL_VALUE));
     QVERIFY(pVar.setValue(CinParameter::NAN_VALUE));
 
-    // set and get
-    QVERIFY(pVar.setValue(1));
-    QVERIFY(pVar.setValue(15) == false);
-    QVERIFY(pVar.setValue(2.0));
-    QVERIFY(pVar.setValue(3.0) == false);
-    QVERIFY(pVar.setValue("this"));
-    QVERIFY(pVar.setValue("that") == false);
-
+    // getting the value as a string
     QString value;
-    pVar.getValueAsString(value, 2);
+    pVar.getValueAsString(value, 0);
+    QVERIFY(value == "0.098765432109");
+    pVar.getValueAsString(value, 3);
     QVERIFY(value == "3.0");
 
     pVar.print();
@@ -404,6 +373,21 @@ void CinScopeTest::nannull()
     }
 }
 
+void CinScopeTest::timestep()
+{
+    CinDatabase db;
+
+    db.load("../unittesting/test_time.cdb");
+    QStringList parameters = {"timestep", "producer"};
+    QStringList artifacts  = {"FILE"};
+
+    QSqlQuery query(db.getDatabase());
+    query.exec("SELECT [FILE] FROM cinema WHERE [timestep]='0.000100073739304' AND [producer]='cview_0'");
+    while (query.next())
+    {
+        QVERIFY(query.value(0) == "RenderView1/0.000100073739304.png");
+    }
+}
 
 
 QTEST_MAIN(CinScopeTest)

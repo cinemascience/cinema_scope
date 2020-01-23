@@ -59,6 +59,7 @@ int CinDatabase::load(const QString &dbPath)
         result = mReader.load(mDatabase, dbPath, mTableName);
         setColumnNames();
     }
+    // debugdump();
 
     return result;
 }
@@ -113,4 +114,20 @@ void CinDatabase::reset()
 
     mParameterColNames.clear();
     mArtifactColNames.clear();
+}
+
+/*! \brief Perform a specific data dump for debugging
+ *
+ *  This is intended to be hard coded for debugging - it's
+ *  a convenient wrapper to call ...
+ */
+void CinDatabase::debugdump()
+{
+    QSqlQuery query(mDatabase);
+    query.exec("SELECT [timestep] from cinema"); 
+
+    while (query.next())
+    {
+        qDebug() << "value: " << query.value(0).toString();
+    }
 }

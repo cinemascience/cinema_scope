@@ -34,6 +34,7 @@ class CinDatabase
         inline void setTableName(const QString &name) {mTableName = name;}
         void        setColumnNames();
         void        getUniqueConnectionName(QString &connect);
+        void        debugdump();
 
         QSqlDatabase mDatabase;             /*!< The Sql back end for this database object */
         CinDBReader  mReader;               /*!< The reader object for the database on disk */ 

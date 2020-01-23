@@ -88,7 +88,11 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
                 // determine type
                 if (curColData->type == CinDBColData::UNDEFINED) {
                     QString value = cur->c_str();
-                    curColData->type = getType(value);
+                    // curColData->type = getType(value);
+                    // dynamic typing is no longer supported, as it introduces
+                    // errors with precision and matching values. Instead, we
+                    // now treat everything as a string
+                    curColData->type = CinDBColData::STRING;
                 }
                 curColData++;
             }
@@ -107,6 +111,11 @@ int CinDBReader::load(QSqlDatabase &db, const QString &path, const QString &tabl
     return res;
 }
 
+// dynamically get the type of a value
+//
+// This is no longer used, because typing introduces errors
+// with precision matching
+/*
 CinDBColData::Type CinDBReader::getType(const QString &value)
 {
     CinDBColData::Type type = CinDBColData::UNDEFINED;
@@ -132,6 +141,7 @@ CinDBColData::Type CinDBReader::getType(const QString &value)
 
     return type;
 }
+*/
 
 
 void CinDBReader::split(const std::string& s, char c, std::vector<std::string>& v) 
